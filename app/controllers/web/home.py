@@ -1,10 +1,10 @@
-""" Kevin
-Tool to Inspect HTTP Requests & Build Custom Endpoints.
-
-@author: Clivern U{hello@clivern.com}
 """
+Home Web Controller
+"""
+
 from django.http import HttpResponse
 from django.template import loader
+
 
 class Home():
 
