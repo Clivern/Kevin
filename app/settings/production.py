@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CHILD_THEME = "child"
+CURRENT_THEME = "default"
+DEFAULT_THEME = "default"
 
 # Application definition
 
@@ -54,7 +57,11 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.dirname(BASE_DIR) + "/themes/" + CHILD_THEME,
+            os.path.dirname(BASE_DIR) + "/themes/" + CURRENT_THEME,
+            os.path.dirname(BASE_DIR) + "/themes/" + DEFAULT_THEME,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,3 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.dirname(BASE_DIR) + STATIC_URL
+]

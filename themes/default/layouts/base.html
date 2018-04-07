@@ -1,0 +1,11 @@
+{% load staticfiles %}
+<html>
+    <header>
+        {% include 'partials/header.html' %}
+        <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    </header>
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
