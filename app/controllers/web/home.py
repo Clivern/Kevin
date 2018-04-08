@@ -12,4 +12,4 @@ class Home(View):
 	template_name = 'templates/home.html'
 
 	def get(self, request):
-	    return render(request, self.template_name, {'foo': 'get'})
+	    return render(request, self.template_name, {'page_title': '404'})
