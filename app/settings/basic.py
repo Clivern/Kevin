@@ -11,30 +11,30 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+APP_ROOT = os.path.dirname(BASE_DIR)
+APP_DIR = BASE_DIR
 
+load_dotenv(dotenv_path=os.path.join(APP_ROOT, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')lj2@3@y&5ofgoekbt2c-4$$w2bedn@-(hr&i^!#%wype&wp6d'
+SECRET_KEY = os.getenv("APP_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("APP_DEBUG").lower() == "true"
 
 ALLOWED_HOSTS = []
-
-CHILD_THEME = "child"
-CURRENT_THEME = "default"
-DEFAULT_THEME = "default"
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -58,9 +58,9 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.dirname(BASE_DIR) + "/themes/" + CHILD_THEME,
-            os.path.dirname(BASE_DIR) + "/themes/" + CURRENT_THEME,
-            os.path.dirname(BASE_DIR) + "/themes/" + DEFAULT_THEME,
+            APP_ROOT + "/themes/child",
+            APP_ROOT + "/themes/" + os.getenv("CURRENT_THEME"),
+            APP_ROOT + "/themes/default",
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -80,11 +80,24 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if os.getenv("DB_CONNECTION") == "mysql":
+    default_db = {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv("DB_DATABASE"),
+        'USER': os.getenv("DB_USERNAME"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     }
+else:
+    default_db = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(APP_ROOT + "/storage/framework/database/", 'db.sqlite3')
+    }
+
+
+DATABASES = {
+    'default': default_db
 }
 
 
@@ -127,5 +140,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.dirname(BASE_DIR) + STATIC_URL
+    APP_ROOT + STATIC_URL
 ]
