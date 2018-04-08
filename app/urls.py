@@ -8,6 +8,5 @@ from app.controllers.web.home import Home
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('home', Home.index, name='home')
+    path('', Home.as_view(), name='home')
 ]

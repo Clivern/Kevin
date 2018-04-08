@@ -2,13 +2,14 @@
 Home Web Controller
 """
 
+from django.views import View
+from django.shortcuts import render
 from django.http import HttpResponse
-from django.template import loader
+from django.http import HttpResponseRedirect
 
+class Home(View):
 
-class Home():
+	template_name = 'templates/home.html'
 
-	def index(self):
-	    template = loader.get_template('templates/home.html')
-	    response_body = template.render({'foo': 'bar'})
-	    return HttpResponse(response_body)
+	def get(self, request):
+	    return render(request, self.template_name, {'foo': 'get'})
