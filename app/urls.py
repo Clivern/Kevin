@@ -22,7 +22,7 @@ urlpatterns = [
     path('endpoints', Endpoints.as_view(), name='web.endpoints'),
     path('forgot_password', ForgotPassword.as_view(), name='web.forgot_password'),
     path('login', Login.as_view(), name='web.login'),
-    path('profile', Profile.as_view(), name='web.profile')
-    path('404', NotFound.as_view(), name='web.not_found')
+    path('profile', Profile.as_view(), name='web.profile'),
+    path('404', NotFound.as_view(), name='web.not_found'),
     path('500', Error.as_view(), name='web.error')
 ]
