@@ -1,5 +1,5 @@
 """
-Home Web Controller
+Profile Web Controller
 """
 
 from django.views import View
@@ -7,9 +7,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
-class Home(View):
+class Profile(View):
 
-	template_name = 'templates/home.html'
+	template_name = 'templates/profile.html'
 
 	def get(self, request):
-	    return render(request, self.template_name, {'page_title': 'Home'})
+	    return render(request, self.template_name, {'page_title': 'Profile'})
