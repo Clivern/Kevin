@@ -8,7 +8,7 @@ __license__ = "Apache Version 2.0"
 __version__ = "1.0.0"
 __maintainer__ = "A. F"
 __email__ = "hello@clivern.com"
-__status__ = "production"
+__status__ = "basic"
 
 
 if __name__ == "__main__":
