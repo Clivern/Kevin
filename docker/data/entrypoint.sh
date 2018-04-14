@@ -1,1 +1,1 @@
-chmod -R 777 /opt/www
+chmod -R 777 /opt

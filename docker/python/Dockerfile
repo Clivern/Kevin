@@ -1,9 +1,8 @@
 FROM python:3
 
-RUN ls /opt/
-RUN ls /opt/www/
+RUN ls /opt
 
-WORKDIR /opt/www/
+WORKDIR /opt
 
 RUN pip install -r requirements.txt
 
