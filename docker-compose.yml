@@ -28,4 +28,4 @@ services:
     volumes:
       - .:/kevin
     ports:
-      - "8000:80"
+      - "8000:8000"
