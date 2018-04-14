@@ -1,0 +1,37 @@
+version: '2'
+services:
+  data:
+    container_name: kevin_data
+    build: ./docker/data
+    volumes:
+      - .:/www
+    command: /var/local/entrypoint.sh
+
+  db:
+    container_name: kevin_mysql
+    build: ./docker/mysql
+    ports:
+      - "3309:3309"
+    volumes:
+      - .docker_data/mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+
+  python:
+    container_name: kevin_python
+    build: ./docker/python
+    ports:
+      - "8000:80"
+    volumes_from:
+      - data
+    links:
+      - db
+    environment:
+      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_HOST: kevin_mysql
