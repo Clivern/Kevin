@@ -28,9 +28,7 @@ SECRET_KEY = os.getenv("APP_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("APP_DEBUG").lower() == "true"
 
-ALLOWED_HOSTS = [
-    "*"
-]
+ALLOWED_HOSTS =  [] if (os.getenv("ALLOWED_HOSTS") == "") else os.getenv("ALLOWED_HOSTS").split(",")
 
 # Application definition
 INSTALLED_APPS = [
