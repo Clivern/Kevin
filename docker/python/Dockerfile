@@ -1,9 +1,9 @@
 FROM python:3
 
-RUN ls /var
-RUN ls /var/www
+RUN ls /opt/
+RUN ls /opt/www/
 
-WORKDIR /var/www
+WORKDIR /opt/www/
 
 RUN pip install -r requirements.txt
 

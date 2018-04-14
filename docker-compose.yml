@@ -4,7 +4,7 @@ services:
     container_name: kevin_data
     build: ./docker/data
     volumes:
-      - .:/www
+      - .:/opt/www
     command: /var/local/entrypoint.sh
 
   db:
