@@ -2,7 +2,6 @@
 Tool to Inspect HTTP Requests & Build Custom Endpoints.
 
 [![Build Status](https://travis-ci.org/Clivern/Kevin.svg?branch=master)](https://travis-ci.org/Clivern/Kevin)
-[![License](https://poser.pugx.org/clivern/kevin/license.svg)](https://packagist.org/packages/clivern/kevin)
 
 Installation
 ------------
@@ -11,10 +10,9 @@ In order to run this app do the following:
 
 ### Default Install
 
-- Get the application code and install php dependencies and node packages.
 ```bash
 #
-``
+```
 
 ### With Docker
 
@@ -33,9 +31,9 @@ docker-compose up -d
 
 - Open your browser and access the `http://127.0.0.1:8000/`.
 
-- Also you can add `http://lwt.dev` to your `/etc/hosts` file.
+- Also you can add `http://kevin.com` to your `/etc/hosts` file.
 ```bash
-127.0.0.1:8001       kevin.com
+127.0.0.1:8000       kevin.com
 ```
 
 - To Check our containers, use the following command:
