@@ -4,6 +4,7 @@ services:
     build: .
     depends_on:
       - mysql
+    command: "python manage.py migrate"
   mysql:
     image: mysql:5.6
     container_name: kevin_db
