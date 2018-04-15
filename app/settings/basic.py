@@ -26,9 +26,9 @@ load_dotenv(dotenv_path=os.path.join(APP_ROOT, ".env"))
 SECRET_KEY = os.getenv("APP_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("APP_DEBUG").lower() == "true"
+DEBUG = os.getenv("APP_DEBUG", "false").lower() == "true"
 
-ALLOWED_HOSTS =  [] if (os.getenv("ALLOWED_HOSTS") == "") else os.getenv("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS =  [] if (os.getenv("ALLOWED_HOSTS", "") == "") else os.getenv("ALLOWED_HOSTS", "").split(",")
 
 # Application definition
 INSTALLED_APPS = [
@@ -58,7 +58,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             APP_ROOT + "/themes/child",
-            APP_ROOT + "/themes/" + os.getenv("CURRENT_THEME"),
+            APP_ROOT + "/themes/" + os.getenv("CURRENT_THEME", "default"),
             APP_ROOT + "/themes/default",
         ],
         'APP_DIRS': True,
@@ -119,9 +119,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = os.getenv("APP_LANGUAGE", "en-us")
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = os.getenv("APP_TIMEZONE", "UTC")
 
 USE_I18N = True
 
