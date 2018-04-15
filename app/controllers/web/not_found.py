@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 
 class NotFound(View):
 
-	template_name = 'templates/404.html'
+    template_name = 'templates/404.html'
 
-	def get(self, request):
-	    return render(request, self.template_name, {'page_title': '404'})
+    def get(self, request):
+        return render(request, self.template_name, {'page_title': '404'})
