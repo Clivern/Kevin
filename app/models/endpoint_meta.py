@@ -6,6 +6,7 @@ from django.db import models
 from .endpoint import Endpoint
 
 class Endpoint_Meta(models.Model):
+
     endpoint = models.ForeignKey(
         Endpoint,
         on_delete=models.CASCADE,

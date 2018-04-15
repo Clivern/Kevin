@@ -5,6 +5,7 @@ Option Model
 from django.db import models
 
 class Option(models.Model):
+
     AUTOLOAD_CHOICES = (
         ('on', 'On'),
         ('off', 'Off')
