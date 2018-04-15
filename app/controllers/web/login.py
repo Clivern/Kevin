@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 
 class Login(View):
 
-	template_name = 'templates/login.html'
+    template_name = 'templates/login.html'
 
-	def get(self, request):
-	    return render(request, self.template_name, {'page_title': 'Login'})
+    def get(self, request):
+        return render(request, self.template_name, {'page_title': 'Login'})

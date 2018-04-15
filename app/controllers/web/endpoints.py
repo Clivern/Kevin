@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 
 class Endpoints(View):
 
-	template_name = 'templates/endpoints.html'
+    template_name = 'templates/endpoints.html'
 
-	def get(self, request):
-	    return render(request, self.template_name, {'page_title': 'Endpoints'})
+    def get(self, request):
+        return render(request, self.template_name, {'page_title': 'Endpoints'})
