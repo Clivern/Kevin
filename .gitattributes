@@ -1,2 +1,2 @@
-static/assets/plugins/* linguist-vendored
+static/assets/plugins/* linguist-vendored=true
 *.py linguist-vendored=false
