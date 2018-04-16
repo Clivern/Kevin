@@ -2,17 +2,8 @@
 import os
 import sys
 
-__author__ = "Clivern"
-__copyright__ = "Copyright 2018, Clivern"
-__license__ = "Apache Version 2.0"
-__version__ = "1.0.0"
-__maintainer__ = "A. F"
-__email__ = "hello@clivern.com"
-__status__ = "basic"
-
-
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "app.settings." + __status__)
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "app.settings.basic")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

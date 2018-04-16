@@ -27,13 +27,17 @@ class Endpoint(models.Model):
     namespace = models.ForeignKey(
         Namespace,
         on_delete=models.CASCADE,
-        db_index=True
+        db_index=True,
+        verbose_name="Related namespace"
     )
-    route = models.CharField(max_length=100)
-    method = models.CharField(max_length=20, choices=METHOD_CHOICES, default="any")
-    target = models.CharField(max_length=20, choices=TARGET_CHOICES, default="debug")
-    route_rules = models.TextField()
-    headers_rules = models.TextField()
-    body_rules = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    route = models.CharField(max_length=100, verbose_name="Route")
+    method = models.CharField(max_length=20, choices=METHOD_CHOICES, default="any", verbose_name="Method")
+    target = models.CharField(max_length=20, choices=TARGET_CHOICES, default="debug", verbose_name="Target")
+    route_rules = models.TextField(verbose_name="Route rules")
+    headers_rules = models.TextField(verbose_name="Headers rules")
+    body_rules = models.TextField(verbose_name="Body rules")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
+
+    def __str__(self):
+        return "%s /%s" % (self.method, self.route)
