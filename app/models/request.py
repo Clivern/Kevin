@@ -28,13 +28,14 @@ class Request(models.Model):
     endpoint = models.ForeignKey(
         Endpoint,
         on_delete=models.CASCADE,
-        db_index=True
+        db_index=True,
+        verbose_name="Related endpoint"
     )
 
-    method = models.CharField(max_length=20, choices=METHOD_CHOICES, default="get")
-    uri = models.TextField()
-    headers = models.TextField()
-    body = models.TextField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="debug")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    method = models.CharField(max_length=20, choices=METHOD_CHOICES, default="get", verbose_name="Method")
+    uri = models.TextField(verbose_name="Uri")
+    headers = models.TextField(verbose_name="Headers")
+    body = models.TextField(verbose_name="Body")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="debug", verbose_name="Status")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
