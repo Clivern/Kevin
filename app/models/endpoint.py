@@ -7,6 +7,19 @@ from .namespace import Namespace
 
 class Endpoint(models.Model):
 
+    GET = "get"
+    POST = "post"
+    HEADE = "head"
+    PUT = "put"
+    DELETE = "delete"
+    PATCH = "patch"
+    TRACE = "trace"
+    OPTIONS = "options"
+    CONNECT = "connect"
+    ANY = "any"
+    VALIDATE = "validate"
+    DEBUG = "debug"
+
     METHOD_CHOICES = (
         ('get', 'GET'),
         ('post', 'POST'),
