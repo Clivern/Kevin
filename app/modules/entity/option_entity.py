@@ -1,18 +1,22 @@
 """
 Option Entity Module
 """
+
 from app.models import Option
 
 class Option_Entity():
 
-
     def insert_one(self, option):
         """Insert a New Option"""
+        if self.get_one_by_key(option["key"]) != False:
+            return False
+
         option = Option(
             key=option["key"],
             value=option["value"],
-            autoload=option["autoload"] if "autoload" in option else "off"
+            autoload=option["autoload"] if "autoload" in option else False
         )
+
         option.save()
         return False if option.pk is None else option
 

@@ -9,13 +9,12 @@ from app.modules.entity.option_entity import Option_Entity
 
 class Test_Option_Entity(TestCase):
 
-
     def test_insert_one(self):
         option_entity = Option_Entity()
         option = option_entity.insert_one({
             "key": "key1",
             "value": "value1",
-            "autoload": "on"
+            "autoload": True
         })
         self.assertTrue(option)
         self.assertTrue(option.id > 1)
@@ -24,10 +23,10 @@ class Test_Option_Entity(TestCase):
     def test_insert_many(self):
         option_entity = Option_Entity()
         self.assertTrue(option_entity.insert_many([
-            {"key": "key2", "value": "value2","autoload": "off"},
+            {"key": "key2", "value": "value2","autoload": False},
             {"key": "key3", "value": "value3"},
-            {"key": "key4", "value": "value4","autoload": "on"},
-            {"key": "key5", "value": "value5","autoload": "on"}
+            {"key": "key4", "value": "value4","autoload": True},
+            {"key": "key5", "value": "value5","autoload": True}
         ]))
 
 
@@ -36,7 +35,7 @@ class Test_Option_Entity(TestCase):
         option = option_entity.insert_one({
             "key": "key6",
             "value": "value6",
-            "autoload": "on"
+            "autoload": True
         })
 
         self.assertEqual(option_entity.get_one_by_id(option.id), option)
@@ -49,7 +48,7 @@ class Test_Option_Entity(TestCase):
         option = option_entity.insert_one({
             "key": "key7",
             "value": "value7",
-            "autoload": "on"
+            "autoload": True
         })
         self.assertEqual(option_entity.get_one_by_key("key7"), option)
         self.assertEqual(option_entity.get_one_by_key("key7").key, "key7")
@@ -59,13 +58,13 @@ class Test_Option_Entity(TestCase):
     def test_get_many_by_autoload(self):
         option_entity = Option_Entity()
         self.assertTrue(option_entity.insert_many([
-            {"key": "key2", "value": "value2","autoload": "off"},
+            {"key": "key2", "value": "value2","autoload": False},
             {"key": "key3", "value": "value3"},
-            {"key": "key4", "value": "value4","autoload": "on"},
-            {"key": "key5", "value": "value5","autoload": "on"}
+            {"key": "key4", "value": "value4","autoload": True},
+            {"key": "key5", "value": "value5","autoload": True}
         ]))
-        self.assertEqual(option_entity.get_many_by_autoload("on").count(), 2)
-        self.assertEqual(option_entity.get_many_by_autoload("off").count(), 2)
+        self.assertEqual(option_entity.get_many_by_autoload(True).count(), 2)
+        self.assertEqual(option_entity.get_many_by_autoload(False).count(), 2)
 
 
     def test_update_value_by_id(self):
@@ -73,7 +72,7 @@ class Test_Option_Entity(TestCase):
         option = option_entity.insert_one({
             "key": "key8",
             "value": "value8",
-            "autoload": "on"
+            "autoload": True
         })
         self.assertTrue(option_entity.update_value_by_id(option.id, "new_value8"))
         self.assertFalse(option_entity.update_value_by_id(700, "new_value8"))
@@ -84,7 +83,7 @@ class Test_Option_Entity(TestCase):
         option = option_entity.insert_one({
             "key": "key9",
             "value": "value9",
-            "autoload": "on"
+            "autoload": True
         })
         self.assertTrue(option_entity.update_value_by_key("key9", "new_value9"))
         self.assertFalse(option_entity.update_value_by_key("not_found_key", "new_value9"))
@@ -95,7 +94,7 @@ class Test_Option_Entity(TestCase):
         option = option_entity.insert_one({
             "key": "key10",
             "value": "value10",
-            "autoload": "on"
+            "autoload": True
         })
         self.assertTrue(option_entity.delete_one_by_id(option.id))
         self.assertFalse(option_entity.delete_one_by_id(600))
@@ -106,7 +105,7 @@ class Test_Option_Entity(TestCase):
         option = option_entity.insert_one({
             "key": "key11",
             "value": "value11",
-            "autoload": "on"
+            "autoload": True
         })
         self.assertTrue(option_entity.delete_one_by_key("key11"), 1)
         self.assertFalse(option_entity.delete_one_by_key("key12"))
