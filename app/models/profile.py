@@ -2,13 +2,13 @@
 Profile Model
 """
 
-from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 
 class Profile(models.Model):
 
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.CASCADE,
         db_index=True,
         verbose_name="Related user"
