@@ -12,7 +12,6 @@ class Namespace_Entity():
 
     def insert_one(self, namespace):
         """Insert a New Namespace"""
-
         if "slug" not in namespace:
             namespace["slug"] = Helpers().slugify(namespace["name"])
 
