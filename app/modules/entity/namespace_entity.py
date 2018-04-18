@@ -3,6 +3,7 @@ Namespace Entity Module
 """
 
 from app.models import Namespace
+from app.models import Namespace_Meta
 from django.contrib.auth.models import User
 from app.modules.util.helpers import Helpers
 
