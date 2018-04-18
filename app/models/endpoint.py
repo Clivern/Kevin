@@ -19,6 +19,7 @@ class Endpoint(models.Model):
     ANY = "any"
     VALIDATE = "validate"
     DEBUG = "debug"
+    DYNAMIC = "dynamic"
 
     METHOD_CHOICES = (
         ('get', 'GET'),
@@ -34,7 +35,8 @@ class Endpoint(models.Model):
     )
     TARGET_CHOICES = (
         ('validate', 'VALIDATE'),
-        ('debug', 'DEBUG')
+        ('debug', 'DEBUG'),
+        ('dynamic', 'DYNAMIC'),
     )
 
     namespace = models.ForeignKey(
