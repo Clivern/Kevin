@@ -56,7 +56,7 @@ class Request_Entity():
             return False
 
 
-    def get_many_by_requests(self, endpoint_id):
+    def get_many_by_endpoint(self, endpoint_id):
         """Get Many Requests By Endpoint ID"""
         requests = Request.objects.filter(endpoint=endpoint_id)
         return requests
@@ -81,7 +81,7 @@ class Request_Entity():
             if "status" in new_data:
                 request.status = new_data["status"]
 
-            if "namespace_id" in new_data:
+            if "endpoint_id" in new_data:
                 request.endpoint = Endpoint.objects.get(pk=new_data["endpoint_id"])
 
             request.save()
