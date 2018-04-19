@@ -7,19 +7,6 @@ from .namespace import Namespace
 
 class Endpoint(models.Model):
 
-    GET = "get"
-    POST = "post"
-    HEADE = "head"
-    PUT = "put"
-    DELETE = "delete"
-    PATCH = "patch"
-    TRACE = "trace"
-    OPTIONS = "options"
-    CONNECT = "connect"
-    ANY = "any"
-    VALIDATE = "validate"
-    DEBUG = "debug"
-
     METHOD_CHOICES = (
         ('get', 'GET'),
         ('post', 'POST'),
@@ -34,7 +21,8 @@ class Endpoint(models.Model):
     )
     TARGET_CHOICES = (
         ('validate', 'VALIDATE'),
-        ('debug', 'DEBUG')
+        ('debug', 'DEBUG'),
+        ('dynamic', 'DYNAMIC'),
     )
 
     namespace = models.ForeignKey(
@@ -43,6 +31,7 @@ class Endpoint(models.Model):
         db_index=True,
         verbose_name="Related namespace"
     )
+
     route = models.CharField(max_length=100, verbose_name="Route")
     method = models.CharField(max_length=20, choices=METHOD_CHOICES, default="any", verbose_name="Method")
     target = models.CharField(max_length=20, choices=TARGET_CHOICES, default="debug", verbose_name="Target")

@@ -14,11 +14,6 @@ services:
       - MYSQL_USER=homestead
       - MYSQL_PASSWORD=secret
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-  db_data:
-    image: mysql:5.6
-    volumes:
-      - /var/lib/mysql/data
-    command: /bin/true
   web:
     build: .
     command: "python manage.py runserver 0.0.0.0:8000"
