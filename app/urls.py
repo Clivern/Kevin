@@ -13,10 +13,12 @@ from app.controllers.web.login import Login
 from app.controllers.web.profile import Profile
 from app.controllers.web.not_found import NotFound
 from app.controllers.web.error import Error
+from app.controllers.web.install import Install
 
 
 urlpatterns = [
     path('', Home.as_view(), name='web.home'),
+    path('install', Install.as_view(), name='web.install'),
     path('dashboard', Dashboard.as_view(), name='web.dashboard'),
     path('endpoint/<slug:endpoint>', Endpoint.as_view(), name='web.endpoint'),
     path('endpoints', Endpoints.as_view(), name='web.endpoints'),
