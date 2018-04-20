@@ -22,11 +22,12 @@
         <script src="{% static 'assets/js/require.min.js' %}"></script>
         <script>
             requirejs.config({
-                baseUrl: '.'
+                baseUrl: '/static/'
             });
         </script>
         <!-- Dashboard Core -->
         <link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+        <link href="{% static 'assets/plugins/pace/themes/red/pace-theme-minimal.css' %}" rel="stylesheet" />
         <script src="{% static 'assets/js/dashboard.js' %}"></script>
         <!-- c3.js Charts Plugin -->
         <link href="{% static 'assets/plugins/charts-c3/plugin.css' %}" rel="stylesheet" />
@@ -36,6 +37,7 @@
         <script src="{% static 'assets/plugins/maps-google/plugin.js' %}"></script>
         <!-- Input Mask Plugin -->
         <script src="{% static 'assets/plugins/input-mask/plugin.js' %}"></script>
+        <script src="{% static 'assets/plugins/pace/plugin.js' %}"></script>
       	{% include 'partials/header.html' %}
   	</head>
   	<body class="">

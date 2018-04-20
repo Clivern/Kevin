@@ -1,0 +1,49 @@
+{% extends 'layouts/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+
+    <div class="page-single">
+        <div class="container">
+          <div class="row">
+            <div class="col col-login mx-auto">
+              <div class="text-center mb-6">
+                <img src="{% static 'assets/images/logo.png' %}" class="h-9" alt="">
+              </div>
+              <form class="card" action="" method="post">
+                <div class="card-body p-6">
+                  <div class="form-group">
+                    <label class="form-label">App Name</label>
+                    <input type="text" class="form-control" placeholder="Enter name">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">App Email</label>
+                    <input type="email" class="form-control" placeholder="Enter email">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Admin Username</label>
+                    <input type="email" class="form-control" placeholder="Enter email">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Admin Email</label>
+                    <input type="email" class="form-control" placeholder="Enter email">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" placeholder="Password">
+                  </div>
+                  <div class="form-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Install</button>
+                  </div>
+                </div>
+              </form>
+              <div class="text-center text-muted">
+                Copyright © 2018 <a href="http://github.com/clivern/kevin">Clivern</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}
