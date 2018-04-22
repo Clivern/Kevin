@@ -1,5 +1,5 @@
 """
-Endpoints Web Controller
+Namespace Web Controller
 """
 
 from django.views import View
@@ -7,9 +7,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
-class Endpoints(View):
+class Namespace(View):
 
-    template_name = 'templates/endpoints.html'
+    template_name = 'templates/namespace.html'
 
     def get(self, request):
-        return render(request, self.template_name, {'page_title': 'Endpoints'})
+        return render(request, self.template_name, {'page_title': 'Namespace'})

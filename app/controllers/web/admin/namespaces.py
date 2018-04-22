@@ -1,5 +1,5 @@
 """
-Not Found Web Controller
+Namespaces Web Controller
 """
 
 from django.views import View
@@ -7,9 +7,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
-class Not_Found(View):
+class Namespaces(View):
 
-    template_name = 'templates/404.html'
+    template_name = 'templates/namespaces.html'
 
     def get(self, request):
-        return render(request, self.template_name, {'page_title': '404'})
+        return render(request, self.template_name, {'page_title': 'Namespaces'})
