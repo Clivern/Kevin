@@ -37,7 +37,6 @@ class Endpoint_Entity():
             body_rules=endpoint["body_rules"],
             namespace=Namespace.objects.get(pk=endpoint["namespace_id"])
         )
-
         endpoint.save()
         return False if endpoint.pk is None else endpoint
 
