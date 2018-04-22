@@ -119,7 +119,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGES = (
     ('fr', _('French')),
-    ('en', _('English'))
+    ('en', _('English')),
+    ('de', _('Deutsch'))
 )
 
 # Internationalization
