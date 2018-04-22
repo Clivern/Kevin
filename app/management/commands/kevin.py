@@ -3,10 +3,12 @@ Kevin Info Command
 
 see https://docs.djangoproject.com/en/2.0/howto/custom-management-commands/
 """
+
 from django.core.management import utils
 from django.core.management.base import BaseCommand, CommandError
 from app.settings.info import *
 import os
+
 
 class Command(BaseCommand):
     help = 'Get Info About Kevin Application'
