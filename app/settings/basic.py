@@ -12,10 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 from dotenv import load_dotenv
 from django.utils.translation import ugettext_lazy as _
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-APP_ROOT = os.path.dirname(BASE_DIR)
-APP_DIR = BASE_DIR
+from app.settings.info import *
 
 load_dotenv(dotenv_path=os.path.join(APP_ROOT, ".env"))
 
@@ -23,7 +20,7 @@ load_dotenv(dotenv_path=os.path.join(APP_ROOT, ".env"))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("APP_KEY")
+SECRET_KEY = ")lj2@3@y&5ofgoekbt2c-4$$w2bedn@-(hr&i^!#%wype&wp6d" if os.getenv("APP_KEY", "") == "" else os.getenv("APP_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("APP_DEBUG", "false").lower() == "true"

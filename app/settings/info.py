@@ -1,3 +1,10 @@
+import os
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+APP_ROOT = os.path.dirname(BASE_DIR)
+APP_DIR = BASE_DIR
+
 AUTHOR = "Clivern"
 COPYRIGHT = "Copyright 2018, Clivern"
 LICENSE = "Apache Version 2.0"
