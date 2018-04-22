@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 from dotenv import load_dotenv
+from django.utils.translation import ugettext_lazy as _
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_ROOT = os.path.dirname(BASE_DIR)
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -115,10 +117,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LANGUAGES = (
+    ('fr', _('French')),
+    ('en', _('English'))
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
-LANGUAGE_CODE = os.getenv("APP_LANGUAGE", "en-us")
+LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = os.getenv("APP_TIMEZONE", "UTC")
 
@@ -135,4 +141,8 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     APP_ROOT + STATIC_URL
+]
+
+LOCALE_PATHS = [
+    APP_ROOT + "/translation/"
 ]
