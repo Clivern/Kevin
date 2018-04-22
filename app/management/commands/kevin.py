@@ -11,28 +11,56 @@ import os
 
 
 class Command(BaseCommand):
+
     help = 'Get Info About Kevin Application'
+
     available = [
         "info",
-        "update_app_key"
+        "update_app_key",
+        "update_env"
     ]
+
 
     def add_arguments(self, parser):
         """Config Command Args"""
-        parser.add_argument('command', type=str, help='Available commands are %s' % ", ".join(self.available))
+        parser.add_argument('command', type=str, nargs='+', help='Available commands are %s' % ", ".join(self.available))
 
 
     def handle(self, *args, **options):
         """Command Handle"""
-        # print(dir(self.style))
-        print("\n")
-        if options['command'] == "info":
-            self.stdout.write(self.style.SUCCESS('Current Version is: %s' % VERSION))
-        elif options['command'] == "update_app_key":
-            self._refresh_app_key()
-        else:
+        if len(options['command']) == 0 or options['command'][0] not in self.available:
             raise CommandError('Command Does not exist! Please use one of the following: python manage.py kevin [%s]' % ", ".join(self.available))
-        print("\n")
+
+        if options['command'][0] == "update_env" and (len(options['command']) != 2 or not options['command'][1].find("=") > 1):
+            raise CommandError('Error! Invalid command format.')
+
+        if options['command'][0] == "info":
+            self.stdout.write(self.style.SUCCESS('Current Version is: %s' % VERSION))
+        elif options['command'][0] == "update_app_key":
+            self._refresh_app_key()
+        elif options['command'][0] == "update_env":
+            env_data = options['command'][1].split("=")
+            self._update_env_var(env_data[0], env_data[1])
+
+
+    def _update_env_var(self, key, value):
+        """Update Env Variable"""
+        if not os.path.isfile(os.path.join(APP_ROOT,'.env')):
+            self.stdout.write(self.style.ERROR('Error! .env File is Missing.'))
+            return None
+
+        with open(os.path.join(APP_ROOT,'.env'), 'r') as file:
+            data = file.readlines()
+
+        i = 0
+        for item in data:
+            if item.startswith(key + "="):
+                self.stdout.write(self.style.SUCCESS('%s updated to: %s' % (key, value)))
+                data[i] = "%s=%s\n" % (key, value)
+            i += 1
+
+        with open(os.path.join(APP_ROOT,'.env'), 'w') as file:
+            file.writelines( data )
 
 
     def _refresh_app_key(self):
