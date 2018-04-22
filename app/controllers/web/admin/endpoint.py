@@ -11,5 +11,5 @@ class Endpoint(View):
 
     template_name = 'templates/endpoint.html'
 
-    def get(self, request, endpoint):
+    def get(self, request, namespace, endpoint):
         return render(request, self.template_name, {'page_title': 'Endpoint', "endpoint": endpoint})

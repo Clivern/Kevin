@@ -11,5 +11,5 @@ class Namespace(View):
 
     template_name = 'templates/namespace.html'
 
-    def get(self, request):
+    def get(self, request, namespace):
         return render(request, self.template_name, {'page_title': 'Namespace'})

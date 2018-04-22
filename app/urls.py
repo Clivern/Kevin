@@ -12,6 +12,7 @@ from app.controllers.web.error import Error as Error_View
 from app.controllers.web.login import Login as Login_View
 from app.controllers.web.register import Register as Register_View
 from app.controllers.web.forgot_password import Forgot_Password as Forgot_Password_View
+from app.controllers.web.reset_password import Reset_Password as Reset_Password_View
 from app.controllers.web.admin.logout import Logout as Logout_View
 from app.controllers.web.admin.dashboard import Dashboard as Dashboard_View
 from app.controllers.web.admin.profile import Profile as Profile_View
@@ -30,6 +31,7 @@ urlpatterns = [
     path('login', Login_View.as_view(), name='web.login'),
     path('register', Register_View.as_view(), name='web.register'),
     path('forgot-password', Forgot_Password_View.as_view(), name='web.forgot_password'),
+    path('reset-password/<token>', Reset_Password_View.as_view(), name='web.reset_password'),
 
     # Authenticated Users Views
     path('admin', include([

@@ -9,5 +9,5 @@ from django.http import HttpResponseRedirect
 
 class Logout(View):
 
-    def get(self, request, endpoint):
+    def get(self, request, token):
         pass
