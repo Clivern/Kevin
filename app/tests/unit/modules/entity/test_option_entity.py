@@ -1,5 +1,5 @@
 """
-Simple Test Case
+Option Entity Test Cases
 """
 
 from django.test import TestCase

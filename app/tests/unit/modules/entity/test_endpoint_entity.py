@@ -1,5 +1,5 @@
 """
-Simple Test Case
+Endpoint Entity Test Cases
 """
 
 from django.test import TestCase
