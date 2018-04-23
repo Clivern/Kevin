@@ -9,17 +9,15 @@ from django.core.management.base import BaseCommand, CommandError
 from app.settings.info import *
 import os
 
-
 class Command(BaseCommand):
 
-    help = 'Get Info About Kevin Application'
+    help = "Play around with Kevin Application!"
 
     available = [
         "info",
         "update_app_key",
         "update_env"
     ]
-
 
     def add_arguments(self, parser):
         """Config Command Args"""
