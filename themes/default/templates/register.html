@@ -5,36 +5,46 @@
 {% block content %}
     <div class="page-single">
         <div class="container">
-          <div class="row">
-            <div class="col col-login mx-auto">
-              <div class="text-center mb-6">
-                <img src="{% static 'assets/images/logo.png' %}" class="h-9">
-              </div>
-              <form class="card" action="" method="post">
-                <div class="card-body p-6">
-                  <div class="card-title">Create new account</div>
-                  <div class="form-group">
-                    <label class="form-label">Name</label>
-                    <input type="text" class="form-control" placeholder="Enter name">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Email address</label>
-                    <input type="email" class="form-control" placeholder="Enter email">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" placeholder="Password">
-                  </div>
-                  <div class="form-footer">
-                    <button type="submit" class="btn btn-primary btn-block">Create new account</button>
-                  </div>
+            <div class="row">
+                <div class="col col-login mx-auto">
+                    <div class="text-center mb-6">
+                        <a href="/">
+                            <img src="{% static 'assets/images/logo.png' %}" class="h-9">
+                        </a>
+                    </div>
+                    <form class="card" action="" method="post">
+                        <div class="card-body p-6">
+                            <div class="card-title">{% trans "Create new account" %}</div>
+                            <div class="form-group">
+                                <label class="form-label">{% trans "First Name" %}</label>
+                                <input type="text" class="form-control" placeholder="{% trans "Enter first name" %}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Last Name" %}</label>
+                                <input type="text" class="form-control" placeholder="{% trans "Enter last name" %}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Username" %}</label>
+                                <input type="text" class="form-control" placeholder="{% trans "Enter username" %}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Email address" %}</label>
+                                <input type="email" class="form-control" placeholder="{% trans "Enter email" %}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Password" %}</label>
+                                <input type="password" class="form-control" placeholder="{% trans "Password" %}">
+                            </div>
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-primary btn-block">{% trans "Create new account" %}</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="text-center text-muted">
+                        {% trans "Already have account?" %} <a href="./login">{% trans "Sign in" %}</a>
+                    </div>
                 </div>
-              </form>
-              <div class="text-center text-muted">
-                Already have account? <a href="./login.html">Sign in</a>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
 {% endblock %}

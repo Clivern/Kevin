@@ -3,43 +3,45 @@
 {% load i18n %}
 
 {% block content %}
-	<div class="page-single">
+    <div class="page-single">
         <div class="container">
-          <div class="row">
-            <div class="col col-login mx-auto">
-              <div class="text-center mb-6">
-                <img src="{% static 'assets/images/logo.png' %}" class="h-9">
-              </div>
-              <form class="card" action="" method="post">
-                <div class="card-body p-6">
-                  <div class="card-title">Login to your account</div>
-                  <div class="form-group">
-                    <label class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">
-                      Password
-                      <a href="./forgot-password.html" class="float-right small">I forgot password</a>
-                    </label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                  </div>
-                  <div class="form-group">
-                    <label class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" />
-                      <span class="custom-control-label">Remember me</span>
-                    </label>
-                  </div>
-                  <div class="form-footer">
-                    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-                  </div>
+            <div class="row">
+                <div class="col col-login mx-auto">
+                    <div class="text-center mb-6">
+                        <a href="/">
+                            <img src="{% static 'assets/images/logo.png' %}" class="h-9">
+                        </a>
+                    </div>
+                    <form class="card" action="" method="post">
+                        <div class="card-body p-6">
+                            <div class="card-title">{% trans "Login to your account" %}</div>
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Email address" %}</label>
+                                <input type="email" class="form-control" placeholder="{% trans "Enter email" %}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    {% trans "Password" %}
+                                    <a href="./forgot-password" class="float-right small">{% trans "I forgot password" %}</a>
+                                </label>
+                                <input type="password" class="form-control" placeholder="{% trans "Password" %}">
+                            </div>
+                            <div class="form-group">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" />
+                                    <span class="custom-control-label">{% trans "Remember me" %}</span>
+                                </label>
+                            </div>
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-primary btn-block">{% trans "Sign in" %}</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="text-center text-muted">
+                        {% trans "Don't have account yet?" %} <a href="./register">{% trans "Sign up" %}</a>
+                    </div>
                 </div>
-              </form>
-              <div class="text-center text-muted">
-                Don't have account yet? <a href="./register.html">Sign up</a>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
 {% endblock %}
