@@ -4,7 +4,6 @@ Routes For Kevin
 
 from django.contrib import admin
 from django.urls import include, path
-
 from app.controllers.web.home import Home as Home_View
 from app.controllers.web.install import Install as Install_View
 from app.controllers.web.not_found import Not_Found as Not_Found_View
@@ -20,7 +19,6 @@ from app.controllers.web.admin.namespaces import Namespaces as Namespaces_View
 from app.controllers.web.admin.namespace import Namespace as Namespace_View
 from app.controllers.web.admin.endpoint import Endpoint as Endpoint_View
 from app.controllers.api.v1.install import Install as Install_V1_Endpoint
-
 
 urlpatterns = [
     # Public Views
