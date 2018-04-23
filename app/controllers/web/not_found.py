@@ -1,5 +1,5 @@
 """
-NotFound Web Controller
+Not Found Web Controller
 """
 
 from django.views import View
@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
-class NotFound(View):
+class Not_Found(View):
 
     template_name = 'templates/404.html'
 

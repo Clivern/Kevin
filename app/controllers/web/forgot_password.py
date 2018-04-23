@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
-class ForgotPassword(View):
+class Forgot_Password(View):
 
     template_name = 'templates/forgot_password.html'
 

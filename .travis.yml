@@ -16,11 +16,18 @@ install:
 
 before_script:
   - mysql -e 'CREATE DATABASE kevin;'
-  - cp .env.travis .env
+  - cp .env.example .env
+  - python manage.py kevin update_env DB_HOST=127.0.0.1
+  - python manage.py kevin update_env DB_PORT=3306
+  - python manage.py kevin update_env DB_DATABASE=kevin
+  - python manage.py kevin update_env DB_USERNAME=root
+  - python manage.py kevin update_env DB_PASSWORD=
+  - python manage.py kevin update_app_key
+  - python manage.py kevin update_env DB_CONNECTION=mysql
   - pip install coverage
 
 # command to run tests
 script:
   - python manage.py test
   - coverage run --source='.' manage.py test app
-  - coverage report
+  - coverage report -m

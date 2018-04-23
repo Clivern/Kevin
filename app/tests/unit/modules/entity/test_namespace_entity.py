@@ -1,5 +1,5 @@
 """
-Simple Test Case
+Namespace Entity Test Cases
 """
 
 from django.test import TestCase
