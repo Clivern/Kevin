@@ -13,6 +13,7 @@ import os
 from dotenv import load_dotenv
 from django.utils.translation import ugettext_lazy as _
 from app.settings.info import *
+import time
 
 load_dotenv(dotenv_path=os.path.join(APP_ROOT, ".env"))
 
@@ -114,6 +115,56 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Logging
+# https://docs.djangoproject.com/en/2.0/topics/logging/
+DJANGO_LOGGING_HANDLERS = [] if os.getenv("DJANGO_LOGGING_HANDLERS", "") == "" else os.getenv("DJANGO_LOGGING_HANDLERS", "").split(",")
+DJANGO_LOGGING_LEVEL = "WARNING" if os.getenv("DJANGO_LOGGING_LEVEL", "") == "" else os.getenv("DJANGO_LOGGING_LEVEL", "").upper()
+DJANGO_LOGGING_PROPAGATE = True if os.getenv("DJANGO_LOGGING_PROPAGATE", "") == "" or os.getenv("DJANGO_LOGGING_PROPAGATE", "") == "true" else False
+
+APP_LOGGING_HANDLERS = ["file"] if os.getenv("APP_LOGGING_HANDLERS", "") == "" else os.getenv("APP_LOGGING_HANDLERS", "").split(",")
+APP_LOGGING_LEVEL = "WARNING" if os.getenv("APP_LOGGING_LEVEL", "") == "" else os.getenv("APP_LOGGING_LEVEL", "").upper()
+APP_LOGGING_PROPAGATE = True if os.getenv("APP_LOGGING_PROPAGATE", "") == "" or os.getenv("APP_LOGGING_PROPAGATE", "").lower() == "true" else False
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(filename)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(APP_ROOT + "/storage/logs/", time.strftime("%d-%m-%Y") + ".log"),
+            'formatter': 'simple'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': DJANGO_LOGGING_HANDLERS,
+            'level': DJANGO_LOGGING_LEVEL,
+            'propagate': DJANGO_LOGGING_PROPAGATE,
+        },
+        'app': {
+            'handlers': APP_LOGGING_HANDLERS,
+            'level': APP_LOGGING_LEVEL,
+            'propagate': APP_LOGGING_PROPAGATE,
+        },
+    },
+}
+
+
+# Languages List
 LANGUAGES = (
     ('fr', _('French')),
     ('en', _('English')),
