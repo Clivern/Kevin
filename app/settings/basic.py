@@ -15,7 +15,9 @@ from django.utils.translation import ugettext_lazy as _
 from app.settings.info import *
 import time
 
+
 load_dotenv(dotenv_path=os.path.join(APP_ROOT, ".env"))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
