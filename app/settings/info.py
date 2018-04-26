@@ -1,5 +1,8 @@
-import os
+"""
+Kevin Info
+"""
 
+import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_ROOT = os.path.dirname(BASE_DIR)
