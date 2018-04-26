@@ -200,6 +200,7 @@ LOGGING = {
     },
 }
 
+CSRF_FAILURE_VIEW = "app.controllers.web.forbidden.csrf_failure"
 
 # Languages List
 LANGUAGES = (

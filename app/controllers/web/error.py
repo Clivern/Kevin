@@ -13,4 +13,4 @@ class Error(View):
     template_name = 'templates/500.html'
 
     def get(self, request):
-        return render(request, self.template_name, {'page_title': _('500')})
+        return render(request, self.template_name, {'page_title': _('500')}, status=500)

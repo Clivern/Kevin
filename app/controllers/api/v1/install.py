@@ -3,11 +3,12 @@ Install API Endpoint
 """
 
 from django.views import View
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
+@method_decorator(csrf_exempt, name='dispatch')
 class Install(View):
 
     def post(self, request):
-        return render(request, self.template_name, {'page_title': 'Dashboard'})
+        return JsonResponse({"status":"success"})
