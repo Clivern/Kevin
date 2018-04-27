@@ -18,7 +18,7 @@ from app.controllers.web.admin.profile import Profile as Profile_View
 from app.controllers.web.admin.namespaces import Namespaces as Namespaces_View
 from app.controllers.web.admin.namespace import Namespace as Namespace_View
 from app.controllers.web.admin.endpoint import Endpoint as Endpoint_View
-from app.controllers.api.v1.install import Install as Install_V1_Endpoint
+from app.controllers.api.private.v1.install import Install as Install_V1_Endpoint_Private
 
 urlpatterns = [
     # Public Views
@@ -41,8 +41,13 @@ urlpatterns = [
         path('namespace/<slug:namespace>/<slug:endpoint>', Endpoint_View.as_view(), name='web.admin.endpoint'),
     ])),
 
-    # API V1 Endpoints
-    path('api/v1/', include([
-        path('install', Install_V1_Endpoint.as_view(), name='api.v1.install.endpoint')
+    # Private API V1 Endpoints
+    path('api/private/v1/', include([
+        path('install', Install_V1_Endpoint_Private.as_view(), name='api.private.v1.install.endpoint')
     ])),
+
+    # Public API V1 Endpoints
+    path('api/public/v1/', include([
+
+    ]))
 ]

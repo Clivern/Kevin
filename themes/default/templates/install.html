@@ -11,6 +11,7 @@
                         <img src="{% static 'assets/images/logo.png' %}" class="h-9">
                     </div>
                     <form class="card" action="" method="post">
+                        {% csrf_token %}
                         <div class="card-body p-6">
                             <div class="form-group">
                                 <label class="form-label">{% trans "App Name" %}</label>
