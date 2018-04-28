@@ -4,6 +4,7 @@ Response Module
 
 from app.modules.util.helpers import Helpers
 from django.http import JsonResponse
+from django.utils.translation import gettext as _
 
 class Response():
 
@@ -22,7 +23,7 @@ class Response():
         if len(payload) > 0:
             self._private["payload"] = payload
 
-        self._logger.debug("App Response: " + self._helpers.json_dumps(self._private) + "\n")
+        self._logger.debug(_("App Response: ") + self._helpers.json_dumps(self._private) + "\n")
         return self._private
 
     def send_private_failure(self, messages, payload={}):
@@ -31,5 +32,5 @@ class Response():
         if len(payload) > 0:
             self._private["payload"] = payload
 
-        self._logger.debug("App Response: " + self._helpers.json_dumps(self._private) + "\n")
+        self._logger.debug(_("App Response: ") + self._helpers.json_dumps(self._private) + "\n")
         return self._private

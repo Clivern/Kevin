@@ -6,8 +6,6 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from pprint import pprint
-
 from app.modules.validation.form import Form
 from app.modules.util.helpers import Helpers
 from app.modules.core.install import Install as Install_Core
@@ -35,8 +33,8 @@ class Install(View):
         self._logger = self._helpers.get_logger(__name__)
 
     def post(self, request):
-        self._logger.debug("Request Method: POST")
-        self._logger.debug("Request URL: " + reverse("app.api.private.v1.install.endpoint"))
+        self._logger.debug(_("Request Method: POST"))
+        self._logger.debug(_("Request URL: ") + reverse("app.api.private.v1.install.endpoint"))
 
         if self._install.is_installed():
             return JsonResponse(self._response.send_private_failure([{
@@ -59,66 +57,80 @@ class Install(View):
             'app_name': {
                 'value': request_data["app_name"],
                 'sanitize': {
-                    'escape': {}
+                    'escape': {},
+                    'strip': {}
                 },
                 'validate': {
-                    'email': {
-                        'error': 'Please provide a valid email.'
+                    'alpha_numeric': {
+                        'error': _('Error! Application name must be alpha numeric.')
+                    },
+                    'length_between':{
+                        'param': [3, 10],
+                        'error': _('Error! Application name must be 5 to 10 characters long.')
                     }
                 }
             },
             'app_email': {
                 'value': request_data["app_email"],
                 'sanitize': {
-                    'escape': {}
+                    'escape': {},
+                    'strip': {}
                 },
                 'validate': {
                     'email': {
-                        'error': 'Please provide a valid email.'
+                        'error': _('Error! Application email is invalid.')
                     }
                 }
             },
             'app_url': {
                 'value': request_data["app_url"],
                 'sanitize': {
-                    'escape': {}
+                    'escape': {},
+                    'strip': {}
                 },
                 'validate': {
-                    'email': {
-                        'error': 'Please provide a valid email.'
+                    'url': {
+                        'error': _('Error! Application url is invalid.')
                     }
                 }
             },
             'admin_username': {
                 'value': request_data["admin_username"],
                 'sanitize': {
-                    'escape': {}
+                    'escape': {},
+                    'strip': {}
                 },
                 'validate': {
-                    'email': {
-                        'error': 'Please provide a valid email.'
+                    'alpha_numeric': {
+                        'error': _('Error! Username must be alpha numeric.')
+                    },
+                    'length_between':{
+                        'param': [4, 10],
+                        'error': _('Error! Username must be 5 to 10 characters long.')
                     }
                 }
             },
             'admin_email': {
                 'value': request_data["admin_email"],
                 'sanitize': {
-                    'escape': {}
+                    'escape': {},
+                    'strip': {}
                 },
                 'validate': {
                     'email': {
-                        'error': 'Please provide a valid email.'
+                        'error': _('Error! Admin email is invalid.')
                     }
                 }
             },
             'admin_password': {
                 'value': request_data["admin_password"],
-                'sanitize': {
-                    'escape': {}
-                },
                 'validate': {
-                    'email': {
-                        'error': 'Please provide a valid email.'
+                    'password': {
+                        'error': _('Error! Password must contain at least uppercase letter, lowercase letter, numbers and special character.')
+                    },
+                    'length_between':{
+                        'param': [7, 20],
+                        'error': _('Error! Password length must be from 8 to 20 characters.')
                     }
                 }
             }

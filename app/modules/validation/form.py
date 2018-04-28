@@ -2,11 +2,11 @@
 Form Validation Module
 """
 
+from app.modules.validation.extensions import *
 from app.modules.validation.validator import Validator
 from app.modules.validation.sanitizer import Sanitizer
 from app.exceptions.sanitization_rule_not_found import Sanitization_Rule_Not_Found
 from app.exceptions.validation_rule_not_found import Validation_Rule_Not_Found
-from app.modules.validation.extensions import *
 
 class Form():
 
@@ -32,14 +32,15 @@ class Form():
     def get_inputs(self):
         return self._inputs
 
-    def get_input_value(self, sanitized=True):
-        return self._inputs["value"] if not sanitized else self._inputs["svalue"]
+    def get_input_value(self, input_key, sanitized=True):
+        return self._inputs[input_key]["value"] if not sanitized or not "svalue" in self._inputs[input_key] else self._inputs[input_key]["svalue"]
 
     def get_errors(self, with_type = False):
         if with_type:
             errors = []
-            for input_key, error in self._errors.items():
-                errors.append({"type": "error", "message": error})
+            for input_key, error_list in self._errors.items():
+                for error in error_list:
+                    errors.append({"type": "error", "message": error})
             return errors
         else:
             return self._errors

@@ -3,6 +3,7 @@ Request Module
 """
 
 from app.modules.util.helpers import Helpers
+from django.utils.translation import gettext as _
 
 class Request():
 
@@ -25,5 +26,5 @@ class Request():
         for key, default in predicted.items():
             request_data[key] = data_bag[key] if key in data_bag else default
 
-        self._logger.debug("App Incoming Request: " + self._helpers.json_dumps(request_data))
+        self._logger.debug(_("App Incoming Request: ") + self._helpers.json_dumps(request_data))
         return request_data

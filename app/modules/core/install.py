@@ -10,7 +10,7 @@ class Install():
     _option_entity = None
     _user_entity = None
     _options = [
-        {"key": "app_installed", "value": "true", "autoload": "off"}
+        {"key": "app_installed", "value": "true", "autoload": False}
     ]
     _admin = {
         "username" : "",
@@ -26,17 +26,17 @@ class Install():
         return False if self._option_entity.get_one_by_key("app_installed") == False else True
 
     def set_app_data(self, name, email, url):
-        self._base_options.append({"key": "app_name", "value": name, "autoload": "on"})
-        self._base_options.append({"key": "app_email", "value": email, "autoload": "on"})
-        self._base_options.append({"key": "app_url", "value": url, "autoload": "on"})
+        self._options.append({"key": "app_name", "value": name, "autoload": True})
+        self._options.append({"key": "app_email", "value": email, "autoload": True})
+        self._options.append({"key": "app_url", "value": url, "autoload": True})
 
     def set_admin_data(self, username, email, password):
-        self._admin_data["username"] = username
-        self._admin_data["email"] = email
-        self._admin_data["password"] = password
+        self._admin["username"] = username
+        self._admin["email"] = email
+        self._admin["password"] = password
 
     def install(self):
         status = True
         status &= self._option_entity.insert_many(self._options)
-        status &= self._user_entity.insert_one(self._admin)
+        #status &= self._user_entity.insert_one(self._admin)
         return status
