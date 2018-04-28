@@ -2,24 +2,41 @@
 Install Module
 """
 
+from app.modules.entity.option_entity import Option_Entity
+from app.modules.entity.user_entity import User_Entity
+
 class Install():
 
-    def is_db_connectd(self):
-        """Check if DB Connection is Ok"""
-        pass
+    _option_entity = None
+    _user_entity = None
+    _options = [
+        {"key": "app_installed", "value": "true", "autoload": "off"}
+    ]
+    _admin = {
+        "username" : "",
+        "email" : "",
+        "password" : ""
+    }
 
-    def is_db_migrated(self):
-        """Check if DB Migrations Run"""
-        pass
-
-    def run_db_migrations(self):
-        """Run DB Migrations"""
-        pass
+    def __init__(self):
+        self._option_entity = Option_Entity()
+        self._user_entity = User_Entity()
 
     def is_installed(self):
-        """Check if App is Installed"""
-        pass
+        return False if self._option_entity.get_one_by_key("app_installed") == False else True
 
-    def install(data):
-        """Install The Application"""
-        pass
+    def set_app_data(self, name, email, url):
+        self._base_options.append({"key": "app_name", "value": name, "autoload": "on"})
+        self._base_options.append({"key": "app_email", "value": email, "autoload": "on"})
+        self._base_options.append({"key": "app_url", "value": url, "autoload": "on"})
+
+    def set_admin_data(self, username, email, password):
+        self._admin_data["username"] = username
+        self._admin_data["email"] = email
+        self._admin_data["password"] = password
+
+    def install(self):
+        status = True
+        status &= self._option_entity.insert_many(self._options)
+        status &= self._user_entity.insert_one(self._admin)
+        return status
