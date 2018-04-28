@@ -15,7 +15,10 @@ class Install():
     _admin = {
         "username" : "",
         "email" : "",
-        "password" : ""
+        "password" : "",
+        "is_superuser": True,
+        "is_active": True,
+        "is_staff": False
     }
 
     def __init__(self):
@@ -38,5 +41,5 @@ class Install():
     def install(self):
         status = True
         status &= self._option_entity.insert_many(self._options)
-        #status &= self._user_entity.insert_one(self._admin)
+        status &= (self._user_entity.insert_one(self._admin) != False)
         return status
