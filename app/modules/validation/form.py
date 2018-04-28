@@ -12,7 +12,6 @@ class Form():
 
 	_inputs = {}
 	_errors = {}
-	_sinputs = {}
 
 	_vstatus = False
 	_sstatus = False
