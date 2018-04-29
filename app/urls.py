@@ -33,7 +33,7 @@ urlpatterns = [
     path('reset-password/<token>', Reset_Password_View.as_view(), name='app.web.reset_password'),
 
     # Authenticated Users Views
-    path('admin', include([
+    path('admin/', include([
         path('logout/<token>', Logout_View.as_view(), name='app.web.admin.logout'),
         path('dashboard', Dashboard_View.as_view(), name='app.web.admin.dashboard'),
         path('profile', Profile_View.as_view(), name='app.web.admin.profile'),

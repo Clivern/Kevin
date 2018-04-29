@@ -115,6 +115,9 @@ class Validator():
             return False
         return True
 
+    def username_or_email(self):
+        return self.email() or self.alpha_numeric()
+
     def digit(self):
         if not isinstance(self._input, (str)):
             return False

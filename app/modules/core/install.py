@@ -2,6 +2,7 @@
 Install Module
 """
 
+from app.modules.util.helpers import Helpers
 from app.modules.entity.option_entity import Option_Entity
 from app.modules.entity.user_entity import User_Entity
 
@@ -20,10 +21,14 @@ class Install():
         "is_active": True,
         "is_staff": False
     }
+    _helpers = None
+    _logger = None
 
     def __init__(self):
         self._option_entity = Option_Entity()
         self._user_entity = User_Entity()
+        self._helpers = Helpers()
+        self._logger = self._helpers.get_logger(__name__)
 
     def is_installed(self):
         return False if self._option_entity.get_one_by_key("app_installed") == False else True

@@ -14,7 +14,7 @@ from app.modules.core.response import Response
 from django.utils.translation import gettext as _
 from django.urls import reverse
 
-@method_decorator(csrf_exempt, name='dispatch')
+#@method_decorator(csrf_exempt, name='dispatch')
 class Login(View):
 
     _request = None
@@ -57,11 +57,7 @@ class Login(View):
                     'strip': {}
                 },
                 'validate': {
-                    'alpha_numeric': {
-                        'error': _("Error! Username or password is invalid.")
-                    },
-                    'length_between':{
-                        'param': [4, 10],
+                    'username_or_email': {
                         'error': _("Error! Username or password is invalid.")
                     }
                 }
