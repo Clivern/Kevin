@@ -12,28 +12,29 @@
                             <img src="{% static 'assets/images/logo.png' %}" class="h-9">
                         </a>
                     </div>
-                    <form class="card" action="" method="post">
+                    <form class="card" id="register_form" onsubmit="return false" action="{% url 'app.api.private.v1.register.endpoint' %}" method="post" >
+                        {% csrf_token %}
                         <div class="card-body p-6">
                             <div class="card-title">{% trans "Create new account" %}</div>
                             <div class="form-group">
                                 <label class="form-label">{% trans "First Name" %}</label>
-                                <input type="text" class="form-control" placeholder="{% trans "Enter first name" %}">
+                                <input type="text" name="first_name" class="form-control" placeholder="{% trans "Enter first name" %}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{% trans "Last Name" %}</label>
-                                <input type="text" class="form-control" placeholder="{% trans "Enter last name" %}">
+                                <input type="text" name="last_name" class="form-control" placeholder="{% trans "Enter last name" %}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{% trans "Username" %}</label>
-                                <input type="text" class="form-control" placeholder="{% trans "Enter username" %}">
+                                <input type="text" name="username" class="form-control" placeholder="{% trans "Enter username" %}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{% trans "Email address" %}</label>
-                                <input type="email" class="form-control" placeholder="{% trans "Enter email" %}">
+                                <input type="email" name="email" class="form-control" placeholder="{% trans "Enter email" %}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{% trans "Password" %}</label>
-                                <input type="password" class="form-control" placeholder="{% trans "Password" %}">
+                                <input type="password" name="password" class="form-control" placeholder="{% trans "Password" %}">
                             </div>
                             <div class="form-footer">
                                 <button type="submit" class="btn btn-primary btn-block">{% trans "Create a new account" %}</button>

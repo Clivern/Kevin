@@ -154,6 +154,82 @@ kevin_app.login = (function (window, document, $) {
 })(window, document, jQuery);
 
 
+
+/**
+ * Register Action
+ */
+kevin_app.register = (function (window, document, $) {
+
+    'use strict';
+
+    var base = {
+
+        el: {
+            form : $("form#register_form"),
+            submitButt : $("form#register_form button[type='submit']"),
+        },
+        init: function(){
+            console.log("Hi");
+            if( base.el.form.length ){
+                base.submit();
+            }
+        },
+        submit : function(){
+            base.el.form.on("submit", base.handler);
+        },
+        handler: function(event) {
+            event.preventDefault();
+            base.el.submitButt.attr('disabled', 'disabled');
+            require(['pace'], function(Pace) {
+                Pace.track(function(){
+                    $.post(base.el.form.attr('action'), base.data(), function( response, textStatus, jqXHR ){
+                        if( jqXHR.status == 200 && textStatus == 'success' ) {
+                            if( response.status == "success" ){
+                                base.success(response.messages);
+                            }else{
+                                base.error(response.messages);
+                            }
+                        }
+                    }, 'json');
+                });
+            });
+        },
+        data : function(){
+            var inputs = {};
+            base.el.form.serializeArray().map(function(item, index) {
+                inputs[item.name] = item.value;
+            });
+            return inputs;
+        },
+        success : function(messages){
+            location.reload();
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.success(messageObj.message);
+                });
+                break;
+            }
+        },
+        error : function(messages){
+            base.el.submitButt.removeAttr('disabled');
+            require(['toastr'], function(toastr) {
+                toastr.clear();
+            });
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.error(messageObj.message);
+                });
+                break;
+            }
+        }
+    };
+
+   return {
+        init: base.init
+    };
+
+})(window, document, jQuery);
+
 /**
  *
  */
@@ -183,6 +259,7 @@ $(document).ready(function() {
 
     kevin_app.install.init();
     kevin_app.login.init();
+    kevin_app.register.init();
 
     require(['jscookie'], function(Cookies) {
         console.log(Cookies.get('csrftoken'))

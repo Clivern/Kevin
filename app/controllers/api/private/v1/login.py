@@ -13,8 +13,8 @@ from app.modules.core.request import Request
 from app.modules.core.response import Response
 from django.utils.translation import gettext as _
 from django.urls import reverse
+from app.modules.core.decorators import stop_request_if_authenticated
 
-#@method_decorator(csrf_exempt, name='dispatch')
 class Login(View):
 
     _request = None
@@ -32,6 +32,7 @@ class Login(View):
         self._response = Response()
         self._logger = self._helpers.get_logger(__name__)
 
+    @stop_request_if_authenticated
     def post(self, request):
         self._logger.debug(_("Request Method: POST"))
         self._logger.debug(_("Request URL: ") + reverse("app.api.private.v1.login.endpoint"))

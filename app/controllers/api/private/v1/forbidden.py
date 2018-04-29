@@ -8,8 +8,7 @@ from django.utils.translation import gettext as _
 
 def csrf_failure(request, reason=""):
     response = Response()
-
     return JsonResponse(response.send_private_failure([{
         "type": "error",
-        "message": _("Error! Something goes wrong during installing.")
-    }]), status=403)
+        "message": _("Error! Access forbidden due to invalid CSRF token.")
+    }]))

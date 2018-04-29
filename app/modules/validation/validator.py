@@ -115,6 +115,9 @@ class Validator():
             return False
         return True
 
+    def names(self):
+        return (re.search('[^a-zA-Z\s\-\']', self._input) == None)
+
     def username_or_email(self):
         return self.email() or self.alpha_numeric()
 
