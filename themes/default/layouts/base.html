@@ -2,7 +2,7 @@
 {% load i18n %}
 <!doctype html>
 <html lang="en" dir="ltr">
-  	<head>
+    <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -27,7 +27,7 @@
         </script>
         <!-- Dashboard Core -->
         <link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
-        <link href="{% static 'assets/plugins/pace/themes/red/pace-theme-minimal.css' %}" rel="stylesheet" />
+        <link href="{% static 'assets/plugins/pace/themes/red/pace-theme-flash.css' %}" rel="stylesheet" />
         <script src="{% static 'assets/js/dashboard.js' %}"></script>
         <!-- c3.js Charts Plugin -->
         <link href="{% static 'assets/plugins/charts-c3/plugin.css' %}" rel="stylesheet" />
@@ -43,13 +43,13 @@
         <script src="{% static 'assets/plugins/toastr/plugin.js' %}"></script>
         <link href="{% static 'assets/plugins/toastr/toastr.css' %}" rel="stylesheet" />
         <link href="{% static 'assets/css/app.css' %}" rel="stylesheet" />
-      	{% include 'partials/header.html' %}
-  	</head>
-  	<body class="">
-    	<div class="page">
-        	{% block content %}
+        {% include 'partials/header.html' %}
+    </head>
+    <body class="">
+        <div class="page">
+            {% block content %}
             {% endblock %}
-    	</div>
-    	{% include 'partials/footer.html' %}
-  	</body>
+        </div>
+        {% include 'partials/footer.html' %}
+    </body>
 </html>
