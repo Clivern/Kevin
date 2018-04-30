@@ -49,9 +49,9 @@ urlpatterns = [
     path('api/private/v1/', include([
         path('install', Install_V1_Endpoint_Private.as_view(), name='app.api.private.v1.install.endpoint'),
         path('login', Login_V1_Endpoint_Private.as_view(), name='app.api.private.v1.login.endpoint'),
-        path('register', Register_V1_Endpoint_Private.as_view(), name='app.api.private.v1.register.endpoint')
-        path('forgot-password', Forgot_Password_V1_Endpoint_Private.as_view(), name='app.api.private.v1.forgot_password.endpoint')
-        path('reset-password', Reset_Password_V1_Endpoint_Private.as_view(), name='app.api.private.v1.reset_password.endpoint')
+        path('register', Register_V1_Endpoint_Private.as_view(), name='app.api.private.v1.register.endpoint'),
+        path('forgot-password', Forgot_Password_V1_Endpoint_Private.as_view(), name='app.api.private.v1.forgot_password.endpoint'),
+        path('reset-password', Reset_Password_V1_Endpoint_Private.as_view(), name='app.api.private.v1.reset_password.endpoint'),
     ])),
 
     # Public API V1 Endpoints
