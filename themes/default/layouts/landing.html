@@ -1,0 +1,63 @@
+{% load staticfiles %}
+{% load i18n %}
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>{{ page_title }}</title>
+		<meta name="description" content="Premium dashboard template with responsive and high quality UI. For Free!">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,700" rel="stylesheet">
+		<link rel="stylesheet" href="{% static 'assets/css/landing.css' %}">
+        <link rel="icon" href="{% static 'assets/images/logo.png' %}" type="image/x-icon"/>
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/logo.png' %}" />
+		<!--
+		<meta name="google-site-verification" content="BVFVRVpG6GoPMaAY6LsruG_pYia11RDrJGZtp0ITwA8"/>
+		<meta name="twitter:card" content="summary_large_image"/>
+		<meta name="twitter:url" content="https://tabler.github.io"/>
+		<meta name="twitter:title" content="Tabler - Admin panel made simple"/>
+		<meta name="twitter:description" content="Premium dashboard template with responsive and high quality UI. For Free!">
+		<meta name="twitter:image" content="https://tabler.github.io/og.png?1523369206"/>
+		<meta name="twitter:image:width" content="600"/>
+		<meta name="twitter:image:height" content="315"/>
+		<meta name="twitter:creator" content="@codecalm"/>
+		<meta property="og:type" content="website"/>
+		<meta property="og:title" content="Tabler - Admin panel made simple"/>
+		<meta property="og:description" content="Premium dashboard template with responsive and high quality UI. For Free!"/>
+		<meta property="og:url" content="https://tabler.github.io"/>
+		<meta property="og:site_name" content="Tabler - Admin panel made simple"/>
+		<meta property="og:image" content="https://tabler.github.io/og.png?1523369206"/>
+		<meta property="og:image:width" content="1200"/>
+		<meta property="og:image:height" content="630"/>
+		<link rel="canonical" href="https://tabler.github.io/" />
+		<script type="application/ld+json">
+			{
+				"name": "Tabler - Admin panel made simple",
+				"description": "Premium dashboard template with responsive and high quality UI. For Free!",
+				"@type": "WebSite",
+				"url": "https://tabler.github.io/",
+				"headline": "Tabler - Admin panel made simple",
+				"@context": "http://schema.org"
+			}
+		</script>
+
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113467793-1"></script>
+		<script>
+	        window.dataLayer = window.dataLayer || [];
+	        function gtag() {
+	            dataLayer.push(arguments);
+	        }
+	        gtag('js', new Date());
+
+	        gtag('config', 'UA-113467793-1');
+		</script>
+		-->
+		{% include 'partials/header.html' %}
+	</head>
+	<body>
+    	{% block content %}
+        {% endblock %}
+		{% include 'partials/footer.html' %}
+	</body>
+</html>

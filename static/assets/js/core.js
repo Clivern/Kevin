@@ -19,6 +19,13 @@ $(document).ready(function() {
   /** Constant div card */
   const DIV_CARD = 'div.card';
 
+
+  require(['jscookie'], function(Cookies) {
+    console.log(Cookies.get('csrftoken'))
+  })
+
+
+
   /** Initialize tooltips */
   $('[data-toggle="tooltip"]').tooltip();
 

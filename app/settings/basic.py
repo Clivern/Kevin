@@ -13,8 +13,11 @@ import os
 from dotenv import load_dotenv
 from django.utils.translation import ugettext_lazy as _
 from app.settings.info import *
+import time
+
 
 load_dotenv(dotenv_path=os.path.join(APP_ROOT, ".env"))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -71,8 +74,43 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'app.wsgi.application'
+# Email Settings
+# https://docs.djangoproject.com/en/2.0/topics/email/
+if os.getenv("EMAIL_HOST", None) != None:
+    EMAIL_HOST = os.getenv("EMAIL_HOST", "localhost")
 
+if os.getenv("EMAIL_PORT", None) != None:
+    EMAIL_PORT = os.getenv("EMAIL_PORT", 25)
+
+if os.getenv("EMAIL_HOST_USER", None) != None:
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+
+if os.getenv("EMAIL_HOST_PASSWORD", None) != None:
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+
+if os.getenv("EMAIL_USE_TLS", None) != None:
+    EMAIL_USE_TLS = True if os.getenv("EMAIL_USE_TLS", "false").lower() == "true" else False
+
+if os.getenv("EMAIL_USE_SSL", None) != None:
+    EMAIL_USE_SSL = True if os.getenv("EMAIL_USE_SSL", "false").lower() == "true" else False
+
+if os.getenv("EMAIL_TIMEOUT", None) != None:
+    EMAIL_TIMEOUT = os.getenv("EMAIL_TIMEOUT", None)
+
+if os.getenv("EMAIL_SSL_KEYFILE", None) != None and os.path.isfile(APP_ROOT + os.getenv("EMAIL_SSL_KEYFILE", "")):
+    EMAIL_SSL_KEYFILE = APP_ROOT + os.getenv("EMAIL_SSL_KEYFILE", "")
+
+if os.getenv("EMAIL_SSL_CERTFILE", None) != None and os.path.isfile(APP_ROOT + os.getenv("EMAIL_SSL_CERTFILE", "")):
+    EMAIL_SSL_CERTFILE = APP_ROOT + os.getenv("EMAIL_SSL_CERTFILE", "")
+
+if os.getenv("EMAIL_BACKEND", None) != None and os.getenv("EMAIL_BACKEND", None) in ["smtp", "console", "filebased"]:
+    EMAIL_BACKEND = "django.core.mail.backends." + os.getenv("EMAIL_BACKEND", "smtp") + ".EmailBackend"
+    if os.getenv("EMAIL_BACKEND", None) == "filebased":
+        EMAIL_FILE_PATH = APP_ROOT + "/storage/mails"
+
+
+
+WSGI_APPLICATION = 'app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -88,7 +126,7 @@ if os.getenv("DB_CONNECTION") == "mysql":
 else:
     default_db = {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(APP_ROOT + "/storage/framework/database/", 'db.sqlite3')
+        'NAME': os.path.join(APP_ROOT + "/storage/database/", 'db.sqlite3')
     }
 
 
@@ -114,6 +152,57 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Logging
+# https://docs.djangoproject.com/en/2.0/topics/logging/
+DJANGO_LOGGING_HANDLERS = [] if os.getenv("DJANGO_LOGGING_HANDLERS", "") == "" else os.getenv("DJANGO_LOGGING_HANDLERS", "").split(",")
+DJANGO_LOGGING_LEVEL = "WARNING" if os.getenv("DJANGO_LOGGING_LEVEL", "") == "" else os.getenv("DJANGO_LOGGING_LEVEL", "").upper()
+DJANGO_LOGGING_PROPAGATE = True if os.getenv("DJANGO_LOGGING_PROPAGATE", "") == "" or os.getenv("DJANGO_LOGGING_PROPAGATE", "") == "true" else False
+
+APP_LOGGING_HANDLERS = ["file"] if os.getenv("APP_LOGGING_HANDLERS", "") == "" else os.getenv("APP_LOGGING_HANDLERS", "").split(",")
+APP_LOGGING_LEVEL = "WARNING" if os.getenv("APP_LOGGING_LEVEL", "") == "" else os.getenv("APP_LOGGING_LEVEL", "").upper()
+APP_LOGGING_PROPAGATE = True if os.getenv("APP_LOGGING_PROPAGATE", "") == "" or os.getenv("APP_LOGGING_PROPAGATE", "").lower() == "true" else False
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(filename)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(APP_ROOT + "/storage/logs/", time.strftime("%d-%m-%Y") + ".log"),
+            'formatter': 'simple'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': DJANGO_LOGGING_HANDLERS,
+            'level': DJANGO_LOGGING_LEVEL,
+            'propagate': DJANGO_LOGGING_PROPAGATE,
+        },
+        'app': {
+            'handlers': APP_LOGGING_HANDLERS,
+            'level': APP_LOGGING_LEVEL,
+            'propagate': APP_LOGGING_PROPAGATE,
+        },
+    },
+}
+
+CSRF_FAILURE_VIEW = "app.controllers.web.forbidden.csrf_failure"
+
+# Languages List
 LANGUAGES = (
     ('fr', _('French')),
     ('en', _('English')),

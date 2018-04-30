@@ -6,10 +6,11 @@ from django.views import View
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.utils.translation import gettext as _
 
 class Register(View):
 
     template_name = 'templates/register.html'
 
     def get(self, request):
-        return render(request, self.template_name, {'page_title': 'Register'})
+        return render(request, self.template_name, {'page_title': _('Register')})

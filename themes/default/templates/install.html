@@ -10,27 +10,28 @@
                     <div class="text-center mb-6">
                         <img src="{% static 'assets/images/logo.png' %}" class="h-9">
                     </div>
-                    <form class="card" action="" method="post">
+                    <form class="card" action="{% url 'app.api.private.v1.install.endpoint' %}" method="post" >
+                        {% csrf_token %}
                         <div class="card-body p-6">
                             <div class="form-group">
                                 <label class="form-label">{% trans "App Name" %}</label>
-                                <input type="text" class="form-control" placeholder="{% trans "Enter app name" %}">
+                                <input name="app_name" type="text" class="form-control" placeholder="{% trans "Enter app name" %}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{% trans "App Email" %}</label>
-                                <input type="email" class="form-control" placeholder="{% trans "Enter app email" %}">
+                                <input name="app_email" type="email" class="form-control" placeholder="{% trans "Enter app email" %}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{% trans "Admin Username" %}</label>
-                                <input type="email" class="form-control" placeholder="{% trans "Enter admin username" %}">
+                                <input name="admin_username" type="email" class="form-control" placeholder="{% trans "Enter admin username" %}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{% trans "Admin Email" %}</label>
-                                <input type="email" class="form-control" placeholder="{% trans "Enter admin email" %}">
+                                <input name="admin_email" type="email" class="form-control" placeholder="{% trans "Enter admin email" %}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{% trans "Password" %}</label>
-                                <input type="password" class="form-control" placeholder="{% trans "Enter admin password" %}">
+                                <input name="admin_password" type="password" class="form-control" placeholder="{% trans "Enter admin password" %}">
                             </div>
                             <div class="form-footer">
                                 <button type="submit" class="btn btn-primary btn-block">{% trans "Install" %}</button>
