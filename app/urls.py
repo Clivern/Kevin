@@ -19,6 +19,7 @@ from app.controllers.web.admin.namespaces import Namespaces as Namespaces_View
 from app.controllers.web.admin.namespace import Namespace as Namespace_View
 from app.controllers.web.admin.endpoint import Endpoint as Endpoint_View
 from app.controllers.api.private.v1.install import Install as Install_V1_Endpoint_Private
+from app.controllers.api.private.v1.login import Login as Login_V1_Endpoint_Private
 
 urlpatterns = [
     # Public Views
@@ -32,7 +33,7 @@ urlpatterns = [
     path('reset-password/<token>', Reset_Password_View.as_view(), name='app.web.reset_password'),
 
     # Authenticated Users Views
-    path('admin', include([
+    path('admin/', include([
         path('logout/<token>', Logout_View.as_view(), name='app.web.admin.logout'),
         path('dashboard', Dashboard_View.as_view(), name='app.web.admin.dashboard'),
         path('profile', Profile_View.as_view(), name='app.web.admin.profile'),
@@ -43,7 +44,8 @@ urlpatterns = [
 
     # Private API V1 Endpoints
     path('api/private/v1/', include([
-        path('install', Install_V1_Endpoint_Private.as_view(), name='app.api.private.v1.install.endpoint')
+        path('install', Install_V1_Endpoint_Private.as_view(), name='app.api.private.v1.install.endpoint'),
+        path('login', Login_V1_Endpoint_Private.as_view(), name='app.api.private.v1.login.endpoint')
     ])),
 
     # Public API V1 Endpoints

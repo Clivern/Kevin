@@ -56,3 +56,12 @@ class User_Entity():
             return False if user.pk is None else user
         except:
             return False
+
+
+    def get_one_by_email(self, email):
+        """Get User By Email"""
+        try:
+            user = User.objects.get(email=email)
+            return False if user.pk is None else user
+        except:
+            return False
