@@ -104,6 +104,17 @@ class Validator():
             return False
         return self._input.isalnum()
 
+    def password(self):
+        if re.search("[a-z]", self._input) is None:
+            return False
+        if re.search("[A-Z]", self._input) is None:
+            return False
+        if re.search("[0-9]", self._input) is None:
+            return False
+        if not re.search("^[a-zA-Z0-9]*$", self._input) is None:
+            return False
+        return True
+
     def digit(self):
         if not isinstance(self._input, (str)):
             return False

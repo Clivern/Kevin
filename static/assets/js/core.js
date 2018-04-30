@@ -1,3 +1,95 @@
+require(['jscookie', 'toastr', 'pace']);
+
+var kevin_app = kevin_app || {};
+
+/**
+ * Install Action
+ */
+kevin_app.install = (function (window, document, $) {
+
+    'use strict';
+
+    var base = {
+
+        el: {
+            form : $("form#install_form"),
+            submitButt : $("form#install_form button[type='submit']"),
+        },
+        init: function(){
+            console.log("Hi");
+            if( base.el.form.length ){
+                base.submit();
+            }
+        },
+        submit : function(){
+            base.el.form.on("submit", base.handler);
+        },
+        handler: function(event) {
+            event.preventDefault();
+            base.el.submitButt.attr('disabled', 'disabled');
+            require(['pace'], function(Pace) {
+                Pace.track(function(){
+                    $.post(base.el.form.attr('action'), base.data(), function( response, textStatus, jqXHR ){
+                        if( jqXHR.status == 200 && textStatus == 'success' ) {
+                            if( response.status == "success" ){
+                                base.success(response.messages);
+                            }else{
+                                base.error(response.messages);
+                            }
+                        }
+                    }, 'json');
+                });
+            });
+        },
+        data : function(){
+            var inputs = {};
+            base.el.form.serializeArray().map(function(item, index) {
+                inputs[item.name] = item.value;
+            });
+            return inputs;
+        },
+        success : function(messages){
+            location.reload();
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.success(messageObj.message);
+                });
+                break;
+            }
+        },
+        error : function(messages){
+            base.el.submitButt.removeAttr('disabled');
+            require(['toastr'], function(toastr) {
+                toastr.clear();
+            });
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.error(messageObj.message);
+                });
+                break;
+            }
+        },
+        store: function(key, value){
+            require(['jscookie'], function(Cookies) {
+                Cookies.set(key, value);
+            });
+        },
+        get: function(key){
+            require(['jscookie'], function(Cookies) {
+                return Cookies.get(key);
+            });
+        }
+    };
+
+   return {
+        init: base.init
+    };
+
+})(window, document, jQuery);
+
+
+
+
 /**
  *
  */
@@ -16,9 +108,18 @@ let hexToRgba = function(hex, opacity) {
  *
  */
 $(document).ready(function() {
+
+
+    $(document).ajaxStart(function() {
+        require(['pace'], function(Pace) {
+            Pace.restart();
+        });
+    });
+
   /** Constant div card */
   const DIV_CARD = 'div.card';
 
+  kevin_app.install.init();
 
   require(['jscookie'], function(Cookies) {
     console.log(Cookies.get('csrftoken'))

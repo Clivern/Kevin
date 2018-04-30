@@ -170,7 +170,7 @@ LOGGING = {
             'format': '%(levelname)s %(asctime)s %(filename)s %(module)s %(process)d %(thread)d %(message)s'
         },
         'simple': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
+            'format': '%(levelname)s %(asctime)s %(message)s'
         },
     },
     'handlers': {
@@ -200,7 +200,7 @@ LOGGING = {
     },
 }
 
-CSRF_FAILURE_VIEW = "app.controllers.web.forbidden.csrf_failure"
+CSRF_FAILURE_VIEW = "app.controllers.api.private.v1.forbidden.csrf_failure"
 
 # Languages List
 LANGUAGES = (
