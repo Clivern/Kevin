@@ -20,6 +20,7 @@ from app.controllers.web.admin.namespace import Namespace as Namespace_View
 from app.controllers.web.admin.endpoint import Endpoint as Endpoint_View
 from app.controllers.api.private.v1.install import Install as Install_V1_Endpoint_Private
 from app.controllers.api.private.v1.login import Login as Login_V1_Endpoint_Private
+from app.controllers.api.private.v1.register import Register as Register_V1_Endpoint_Private
 
 urlpatterns = [
     # Public Views
@@ -45,7 +46,8 @@ urlpatterns = [
     # Private API V1 Endpoints
     path('api/private/v1/', include([
         path('install', Install_V1_Endpoint_Private.as_view(), name='app.api.private.v1.install.endpoint'),
-        path('login', Login_V1_Endpoint_Private.as_view(), name='app.api.private.v1.login.endpoint')
+        path('login', Login_V1_Endpoint_Private.as_view(), name='app.api.private.v1.login.endpoint'),
+        path('register', Register_V1_Endpoint_Private.as_view(), name='app.api.private.v1.register.endpoint')
     ])),
 
     # Public API V1 Endpoints
