@@ -3,7 +3,6 @@ User Meta Model
 """
 
 from django.db import models
-from datetime import datetime, timedelta
 
 class Reset_Request(models.Model):
 
