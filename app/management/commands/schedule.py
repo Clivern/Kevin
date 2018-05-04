@@ -9,6 +9,7 @@ import time
 from app.settings.info import *
 from django.core.management import utils
 from django.core.management.base import BaseCommand, CommandError
+from django.utils import timezone
 
 class Command(BaseCommand):
 
@@ -35,7 +36,6 @@ class Command(BaseCommand):
                 if job != False:
                     self.run(job)
                 time.sleep(2)
-
 
     def _get_job(self):
         return {}

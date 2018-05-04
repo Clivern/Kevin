@@ -17,7 +17,7 @@ class Job(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending", verbose_name="Status")
     executor = models.CharField(max_length=200, verbose_name="Executor")
     parameters = models.TextField(max_length=30, verbose_name="Parameters")
-    interval = models.CharField(max_length=30, verbose_name="Interval")
+    interval = models.CharField(max_length=200, verbose_name="Interval")
     retry_count = models.PositiveSmallIntegerField(verbose_name="Retry Count")
     priority = models.PositiveSmallIntegerField(verbose_name="Priority")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
