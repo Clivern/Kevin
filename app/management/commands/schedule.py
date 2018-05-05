@@ -4,13 +4,10 @@ Kevin Info Command
 see https://docs.djangoproject.com/en/2.0/howto/custom-management-commands/
 """
 
-import os
 import time
 import json
 from app.settings.info import *
-from django.core.management import utils
 from django.core.management.base import BaseCommand, CommandError
-from django.utils import timezone
 from app.modules.entity.job_entity import Job_Entity
 from importlib import import_module
 
@@ -28,7 +25,6 @@ class Command(BaseCommand):
         """Config Command Args"""
         parser.add_argument('command', type=str, nargs='+', help='Available commands are %s' % ", ".join(self.available))
 
-
     def handle(self, *args, **options):
         """Command Handle"""
         if len(options['command']) == 0 or options['command'][0] not in self.available:
@@ -37,23 +33,25 @@ class Command(BaseCommand):
         if options['command'][0] == "run":
             self.stdout.write(self.style.SUCCESS("█ Running Kevin Schedule...\n"))
             while True:
-                job = self._get_job()
+                job = self.get_job()
                 if job != False:
                     self.run(job)
                 time.sleep(2)
 
-    def _get_job(self):
-        return {"executor":"test.Test", "parameters":"{\"text\": \"Job Text\"}"}
+    def get_job(self):
+        """Get a Job To Run"""
+        return self._job_entity.get_one_to_run()
 
     def run(self, job):
+        """Run The Job"""
         try:
-            job_module = job["executor"].split(".")
+            job_module = job.executor.split(".")
             p = import_module("app.jobs.%s" % (job_module[0]))
             c = getattr(p, job_module[1])
-            instance = c(json.loads(job["parameters"]))
+            instance = c(json.loads(job.parameters))
             if instance.execute():
-                return True
+                return self._job_entity.update_after_run(job, Job_Entity.PASSED)
             else:
-                return False
+                return self._job_entity.update_after_run(job, Job_Entity.FAILED)
         except Exception as e:
-            return False
+            return self._job_entity.update_after_run(job, Job_Entity.ERROR)

@@ -13,20 +13,27 @@ class Job_Entity():
     ONCE_AT = "once_at"
     EVERY = "every"
 
+    PENDING = "pending"
+    FAILED  = "failed"
+    PASSED  = "passed"
+    DAEMON  = "daemon"
+    ERROR   = "error"
+
     def insert_one(self, job):
         """Insert a New Job"""
         job = Job(
             name=job["name"],
-            status=job["status"] if "status" in job else "pending",
+            status=self.PENDING if job["interval"]["type"] == self.ONCE or job["interval"]["type"] == self.ONCE_AT else self.DAEMON,
+            last_status=self.PENDING if job["interval"]["type"] == self.ONCE or job["interval"]["type"] == self.ONCE_AT else self.DAEMON,
             executor=job["executor"],
-            parameters=job["parameters"],
+            parameters=json.dumps(job["parameters"]),
             interval=json.dumps(job["interval"]),
             retry_count=job["retry_count"] if "retry_count" in job else 0,
+            trials=job["trials"] if "trials" in job else 5,
             priority=job["priority"] if "priority" in job else 1,
-            run_at=job["run_at"] if "run_at" in job else None,
-            last_run=job["last_run"] if "last_run" in job else self._get_run_at(job["interval"])
+            last_run=job["last_run"] if "last_run" in job else None,
+            run_at=job["run_at"] if "run_at" in job else self.get_run_at(job["interval"])
         )
-
         job.save()
         return False if job.pk is None else job
 
@@ -45,6 +52,63 @@ class Job_Entity():
         except:
             return False
 
+    def get_one_to_run(self):
+        """Get Job To Run"""
+        try:
+            job = Job.objects.filter(status__in=["pending","daemon"], run_at__lt=timezone.now()).order_by("priority").first()
+            return False if job.pk is None else job
+        except:
+            return False
+
+    def update_one_by_id(self, id, new_data):
+        """Update Job By ID"""
+        job = self.get_one_by_id(id)
+        if job != False:
+            if "name" in new_data:
+                job.name = new_data["name"]
+            if "status" in new_data:
+                job.status = new_data["status"]
+            if "last_status" in new_data:
+                job.last_status = new_data["last_status"]
+            if "executor" in new_data:
+                job.executor = new_data["executor"]
+            if "parameters" in new_data:
+                job.parameters = new_data["parameters"]
+            if "interval" in new_data:
+                job.interval = new_data["interval"]
+            if "retry_count" in new_data:
+                job.retry_count = new_data["retry_count"]
+            if "trials" in new_data:
+                job.trials = new_data["trials"]
+            if "priority" in new_data:
+                job.priority = new_data["priority"]
+            if "last_run" in new_data:
+                job.last_run = new_data["last_run"]
+            if "run_at" in new_data:
+                job.run_at = new_data["run_at"]
+            job.save()
+            return True
+        return False
+
+    def update_after_run(self, job, status):
+        """Update Job According To Status"""
+        job_data = {"last_run": timezone.now(), "retry_count": (job.retry_count + 1), "last_status": status}
+
+        if job.status == "pending":
+            if status == self.PASSED:
+                job_data["status"] = self.PASSED
+            elif status == self.FAILED:
+                if (job.retry_count + 1) >= job.trials:
+                    job_data["status"] = self.FAILED
+                else:
+                    job_data["status"] = self.PENDING
+            elif status == self.ERROR:
+                job_data["status"] = self.ERROR
+        elif job.status == "daemon":
+            job_data["run_at"] = self.get_run_at(job.interval)
+
+        return self.update_one_by_id(job.pk, job_data)
+
     def delete_one_by_id(self, id):
         """Delete Job By ID"""
         job = self.get_one_by_id(id)
@@ -53,15 +117,15 @@ class Job_Entity():
             return True if count > 0 else False
         return False
 
-    def _get_run_at(self, interval):
+    def get_run_at(self, interval):
         """Get Run at Datetime"""
-        if interval["type"] == Job_Entity.ONCE:
+        if interval["type"] == self.ONCE:
             return timezone.now()
 
-        if interval["type"] == Job_Entity.ONCE_AT:
+        if interval["type"] == self.ONCE_AT:
             return interval["datetime"]
 
-        if interval["type"] == Job_Entity.EVERY:
+        if interval["type"] == self.EVERY:
             datetime = timezone.now()
             for key, value in interval.items():
                 if key == "microseconds":
@@ -78,4 +142,10 @@ class Job_Entity():
                     datetime += timedelta(days=value)
                 elif key == "weeks":
                     datetime += timedelta(weeks=value)
+                elif key == "months":
+                    datetime += timedelta(days=value * 30)
+                elif key == "years":
+                    datetime += timedelta(days=value * 360)
             return datetime
+
+        return None
