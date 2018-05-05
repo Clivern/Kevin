@@ -6,10 +6,13 @@ see https://docs.djangoproject.com/en/2.0/howto/custom-management-commands/
 
 import os
 import time
+import json
 from app.settings.info import *
 from django.core.management import utils
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
+from app.modules.entity.job_entity import Job_Entity
+from importlib import import_module
 
 class Command(BaseCommand):
 
@@ -18,6 +21,8 @@ class Command(BaseCommand):
     available = [
         "run"
     ]
+
+    _job_entity = Job_Entity()
 
     def add_arguments(self, parser):
         """Config Command Args"""
@@ -38,7 +43,17 @@ class Command(BaseCommand):
                 time.sleep(2)
 
     def _get_job(self):
-        return {}
+        return {"executor":"test.Test", "parameters":"{\"text\": \"Job Text\"}"}
 
     def run(self, job):
-        return False
+        try:
+            job_module = job["executor"].split(".")
+            p = import_module("app.jobs.%s" % (job_module[0]))
+            c = getattr(p, job_module[1])
+            instance = c(json.loads(job["parameters"]))
+            if instance.execute():
+                return True
+            else:
+                return False
+        except Exception as e:
+            return False
