@@ -12,6 +12,7 @@ class Job_Entity():
     ONCE = "once"
     ONCE_AT = "once_at"
     EVERY = "every"
+    AFTER = "after"
 
     PENDING = "pending"
     FAILED  = "failed"
@@ -23,8 +24,8 @@ class Job_Entity():
         """Insert a New Job"""
         job = Job(
             name=job["name"],
-            status=self.PENDING if job["interval"]["type"] == self.ONCE or job["interval"]["type"] == self.ONCE_AT else self.DAEMON,
-            last_status=self.PENDING if job["interval"]["type"] == self.ONCE or job["interval"]["type"] == self.ONCE_AT else self.DAEMON,
+            status=self.PENDING if job["interval"]["type"] == self.ONCE or job["interval"]["type"] == self.AFTER or job["interval"]["type"] == self.ONCE_AT else self.DAEMON,
+            last_status=self.PENDING if job["interval"]["type"] == self.ONCE or job["interval"]["type"] == self.AFTER or job["interval"]["type"] == self.ONCE_AT else self.DAEMON,
             executor=job["executor"],
             parameters=json.dumps(job["parameters"]),
             interval=json.dumps(job["interval"]),
@@ -124,6 +125,29 @@ class Job_Entity():
 
         if interval["type"] == self.ONCE_AT:
             return interval["datetime"]
+
+        if interval["type"] == self.AFTER:
+            datetime = timezone.now()
+            for key, value in interval.items():
+                if key == "microseconds":
+                    datetime += timedelta(microseconds=value)
+                elif key == "milliseconds":
+                    datetime += timedelta(milliseconds=value)
+                elif key == "seconds":
+                    datetime += timedelta(seconds=value)
+                elif key == "minutes":
+                    datetime += timedelta(minutes=value)
+                elif key == "hours":
+                    datetime += timedelta(hours=value)
+                elif key == "days":
+                    datetime += timedelta(days=value)
+                elif key == "weeks":
+                    datetime += timedelta(weeks=value)
+                elif key == "months":
+                    datetime += timedelta(days=value * 30)
+                elif key == "years":
+                    datetime += timedelta(days=value * 360)
+            return datetime
 
         if interval["type"] == self.EVERY:
             datetime = timezone.now()
