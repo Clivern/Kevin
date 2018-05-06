@@ -53,6 +53,12 @@ class Option_Entity():
         return options
 
 
+    def get_many_by_keys(self, keys):
+        """Get Many Options By Keys"""
+        options = Option.objects.filter(key__in=keys)
+        return options
+
+
     def update_value_by_id(self, id, value):
         """Update Option Value By ID"""
         option = self.get_one_by_id(id)
