@@ -17,4 +17,4 @@ class Reset_Password(View):
 
     @redirect_if_authenticated
     def get(self, request, token):
-        return render(request, self.template_name, {'page_title': _('Reset Password')})
+        return render(request, self.template_name, {'page_title': _('Reset Password'), 'reset_token': token})
