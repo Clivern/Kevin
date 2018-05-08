@@ -4,6 +4,8 @@ Reset Request Entity Module
 
 import datetime
 from app.models import Reset_Request
+from django.utils import timezone
+from datetime import timedelta
 from django.utils.crypto import get_random_string
 
 class Reset_Request_Entity():
@@ -23,7 +25,7 @@ class Reset_Request_Entity():
         request = Reset_Request(
             email=request["email"],
             token= request["token"] if "token" in request else self.gererate_token(),
-            expire_at=request["expire_at"],
+            expire_at=request["expire_at"] if "expire_at" in request else timezone.now() + timedelta(hours=request["expire_after"]),
             messages_count=request["messages_count"]
         )
 
