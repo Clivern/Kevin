@@ -65,3 +65,13 @@ class User_Entity():
             return False if user.pk is None else user
         except:
             return False
+
+
+    def update_password_by_email(self, email, new_password):
+        """Update Password by Email"""
+        user = self.get_one_by_email(email)
+        if user != False:
+            user.password = make_password(new_password)
+            user.save()
+            return True
+        return False

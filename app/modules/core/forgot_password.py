@@ -42,6 +42,7 @@ class Forgot_Password():
     def check_email(self, email):
         return True if self._user_entity.get_one_by_email(email) != False else False
 
+
     def reset_request_exists(self, email):
         return self._reset_request_entity.get_one_by_email(email)
 
