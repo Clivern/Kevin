@@ -28,10 +28,10 @@ class Reset_Password():
         return False
 
 
-    def reset_password(self, email, token, new_password):
+    def reset_password(self, token, new_password):
         request = self._reset_request_entity.get_one_by_token(token)
-        if request != False and timezone.now() < request.expire_at and request.email == email:
-            return self._user_entity.update_password_by_email(self, email, new_password);
+        if request != False and timezone.now() < request.expire_at:
+            return self._user_entity.update_password_by_email(request.email, new_password);
         return False
 
 
