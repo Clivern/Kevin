@@ -34,3 +34,7 @@ class Reset_Password(View):
     def post(self, request):
         self._logger.debug(_("Request Method: POST"))
         self._logger.debug(_("Request URL: ") + reverse("app.api.private.v1.reset_password.endpoint"))
+
+
+        #reset_token
+        #new_password

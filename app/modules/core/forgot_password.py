@@ -23,7 +23,7 @@ class Forgot_Password():
 
 
     def __init__(self):
-        self._reset_request_entity = Reset_Request()
+        self._reset_request_entity = Reset_Request_Entity()
         self._option_entity = Option_Entity()
         self._helpers = Helpers()
         self._user_entity = User_Entity()
@@ -33,10 +33,10 @@ class Forgot_Password():
         reset_expire_option = self._option_entity.get_one_by_key("reset_mails_expire_after")
 
         if messages_count_option != False:
-            self._messages_count_option = messages_count_option.value
+            self._messages_count_option = int(messages_count_option.value)
 
         if reset_expire_option != False:
-            self._reset_expire_option = reset_expire_option.value
+            self._reset_expire_option = int(reset_expire_option.value)
 
 
     def check_email(self, email):
@@ -54,8 +54,9 @@ class Forgot_Password():
 
 
     def update_request(self, request):
+
         # Delete Old Request
-        self._reset_request_entity.delete_one_by_id(request.pk)
+        self._reset_request_entity.delete_one_by_id(request.id)
 
         # Create a Fresh Request
         if timezone.now() > request.expire_at:

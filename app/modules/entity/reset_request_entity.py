@@ -25,7 +25,7 @@ class Reset_Request_Entity():
         request = Reset_Request(
             email=request["email"],
             token= request["token"] if "token" in request else self.gererate_token(),
-            expire_at=request["expire_at"] if "expire_at" in request else timezone.now() + timedelta(hours=request["expire_after"]),
+            expire_at=request["expire_at"] if "expire_at" in request else timezone.now() + timedelta(hours=int(request["expire_after"])),
             messages_count=request["messages_count"]
         )
 

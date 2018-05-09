@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.utils.translation import gettext as _
 from app.modules.core.decorators import redirect_if_authenticated
-from app.modules.core.reset_password import Reset_Password as Reset_Password_Core
+from app.modules.core.reset_password import Reset_Password as Reset_Password_Module
 
 class Reset_Password(View):
 
@@ -18,7 +18,7 @@ class Reset_Password(View):
 
 
     def __init__(self):
-        self._reset_password_core = Reset_Password_Core()
+        self._reset_password_core = Reset_Password_Module()
 
 
     @redirect_if_authenticated

@@ -14,7 +14,7 @@ class Job(models.Model):
         ('error', 'ERROR')
     )
 
-    name = models.CharField(max_length=30, verbose_name="Name")
+    name = models.CharField(max_length=150, verbose_name="Name")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending", verbose_name="Status")
     last_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending", verbose_name="Last Status")
     executor = models.CharField(max_length=200, verbose_name="Executor")
