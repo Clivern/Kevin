@@ -2,23 +2,46 @@ require(['jscookie', 'toastr', 'pace']);
 
 var kevin_app = kevin_app || {};
 
+
 /**
- * Install Action
+ * Form to Enpoint Connect
  */
-kevin_app.install = (function (window, document, $) {
+kevin_app.endpoint_connect = (function (window, document, $) {
 
     'use strict';
 
     var base = {
 
         el: {
-            form : $("form#install_form"),
-            submitButt : $("form#install_form button[type='submit']"),
+            form : $("form._endpoint_connect"),
+            submitButt : $("form._endpoint_connect button[type='submit']"),
+        },
+        actions: {
+            after_success: {
+                type: false,
+                url: false,
+                wait: false
+            }
+
         },
         init: function(){
-            console.log("Hi");
             if( base.el.form.length ){
                 base.submit();
+
+                var afterSuccessType = base.el.form.attr('data-succ-type');
+                var afterSuccessUrl = base.el.form.attr('data-succ-url');
+                var afterSuccessWait = base.el.form.attr('data-succ-wait');
+
+                if (typeof afterSuccessType !== typeof undefined && afterSuccessType !== false) {
+                    base.actions.after_success.type = afterSuccessType;
+                }
+                if (typeof afterSuccessUrl !== typeof undefined && afterSuccessUrl !== false) {
+                    base.actions.after_success.url = afterSuccessUrl;
+                }
+                if (typeof afterSuccessWait !== typeof undefined && afterSuccessWait !== false) {
+                    base.actions.after_success.wait = afterSuccessWait;
+                }
+
             }
         },
         submit : function(){
@@ -49,12 +72,30 @@ kevin_app.install = (function (window, document, $) {
             return inputs;
         },
         success : function(messages){
-            location.reload();
             for(var messageObj of messages) {
                 require(['toastr'], function(toastr) {
                     toastr.success(messageObj.message);
                 });
                 break;
+            }
+            if( base.actions.after_success.type == "reload" ){
+
+                if( base.actions.after_success.wait != false ){
+                    setTimeout(function(){
+                        location.reload();
+                    }, base.actions.after_success.wait);
+                }else{
+                    location.reload();
+                }
+            }
+            if( base.actions.after_success.type == "redirect" ){
+                if( base.actions.after_success.wait != false ){
+                    setTimeout(function(){
+                        location.href = base.actions.after_success.url;
+                    }, base.actions.after_success.wait);
+                }else{
+                    location.href = base.actions.after_success.url;
+                }
             }
         },
         error : function(messages){
@@ -76,316 +117,6 @@ kevin_app.install = (function (window, document, $) {
     };
 
 })(window, document, jQuery);
-
-
-/**
- * Login Action
- */
-kevin_app.login = (function (window, document, $) {
-
-    'use strict';
-
-    var base = {
-
-        el: {
-            form : $("form#login_form"),
-            submitButt : $("form#login_form button[type='submit']"),
-        },
-        init: function(){
-            console.log("Hi");
-            if( base.el.form.length ){
-                base.submit();
-            }
-        },
-        submit : function(){
-            base.el.form.on("submit", base.handler);
-        },
-        handler: function(event) {
-            event.preventDefault();
-            base.el.submitButt.attr('disabled', 'disabled');
-            require(['pace'], function(Pace) {
-                Pace.track(function(){
-                    $.post(base.el.form.attr('action'), base.data(), function( response, textStatus, jqXHR ){
-                        if( jqXHR.status == 200 && textStatus == 'success' ) {
-                            if( response.status == "success" ){
-                                base.success(response.messages);
-                            }else{
-                                base.error(response.messages);
-                            }
-                        }
-                    }, 'json');
-                });
-            });
-        },
-        data : function(){
-            var inputs = {};
-            base.el.form.serializeArray().map(function(item, index) {
-                inputs[item.name] = item.value;
-            });
-            return inputs;
-        },
-        success : function(messages){
-            location.reload();
-            for(var messageObj of messages) {
-                require(['toastr'], function(toastr) {
-                    toastr.success(messageObj.message);
-                });
-                break;
-            }
-        },
-        error : function(messages){
-            base.el.submitButt.removeAttr('disabled');
-            require(['toastr'], function(toastr) {
-                toastr.clear();
-            });
-            for(var messageObj of messages) {
-                require(['toastr'], function(toastr) {
-                    toastr.error(messageObj.message);
-                });
-                break;
-            }
-        }
-    };
-
-   return {
-        init: base.init
-    };
-
-})(window, document, jQuery);
-
-
-
-/**
- * Register Action
- */
-kevin_app.register = (function (window, document, $) {
-
-    'use strict';
-
-    var base = {
-
-        el: {
-            form : $("form#register_form"),
-            submitButt : $("form#register_form button[type='submit']"),
-        },
-        init: function(){
-            console.log("Hi");
-            if( base.el.form.length ){
-                base.submit();
-            }
-        },
-        submit : function(){
-            base.el.form.on("submit", base.handler);
-        },
-        handler: function(event) {
-            event.preventDefault();
-            base.el.submitButt.attr('disabled', 'disabled');
-            require(['pace'], function(Pace) {
-                Pace.track(function(){
-                    $.post(base.el.form.attr('action'), base.data(), function( response, textStatus, jqXHR ){
-                        if( jqXHR.status == 200 && textStatus == 'success' ) {
-                            if( response.status == "success" ){
-                                base.success(response.messages);
-                            }else{
-                                base.error(response.messages);
-                            }
-                        }
-                    }, 'json');
-                });
-            });
-        },
-        data : function(){
-            var inputs = {};
-            base.el.form.serializeArray().map(function(item, index) {
-                inputs[item.name] = item.value;
-            });
-            return inputs;
-        },
-        success : function(messages){
-            location.reload();
-            for(var messageObj of messages) {
-                require(['toastr'], function(toastr) {
-                    toastr.success(messageObj.message);
-                });
-                break;
-            }
-        },
-        error : function(messages){
-            base.el.submitButt.removeAttr('disabled');
-            require(['toastr'], function(toastr) {
-                toastr.clear();
-            });
-            for(var messageObj of messages) {
-                require(['toastr'], function(toastr) {
-                    toastr.error(messageObj.message);
-                });
-                break;
-            }
-        }
-    };
-
-   return {
-        init: base.init
-    };
-
-})(window, document, jQuery);
-
-
-
-/**
- * Forgot Password Action
- */
-kevin_app.forgot_password = (function (window, document, $) {
-
-    'use strict';
-
-    var base = {
-
-        el: {
-            form : $("form#forgot_password_form"),
-            submitButt : $("form#forgot_password_form button[type='submit']"),
-        },
-        init: function(){
-            console.log("Hi");
-            if( base.el.form.length ){
-                base.submit();
-            }
-        },
-        submit : function(){
-            base.el.form.on("submit", base.handler);
-        },
-        handler: function(event) {
-            event.preventDefault();
-            base.el.submitButt.attr('disabled', 'disabled');
-            require(['pace'], function(Pace) {
-                Pace.track(function(){
-                    $.post(base.el.form.attr('action'), base.data(), function( response, textStatus, jqXHR ){
-                        if( jqXHR.status == 200 && textStatus == 'success' ) {
-                            if( response.status == "success" ){
-                                base.success(response.messages);
-                            }else{
-                                base.error(response.messages);
-                            }
-                        }
-                    }, 'json');
-                });
-            });
-        },
-        data : function(){
-            var inputs = {};
-            base.el.form.serializeArray().map(function(item, index) {
-                inputs[item.name] = item.value;
-            });
-            return inputs;
-        },
-        success : function(messages){
-            location.reload();
-            for(var messageObj of messages) {
-                require(['toastr'], function(toastr) {
-                    toastr.success(messageObj.message);
-                });
-                break;
-            }
-        },
-        error : function(messages){
-            base.el.submitButt.removeAttr('disabled');
-            require(['toastr'], function(toastr) {
-                toastr.clear();
-            });
-            for(var messageObj of messages) {
-                require(['toastr'], function(toastr) {
-                    toastr.error(messageObj.message);
-                });
-                break;
-            }
-        }
-    };
-
-   return {
-        init: base.init
-    };
-
-})(window, document, jQuery);
-
-
-
-/**
- * Reset Password Action
- */
-kevin_app.reset_password = (function (window, document, $) {
-
-    'use strict';
-
-    var base = {
-
-        el: {
-            form : $("form#reset_password_form"),
-            submitButt : $("form#reset_password_form button[type='submit']"),
-        },
-        init: function(){
-            console.log("Hi");
-            if( base.el.form.length ){
-                base.submit();
-            }
-        },
-        submit : function(){
-            base.el.form.on("submit", base.handler);
-        },
-        handler: function(event) {
-            event.preventDefault();
-            base.el.submitButt.attr('disabled', 'disabled');
-            require(['pace'], function(Pace) {
-                Pace.track(function(){
-                    $.post(base.el.form.attr('action'), base.data(), function( response, textStatus, jqXHR ){
-                        if( jqXHR.status == 200 && textStatus == 'success' ) {
-                            if( response.status == "success" ){
-                                base.success(response.messages);
-                            }else{
-                                base.error(response.messages);
-                            }
-                        }
-                    }, 'json');
-                });
-            });
-        },
-        data : function(){
-            var inputs = {};
-            base.el.form.serializeArray().map(function(item, index) {
-                inputs[item.name] = item.value;
-            });
-            return inputs;
-        },
-        success : function(messages){
-            location.reload();
-            for(var messageObj of messages) {
-                require(['toastr'], function(toastr) {
-                    toastr.success(messageObj.message);
-                });
-                break;
-            }
-        },
-        error : function(messages){
-            base.el.submitButt.removeAttr('disabled');
-            require(['toastr'], function(toastr) {
-                toastr.clear();
-            });
-            for(var messageObj of messages) {
-                require(['toastr'], function(toastr) {
-                    toastr.error(messageObj.message);
-                });
-                break;
-            }
-        }
-    };
-
-   return {
-        init: base.init
-    };
-
-})(window, document, jQuery);
-
-
-
 
 
 /**
@@ -415,11 +146,7 @@ $(document).ready(function() {
     /** Constant div card */
     const DIV_CARD = 'div.card';
 
-    kevin_app.install.init();
-    kevin_app.login.init();
-    kevin_app.register.init();
-    kevin_app.forgot_password.init();
-    kevin_app.reset_password.init();
+    kevin_app.endpoint_connect.init();
 
     require(['jscookie'], function(Cookies) {
         console.log(Cookies.get('csrftoken'))
