@@ -12,8 +12,6 @@ class Register(View):
 
     template_name = 'templates/register.html'
 
-    def __init__(self):
-        pass
 
     @redirect_if_authenticated
     def get(self, request):

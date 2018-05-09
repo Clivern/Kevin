@@ -21,6 +21,8 @@ from app.controllers.web.admin.endpoint import Endpoint as Endpoint_View
 from app.controllers.api.private.v1.install import Install as Install_V1_Endpoint_Private
 from app.controllers.api.private.v1.login import Login as Login_V1_Endpoint_Private
 from app.controllers.api.private.v1.register import Register as Register_V1_Endpoint_Private
+from app.controllers.api.private.v1.forgot_password import Forgot_Password as Forgot_Password_V1_Endpoint_Private
+from app.controllers.api.private.v1.reset_password import Reset_Password as Reset_Password_V1_Endpoint_Private
 
 urlpatterns = [
     # Public Views
@@ -47,7 +49,9 @@ urlpatterns = [
     path('api/private/v1/', include([
         path('install', Install_V1_Endpoint_Private.as_view(), name='app.api.private.v1.install.endpoint'),
         path('login', Login_V1_Endpoint_Private.as_view(), name='app.api.private.v1.login.endpoint'),
-        path('register', Register_V1_Endpoint_Private.as_view(), name='app.api.private.v1.register.endpoint')
+        path('register', Register_V1_Endpoint_Private.as_view(), name='app.api.private.v1.register.endpoint'),
+        path('forgot-password', Forgot_Password_V1_Endpoint_Private.as_view(), name='app.api.private.v1.forgot_password.endpoint'),
+        path('reset-password', Reset_Password_V1_Endpoint_Private.as_view(), name='app.api.private.v1.reset_password.endpoint'),
     ])),
 
     # Public API V1 Endpoints

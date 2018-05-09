@@ -14,8 +14,10 @@ class Install(View):
     template_name = 'templates/install.html'
     _install = None
 
+
     def __init__(self):
         self._install = Install_Core()
+
 
     def get(self, request):
         if self._install.is_installed():

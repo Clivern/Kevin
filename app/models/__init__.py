@@ -11,3 +11,5 @@ from .endpoint import Endpoint
 from .endpoint_meta import Endpoint_Meta
 from .request import Request
 from .request_meta import Request_Meta
+from .reset_request import Reset_Request
+from .job import Job

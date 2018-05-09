@@ -12,8 +12,6 @@ class Forgot_Password(View):
 
     template_name = 'templates/forgot_password.html'
 
-    def __init__(self):
-        pass
 
     @redirect_if_authenticated
     def get(self, request):

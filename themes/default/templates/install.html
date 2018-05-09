@@ -10,7 +10,7 @@
                     <div class="text-center mb-6">
                         <img src="{% static 'assets/images/logo.png' %}" class="h-9">
                     </div>
-                    <form class="card" id="install_form" onsubmit="return false" action="{% url 'app.api.private.v1.install.endpoint' %}" method="post" >
+                    <form class="card _endpoint_connect" onsubmit="return false" action="{% url 'app.api.private.v1.install.endpoint' %}" method="post" data-succ-type="redirect" data-succ-url="{% url 'app.web.login' %}" data-succ-wait="3000">
                         {% csrf_token %}
                         <div class="card-body p-6">
                             <div class="form-group">

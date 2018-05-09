@@ -4,6 +4,8 @@ Helpers Module
 
 import json
 import logging
+from django.utils import timezone
+from datetime import timedelta
 from django.utils.text import slugify
 from django.utils.translation import activate
 
@@ -33,3 +35,26 @@ class Helpers():
 
     def json_dumps(self, data):
         return json.dumps(data)
+
+    def time_after(self, interval):
+        datetime = timezone.now()
+        for key, value in interval.items():
+            if key == "microseconds":
+                datetime += timedelta(microseconds=value)
+            elif key == "milliseconds":
+                datetime += timedelta(milliseconds=value)
+            elif key == "seconds":
+                datetime += timedelta(seconds=value)
+            elif key == "minutes":
+                datetime += timedelta(minutes=value)
+            elif key == "hours":
+                datetime += timedelta(hours=value)
+            elif key == "days":
+                datetime += timedelta(days=value)
+            elif key == "weeks":
+                datetime += timedelta(weeks=value)
+            elif key == "months":
+                datetime += timedelta(days=value * 30)
+            elif key == "years":
+                datetime += timedelta(days=value * 360)
+        return datetime
