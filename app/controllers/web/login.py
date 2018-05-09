@@ -12,8 +12,6 @@ class Login(View):
 
     template_name = 'templates/login.html'
 
-    def __init__(self):
-        pass
 
     @redirect_if_authenticated
     def get(self, request):

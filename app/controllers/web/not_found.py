@@ -12,5 +12,6 @@ class Not_Found(View):
 
     template_name = 'templates/404.html'
 
+
     def get(self, request):
         return render(request, self.template_name, {'page_title': _('404')}, status=404)

@@ -18,7 +18,7 @@ class Reset_Password():
     def __init__(self):
         self._helpers = Helpers()
         self._user_entity = User_Entity()
-        self._reset_request_entity = Reset_Request()
+        self._reset_request_entity = Reset_Request_Entity()
 
 
     def check_token(self, token):
