@@ -19,21 +19,16 @@ from app.modules.core.forgot_password import Forgot_Password as Forgot_Password_
 
 class Forgot_Password(View):
 
-    _request = None
-    _response = None
-    _helpers = None
-    _form = None
+    _request = Request()
+    _response = Response()
+    _helpers = Helpers()
+    _form = Form()
+    _forgot_password = Forgot_Password_Module()
     _logger = None
-    _forgot_password = None
 
 
     def __init__(self):
-        self._helpers = Helpers()
-        self._form = Form()
-        self._request = Request()
-        self._response = Response()
         self._logger = self._helpers.get_logger(__name__)
-        self._forgot_password = Forgot_Password_Module()
 
 
     @stop_request_if_authenticated

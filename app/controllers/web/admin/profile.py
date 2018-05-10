@@ -9,11 +9,18 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.utils.translation import gettext as _
 
+# local Django
+from app.modules.core.context import Context
+
 
 class Profile(View):
 
     template_name = 'templates/profile.html'
+    _context = Context()
 
 
     def get(self, request):
-        return render(request, self.template_name, {'page_title': _('Profile')})
+
+        self._context.push({'page_title': _('Profile')})
+
+        return render(request, self.template_name, self._context.get())

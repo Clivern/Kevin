@@ -9,11 +9,18 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.utils.translation import gettext as _
 
+# local Django
+from app.modules.core.context import Context
+
 
 class Namespaces(View):
 
     template_name = 'templates/namespaces.html'
+    _context = Context()
 
 
     def get(self, request):
-        return render(request, self.template_name, {'page_title': _('Namespaces')})
+
+        self._context.push({'page_title': _('Namespaces')})
+
+        return render(request, self.template_name, self._context.get())

@@ -9,14 +9,19 @@ from django.http import HttpResponse
 from django.utils.translation import gettext as _
 
 # local Django
+from app.modules.core.context import Context
 from app.modules.core.decorators import redirect_if_authenticated
 
 
 class Login(View):
 
     template_name = 'templates/login.html'
+    _context = Context()
 
 
     @redirect_if_authenticated
     def get(self, request):
-        return render(request, self.template_name, {'page_title': _('Login')})
+
+        self._context.push({'page_title': _('Login')})
+
+        return render(request, self.template_name, self._context.get())

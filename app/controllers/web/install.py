@@ -10,6 +10,7 @@ from django.shortcuts import redirect
 from django.utils.translation import gettext as _
 
 # local Django
+from app.modules.core.context import Context
 from app.modules.core.install import Install as Install_Core
 
 
@@ -17,14 +18,15 @@ class Install(View):
 
     template_name = 'templates/install.html'
     _install = None
-
-
-    def __init__(self):
-        self._install = Install_Core()
+    _context = Context()
+    _install = Install_Core()
 
 
     def get(self, request):
+
         if self._install.is_installed():
             return redirect("app.web.login")
 
-        return render(request, self.template_name, {'page_title': _('Installation')})
+        self._context.push({'page_title': _('Installation')})
+
+        return render(request, self.template_name, self._context.get())
