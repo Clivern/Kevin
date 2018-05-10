@@ -2,7 +2,9 @@
 Option Model
 """
 
+# Django
 from django.db import models
+
 
 class Option(models.Model):
 

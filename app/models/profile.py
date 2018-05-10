@@ -2,8 +2,10 @@
 Profile Model
 """
 
-from django.contrib.auth.models import User
+# Django
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Profile(models.Model):
 

@@ -2,8 +2,12 @@
 Endpoint Model
 """
 
+# Django
 from django.db import models
+
+# local Django
 from .namespace import Namespace
+
 
 class Endpoint(models.Model):
 
@@ -40,6 +44,7 @@ class Endpoint(models.Model):
     body_rules = models.TextField(verbose_name="Body rules")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
+
 
     def __str__(self):
         return "%s /%s" % (self.method, self.route)
