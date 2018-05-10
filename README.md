@@ -64,7 +64,7 @@ python manage.py runserver
 ```bash
 python manage.py schedule run < /dev/null
 # Or as a process
-python3 manage.py schedule run </dev/null &
+python manage.py schedule run </dev/null &
 ```
 
 - Go to `http://127.0.0.1:8000/install` to install the application.
