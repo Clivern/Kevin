@@ -9,11 +9,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
+# standard library
 import os
-from dotenv import load_dotenv
-from django.utils.translation import ugettext_lazy as _
-from app.settings.info import *
 import time
+
+# third-party
+from dotenv import load_dotenv
+
+# Django
+from django.utils.translation import ugettext_lazy as _
+
+# local Django
+from app.settings.info import *
 
 
 load_dotenv(dotenv_path=os.path.join(APP_ROOT, ".env"))
