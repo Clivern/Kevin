@@ -2,16 +2,20 @@
 Forgot Password API Endpoint
 """
 
+# Django
 from django.views import View
-from django.http import JsonResponse
-from app.modules.validation.form import Form
-from app.modules.util.helpers import Helpers
-from app.modules.core.forgot_password import Forgot_Password as Forgot_Password_Module
-from app.modules.core.request import Request
-from app.modules.core.response import Response
-from django.utils.translation import gettext as _
 from django.urls import reverse
+from django.http import JsonResponse
+from django.utils.translation import gettext as _
+
+# local Django
+from app.modules.util.helpers import Helpers
+from app.modules.core.request import Request
+from app.modules.validation.form import Form
+from app.modules.core.response import Response
 from app.modules.core.decorators import stop_request_if_authenticated
+from app.modules.core.forgot_password import Forgot_Password as Forgot_Password_Module
+
 
 class Forgot_Password(View):
 

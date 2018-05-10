@@ -2,17 +2,21 @@
 Install API Endpoint
 """
 
+# Django
 from django.views import View
+from django.urls import reverse
 from django.http import JsonResponse
+from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+
+# local Django
 from app.modules.validation.form import Form
 from app.modules.util.helpers import Helpers
-from app.modules.core.install import Install as Install_Core
 from app.modules.core.request import Request
 from app.modules.core.response import Response
-from django.utils.translation import gettext as _
-from django.urls import reverse
+from app.modules.core.install import Install as Install_Core
+
 
 class Install(View):
 
@@ -23,6 +27,7 @@ class Install(View):
     _install = None
     _logger = None
 
+
     def __init__(self):
         self._helpers = Helpers()
         self._form = Form()
@@ -30,6 +35,7 @@ class Install(View):
         self._request = Request()
         self._response = Response()
         self._logger = self._helpers.get_logger(__name__)
+
 
     def post(self, request):
         self._logger.debug(_("Request Method: POST"))

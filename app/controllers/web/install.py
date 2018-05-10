@@ -2,12 +2,16 @@
 Install Web Controller
 """
 
+# Django
 from django.views import View
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.utils.translation import gettext as _
+
+# local Django
 from app.modules.core.install import Install as Install_Core
+
 
 class Install(View):
 

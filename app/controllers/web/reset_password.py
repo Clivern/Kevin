@@ -2,14 +2,18 @@
 Reset Password Web Controller
 """
 
+# Django
 from django.views import View
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.utils.translation import gettext as _
+
+# local Django
 from app.modules.core.decorators import redirect_if_authenticated
 from app.modules.core.reset_password import Reset_Password as Reset_Password_Module
+
 
 class Reset_Password(View):
 
