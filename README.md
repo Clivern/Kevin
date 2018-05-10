@@ -65,7 +65,7 @@ python manage.py runserver
 python manage.py schedule run < /dev/null
 ```
 
-- Go to `http(s)://app_url/install` to install the application.
+- Go to `http://127.0.0.1:8000/install` to install the application.
 
 ### With Docker
 
