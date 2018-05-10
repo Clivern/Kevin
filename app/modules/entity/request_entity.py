@@ -2,11 +2,15 @@
 Request Entity Module
 """
 
+# Django
+from django.contrib.auth.models import User
+
+# local Django
 from app.models import Endpoint
 from app.models import Request
 from app.models import Request_Meta
-from django.contrib.auth.models import User
 from app.modules.util.helpers import Helpers
+
 
 class Request_Entity():
 

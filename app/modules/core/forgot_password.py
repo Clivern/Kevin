@@ -2,13 +2,19 @@
 Forgot Password Module
 """
 
-from django.utils import timezone
+# standard library
 from datetime import timedelta
+
+# Django
+from django.utils import timezone
+
+# local Django
 from app.modules.util.helpers import Helpers
 from app.modules.entity.user_entity import User_Entity
 from app.modules.entity.option_entity import Option_Entity
 from app.modules.entity.job_entity import Job_Entity
 from app.modules.entity.reset_request_entity import Reset_Request_Entity
+
 
 class Forgot_Password():
 

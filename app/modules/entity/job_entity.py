@@ -2,10 +2,16 @@
 Job Entity Module
 """
 
-from app.models import Job
-from django.utils import timezone
-from datetime import timedelta
+# standard library
 import json
+from datetime import timedelta
+
+# Django
+from django.utils import timezone
+
+# local Django
+from app.models import Job
+
 
 class Job_Entity():
 
@@ -19,6 +25,7 @@ class Job_Entity():
     PASSED  = "passed"
     DAEMON  = "daemon"
     ERROR   = "error"
+
 
     def insert_one(self, job):
         """Insert a New Job"""
@@ -38,12 +45,14 @@ class Job_Entity():
         job.save()
         return False if job.pk is None else job
 
+
     def insert_many(self, jobs):
         """Insert Many Jobs"""
         status = True
         for job in jobs:
             status &= True if self.insert_one(job) != False else False
         return status
+
 
     def get_one_by_id(self, id):
         """Get Job By ID"""
@@ -53,6 +62,7 @@ class Job_Entity():
         except:
             return False
 
+
     def get_one_to_run(self):
         """Get Job To Run"""
         try:
@@ -60,6 +70,7 @@ class Job_Entity():
             return False if job.pk is None else job
         except:
             return False
+
 
     def update_one_by_id(self, id, new_data):
         """Update Job By ID"""
@@ -91,6 +102,7 @@ class Job_Entity():
             return True
         return False
 
+
     def update_after_run(self, job, status):
         """Update Job According To Status"""
         job_data = {"last_run": timezone.now(), "retry_count": (job.retry_count + 1), "last_status": status}
@@ -110,6 +122,7 @@ class Job_Entity():
 
         return self.update_one_by_id(job.pk, job_data)
 
+
     def delete_one_by_id(self, id):
         """Delete Job By ID"""
         job = self.get_one_by_id(id)
@@ -117,6 +130,7 @@ class Job_Entity():
             count, deleted = job.delete()
             return True if count > 0 else False
         return False
+
 
     def get_run_at(self, interval):
         """Get Run at Datetime"""

@@ -2,9 +2,12 @@
 Option Entity Module
 """
 
+# local Django
 from app.models import Option
 
+
 class Option_Entity():
+
 
     def insert_one(self, option):
         """Insert a New Option"""

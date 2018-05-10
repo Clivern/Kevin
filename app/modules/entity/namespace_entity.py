@@ -2,13 +2,17 @@
 Namespace Entity Module
 """
 
+# Django
+from django.contrib.auth.models import User
+
+# local Django
 from app.models import Namespace
 from app.models import Namespace_Meta
-from django.contrib.auth.models import User
 from app.modules.util.helpers import Helpers
 
 
 class Namespace_Entity():
+
 
     def insert_one(self, namespace):
         """Insert a New Namespace"""

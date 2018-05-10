@@ -2,10 +2,13 @@
 Endpoint Entity Module
 """
 
+# Django
+from django.contrib.auth.models import User
+
+# local Django
 from app.models import Endpoint
 from app.models import Namespace
 from app.models import Endpoint_Meta
-from django.contrib.auth.models import User
 from app.modules.util.helpers import Helpers
 
 
