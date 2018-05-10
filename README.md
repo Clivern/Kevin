@@ -10,9 +10,62 @@ In order to run this app do the following:
 
 ### Default Install
 
+- Get the application code
+
 ```bash
-#
+git clone https://github.com/Clivern/Kevin.git kevin
+cd kevin
+cp .env.example .env
 ```
+
+- Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+- Edit the .env file manually or use command for that
+
+```bash
+# Set DB Host
+python manage.py kevin update_env DB_HOST=127.0.0.1
+
+# Set DB Port
+python manage.py kevin update_env DB_PORT=3306
+
+# Set DB Name
+python manage.py kevin update_env DB_DATABASE=kevin
+
+# Set DB Username
+python manage.py kevin update_env DB_USERNAME=root
+
+# Set DB Password
+python manage.py kevin update_env DB_PASSWORD=
+
+# Create a new app key (Required)
+python manage.py kevin update_app_key
+
+# Set DB Type (mysql or sqlite supported till now)
+python manage.py kevin update_env DB_CONNECTION=mysql
+```
+
+- Migrate The Database.
+
+```bash
+python manage.py migrate
+```
+
+- Run The Server
+```bash
+python manage.py runserver
+```
+
+- Run the Schedules as a daemon
+```bash
+python manage.py schedule run < /dev/null
+```
+
+- Go to `http(s)://app_url/install` to install the application.
 
 ### With Docker
 
@@ -45,6 +98,10 @@ docker-compose ps
 ```bash
 docker-compose down
 ```
+
+### Running on production
+
+Currently kevin is still under development and for sure we will explain how to run it on production after the first release.
 
 
 Acknowledgements
