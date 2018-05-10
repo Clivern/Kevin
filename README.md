@@ -60,9 +60,11 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-- Run the Schedules as a daemon
+- Run the Jobs Schedule.
 ```bash
 python manage.py schedule run < /dev/null
+# Or as a process
+python3 manage.py schedule run </dev/null &
 ```
 
 - Go to `http://127.0.0.1:8000/install` to install the application.
