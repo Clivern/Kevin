@@ -9,8 +9,8 @@ from app.modules.entity.option_entity import Option_Entity
 
 class Base():
 
-    _option_entity = None
-    _helpers = None
+    _option_entity = Option_Entity()
+    _helpers = Helpers()
     _logger = None
     _arguments = {
         "app_name": "",
@@ -20,10 +20,8 @@ class Base():
 
 
     def __init__(self, arguments):
-        self._helpers = Helpers()
         self._logger = self._helpers.get_logger(__name__)
         self._arguments.update(arguments)
-        self._option_entity = Option_Entity()
         self._load_options()
 
 
