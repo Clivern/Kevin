@@ -4,10 +4,16 @@ Kevin Info Command
 see https://docs.djangoproject.com/en/2.0/howto/custom-management-commands/
 """
 
+# standard library
+import os
+
+# Django
 from django.core.management import utils
 from django.core.management.base import BaseCommand, CommandError
+
+# local Django
 from app.settings.info import *
-import os
+
 
 class Command(BaseCommand):
 
@@ -18,6 +24,7 @@ class Command(BaseCommand):
         "update_app_key",
         "update_env"
     ]
+
 
     def add_arguments(self, parser):
         """Config Command Args"""

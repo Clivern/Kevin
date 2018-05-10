@@ -4,13 +4,19 @@ Kevin Info Command
 see https://docs.djangoproject.com/en/2.0/howto/custom-management-commands/
 """
 
+# standard library
 import time
 import json
-from app.settings.info import *
-from django.core.management.base import BaseCommand, CommandError
-from app.modules.entity.job_entity import Job_Entity
 from importlib import import_module
+
+# Django
+from django.core.management.base import BaseCommand, CommandError
+
+# local Django
+from app.settings.info import *
 from app.modules.util.helpers import Helpers
+from app.modules.entity.job_entity import Job_Entity
+
 
 class Command(BaseCommand):
 
@@ -24,9 +30,11 @@ class Command(BaseCommand):
     _helpers = Helpers()
     _logger = None
 
+
     def add_arguments(self, parser):
         """Config Command Args"""
         parser.add_argument('command', type=str, nargs='+', help='Available commands are %s' % ", ".join(self.available))
+
 
     def handle(self, *args, **options):
         self._logger = self._helpers.get_logger(__name__)
@@ -42,9 +50,11 @@ class Command(BaseCommand):
                     self.run(job)
                 time.sleep(2)
 
+
     def get_job(self):
         """Get a Job To Run"""
         return self._job_entity.get_one_to_run()
+
 
     def run(self, job):
         """Run The Job"""

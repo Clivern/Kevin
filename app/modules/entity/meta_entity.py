@@ -2,8 +2,10 @@
 Meta Entity Module
 """
 
+# Django
 from django.contrib.auth.models import User
-from app.modules.util.helpers import Helpers
+
+# local Django
 from app.models import Namespace
 from app.models import Endpoint
 from app.models import Request
@@ -11,6 +13,8 @@ from app.models import User_Meta
 from app.models import Namespace_Meta
 from app.models import Endpoint_Meta
 from app.models import Request_Meta
+from app.modules.util.helpers import Helpers
+
 
 class Meta_Entity():
 

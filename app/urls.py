@@ -2,8 +2,11 @@
 Routes For Kevin
 """
 
+# Django
 from django.contrib import admin
 from django.urls import include, path
+
+# local Django
 from app.controllers.web.home import Home as Home_View
 from app.controllers.web.install import Install as Install_View
 from app.controllers.web.not_found import Not_Found as Not_Found_View
@@ -23,6 +26,7 @@ from app.controllers.api.private.v1.login import Login as Login_V1_Endpoint_Priv
 from app.controllers.api.private.v1.register import Register as Register_V1_Endpoint_Private
 from app.controllers.api.private.v1.forgot_password import Forgot_Password as Forgot_Password_V1_Endpoint_Private
 from app.controllers.api.private.v1.reset_password import Reset_Password as Reset_Password_V1_Endpoint_Private
+
 
 urlpatterns = [
     # Public Views

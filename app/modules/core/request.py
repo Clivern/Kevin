@@ -2,8 +2,12 @@
 Request Module
 """
 
-from app.modules.util.helpers import Helpers
+# Django
 from django.utils.translation import gettext as _
+
+# local Django
+from app.modules.util.helpers import Helpers
+
 
 class Request():
 
@@ -11,13 +15,16 @@ class Request():
     _helpers = None
     _logger = None
 
+
     def __init__(self, request = None):
         self._request = request
         self._helpers = Helpers()
         self._logger = self._helpers.get_logger(__name__)
 
+
     def set_request(self, request):
         self._request = request
+
 
     def get_request_data(self, method, predicted):
         request_data = {}

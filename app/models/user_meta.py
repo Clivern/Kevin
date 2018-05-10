@@ -2,8 +2,10 @@
 User Meta Model
 """
 
+# Django
 from django.db import models
 from django.contrib.auth.models import User
+
 
 class User_Meta(models.Model):
 
@@ -17,6 +19,7 @@ class User_Meta(models.Model):
     value = models.CharField(max_length=200, verbose_name="Meta value")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
+
 
     def __str__(self):
         return self.key

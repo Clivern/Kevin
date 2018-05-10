@@ -2,13 +2,18 @@
 User Entity Module
 """
 
+# Django
 from django.contrib.auth.models import User
-from app.modules.util.helpers import Helpers
-from app.models import Profile
-from app.models import User_Meta
 from django.contrib.auth.hashers import make_password
 
+# local Django
+from app.models import Profile
+from app.models import User_Meta
+from app.modules.util.helpers import Helpers
+
+
 class User_Entity():
+
 
     def insert_one(self, user):
         """Insert a New User"""
@@ -48,6 +53,7 @@ class User_Entity():
 
         new_user.save()
         return False if new_user.pk is None else new_user
+
 
     def get_one_by_username(self, username):
         """Get User By Username"""

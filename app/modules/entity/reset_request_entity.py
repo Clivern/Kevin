@@ -2,13 +2,20 @@
 Reset Request Entity Module
 """
 
+# standard library
 import datetime
-from app.models import Reset_Request
-from django.utils import timezone
 from datetime import timedelta
+
+# Django
+from django.utils import timezone
 from django.utils.crypto import get_random_string
 
+# local Django
+from app.models import Reset_Request
+
+
 class Reset_Request_Entity():
+
 
     def gererate_token(self):
         """Generate a Token"""
@@ -16,6 +23,7 @@ class Reset_Request_Entity():
         while self.get_one_by_token(token) != False:
             token = get_random_string(length=50)
         return token
+
 
     def insert_one(self, request):
         """Insert a New Reset Request"""
@@ -32,12 +40,14 @@ class Reset_Request_Entity():
         request.save()
         return False if request.pk is None else request
 
+
     def insert_many(self, requests):
         """Insert Many Reset Requests"""
         status = True
         for request in requests:
             status &= True if self.insert_one(request) != False else False
         return status
+
 
     def get_one_by_id(self, id):
         """Get Reset Request By ID"""
@@ -47,6 +57,7 @@ class Reset_Request_Entity():
         except:
             return False
 
+
     def get_one_by_email(self, email):
         """Get Reset Request By Email"""
         try:
@@ -54,6 +65,7 @@ class Reset_Request_Entity():
             return False if reset_request.pk is None else reset_request
         except:
             return False
+
 
     def get_one_by_token(self, token):
         """Get Reset Request By Token"""
@@ -63,9 +75,11 @@ class Reset_Request_Entity():
         except:
             return False
 
+
     def clear_expired_tokens(self):
         """Clear all Expired Tokens"""
         Reset_Request.objects.filter(expire_at__lt=datetime.now()).delete()
+
 
     def delete_one_by_id(self, id):
         """Delete Reset Request By ID"""

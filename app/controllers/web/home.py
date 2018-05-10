@@ -2,11 +2,15 @@
 Home Web Controller
 """
 
+# Django
 from django.views import View
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+
+# local Django
 from app.modules.util.helpers import Helpers
+
 
 class Home(View):
 

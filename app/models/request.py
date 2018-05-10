@@ -2,8 +2,12 @@
 Request Model
 """
 
+# Django
 from django.db import models
+
+# local Django
 from .endpoint import Endpoint
+
 
 class Request(models.Model):
 
