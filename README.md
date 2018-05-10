@@ -101,7 +101,7 @@ docker-compose down
 
 ### Running on production
 
-Currently application is still under development and for sure we will explain how to run it on production after the first release.
+Currently kevin is still under development and for sure we will explain how to run it on production after the first release.
 
 
 Acknowledgements
