@@ -11,7 +11,7 @@ from django.utils.translation import gettext as _
 
 # local Django
 from app.modules.core.context import Context
-from app.modules.core.install import Install as Install_Core
+from app.modules.core.install import Install as Install_Module
 
 
 class Install(View):
@@ -19,7 +19,7 @@ class Install(View):
     template_name = 'templates/install.html'
     _install = None
     _context = Context()
-    _install = Install_Core()
+    _install = Install_Module()
 
 
     def get(self, request):

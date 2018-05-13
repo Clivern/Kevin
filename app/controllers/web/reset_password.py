@@ -13,6 +13,7 @@ from django.utils.translation import gettext as _
 # local Django
 from app.modules.core.context import Context
 from app.modules.core.decorators import redirect_if_authenticated
+from app.modules.core.decorators import redirect_if_not_installed
 from app.modules.core.reset_password import Reset_Password as Reset_Password_Module
 
 
@@ -22,7 +23,7 @@ class Reset_Password(View):
     _reset_password_core = Reset_Password_Module()
     _context = Context()
 
-
+    @redirect_if_not_installed
     @redirect_if_authenticated
     def get(self, request, token):
 
