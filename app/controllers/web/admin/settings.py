@@ -1,5 +1,5 @@
 """
-Profile Web Controller
+Settings Web Controller
 """
 
 # Django
@@ -13,14 +13,14 @@ from django.utils.translation import gettext as _
 from app.modules.core.context import Context
 
 
-class Profile(View):
+class Settings(View):
 
-    template_name = 'templates/admin/profile.html'
+    template_name = 'templates/admin/settings.html'
     _context = Context()
 
 
     def get(self, request):
 
-        self._context.push({'page_title': _('Profile')})
+        self._context.push({'page_title': _('Settings')})
 
         return render(request, self.template_name, self._context.get())

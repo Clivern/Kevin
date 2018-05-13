@@ -21,6 +21,7 @@ from app.controllers.web.admin.profile import Profile as Profile_View
 from app.controllers.web.admin.namespaces import Namespaces as Namespaces_View
 from app.controllers.web.admin.namespace import Namespace as Namespace_View
 from app.controllers.web.admin.endpoint import Endpoint as Endpoint_View
+from app.controllers.web.admin.settings import Settings as Settings_View
 from app.controllers.api.private.v1.install import Install as Install_V1_Endpoint_Private
 from app.controllers.api.private.v1.login import Login as Login_V1_Endpoint_Private
 from app.controllers.api.private.v1.register import Register as Register_V1_Endpoint_Private
@@ -47,6 +48,7 @@ urlpatterns = [
         path('namespaces', Namespaces_View.as_view(), name='app.web.admin.namespaces'),
         path('namespace/<slug:namespace>', Namespace_View.as_view(), name='app.web.admin.namespace'),
         path('namespace/<slug:namespace>/<slug:endpoint>', Endpoint_View.as_view(), name='app.web.admin.endpoint'),
+        path('settings', Settings_View.as_view(), name='app.web.admin.settings'),
     ])),
 
     # Private API V1 Endpoints
