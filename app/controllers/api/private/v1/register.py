@@ -15,26 +15,21 @@ from app.modules.validation.form import Form
 from app.modules.util.helpers import Helpers
 from app.modules.core.request import Request
 from app.modules.core.response import Response
-from app.modules.core.register import Register as Register_Core
+from app.modules.core.register import Register as Register_Module
 from app.modules.core.decorators import stop_request_if_authenticated
 
 
 class Register(View):
 
-    _request = None
-    _response = None
-    _helpers = None
-    _form = None
-    _register = None
+    _request = Request()
+    _response = Response()
+    _helpers = Helpers()
+    _form = Form()
+    _register = Register_Module()
     _logger = None
 
 
     def __init__(self):
-        self._helpers = Helpers()
-        self._form = Form()
-        self._register = Register_Core()
-        self._request = Request()
-        self._response = Response()
         self._logger = self._helpers.get_logger(__name__)
 
 

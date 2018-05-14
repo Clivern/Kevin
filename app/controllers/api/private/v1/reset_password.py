@@ -19,21 +19,16 @@ from app.modules.core.reset_password import Reset_Password as Reset_Password_Mod
 
 class Reset_Password(View):
 
-    _request = None
-    _response = None
-    _helpers = None
-    _form = None
+    _request = Request()
+    _response = Response()
+    _helpers = Helpers()
+    _form = Form()
     _logger = None
-    _reset_password = None
+    _reset_password = Reset_Password_Module()
 
 
     def __init__(self):
-        self._helpers = Helpers()
-        self._form = Form()
-        self._request = Request()
-        self._response = Response()
         self._logger = self._helpers.get_logger(__name__)
-        self._reset_password = Reset_Password_Module()
 
 
     @stop_request_if_authenticated

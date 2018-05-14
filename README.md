@@ -106,6 +106,21 @@ docker-compose down
 Currently kevin is still under development and for sure we will explain how to run it on production after the first release.
 
 
+### Automated Deployment
+
+Currently we support chef to deploy kevin and even automate your deployment with each release. [Just use this chef cookbook](https://github.com/Clivern/Kevin-Cookbook) and you will amazed with the features it supports.
+
+
+Misc
+====
+
+Changelog
+---------
+Version 1.0.0:
+```
+Coming Soon.
+```
+
 Acknowledgements
 ----------------
 
