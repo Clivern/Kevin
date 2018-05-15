@@ -19,6 +19,7 @@ class Job(models.Model):
     name = models.CharField(max_length=150, verbose_name="Name")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending", verbose_name="Status")
     last_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending", verbose_name="Last Status")
+    locked = models.BooleanField(default=False, verbose_name="Locked")
     executor = models.CharField(max_length=200, verbose_name="Executor")
     parameters = models.TextField(max_length=30, verbose_name="Parameters")
     interval = models.CharField(max_length=200, verbose_name="Interval")
