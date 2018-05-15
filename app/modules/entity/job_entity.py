@@ -41,7 +41,7 @@ class Job_Entity():
             priority=job["priority"] if "priority" in job else 1,
             last_run=job["last_run"] if "last_run" in job else None,
             run_at=job["run_at"] if "run_at" in job else self.get_run_at(job["interval"]),
-            locked=job["locked"] if "locked" in job else True,
+            locked=job["locked"] if "locked" in job else False,
         )
         job.save()
         return False if job.pk is None else job
@@ -67,7 +67,7 @@ class Job_Entity():
     def get_one_to_run(self):
         """Get Job To Run"""
         try:
-            job = Job.objects.filter(status__in=["pending","daemon"], run_at__lt=timezone.now(), locked__eq=False).order_by("priority").first()
+            job = Job.objects.filter(status__in=["pending","daemon"], run_at__lt=timezone.now(), locked=False).order_by("priority").first()
             # Lock the Job
             if not job.pk is None:
                 job.locked = True
