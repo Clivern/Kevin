@@ -10,7 +10,7 @@ In order to run this app do the following:
 
 ### Default Install
 
-- Get the application code
+1. Get the application code
 
 ```bash
 git clone https://github.com/Clivern/Kevin.git kevin
@@ -18,13 +18,13 @@ cd kevin
 cp .env.example .env
 ```
 
-- Install dependencies
+2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-- Edit the .env file manually or use command for that
+3. Edit the .env file manually or use command for that
 
 ```bash
 # Set DB Host
@@ -49,57 +49,66 @@ python manage.py kevin update_app_key
 python manage.py kevin update_env DB_CONNECTION=mysql
 ```
 
-- Migrate The Database.
+4. Migrate The Database.
 
 ```bash
 python manage.py migrate
 ```
 
-- Run The Server
+5. Run The Server
+
 ```bash
 python manage.py runserver
 ```
 
-- Run the Jobs Schedule.
+6. Run the Jobs Schedule.
+
 ```bash
 python manage.py schedule run < /dev/null
 # Or as a process
 python manage.py schedule run </dev/null &
 ```
 
-- Go to `http://127.0.0.1:8000/install` to install the application.
+7. Go to `http://127.0.0.1:8000/install` to install the application.
+
 
 ### With Docker
 
-- Get the application code
+1. Get the application code
+
 ```bash
 git clone https://github.com/Clivern/Kevin.git kevin
 cd kevin
 cp .env.docker .env
 ```
 
-- Then run our docker containers
+2. Then run our docker containers
+
 ```bash
 docker-compose build
 docker-compose up -d
 ```
 
-- Open your browser and access the `http://127.0.0.1:8000/`.
+3. Open your browser and access the `http://127.0.0.1:8000/`.
 
-- Also you can add `http://kevin.com` to your `/etc/hosts` file.
+4. Also you can add `http://kevin.com` to your `/etc/hosts` file.
+
 ```bash
 127.0.0.1:8000       kevin.com
 ```
 
-- To Check our containers, use the following command:
+5. To Check our containers, use the following command:
+
 ```bash
 docker-compose ps
 ```
 
-- To stop our containers
+6. To stop our containers
+
 ```bash
 docker-compose down
 ```
+
 
 ### Running on production
 
