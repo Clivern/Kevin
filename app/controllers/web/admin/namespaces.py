@@ -15,7 +15,7 @@ from app.modules.core.context import Context
 
 class Namespaces(View):
 
-    template_name = 'templates/namespaces.html'
+    template_name = 'templates/admin/namespaces/list.html'
     _context = Context()
 
 
