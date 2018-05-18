@@ -29,8 +29,9 @@ class Forgot_Password(View):
     @redirect_if_authenticated
     def get(self, request):
 
+        self._context.autoload_options()
         self._context.push({
-            "page_title": _("Forgot Password | %s") % self._option_entity.get_value_by_key("app_name", os.getenv("APP_NAME", "Kevin"))
+            "page_title": _("Forgot Password | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
 
         return render(request, self.template_name, self._context.get())

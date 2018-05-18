@@ -33,8 +33,9 @@ class Reset_Password(View):
     @redirect_if_authenticated
     def get(self, request, token):
 
+        self._context.autoload_options()
         self._context.push({
-            "page_title": _("Reset Password | %s") % self._option_entity.get_value_by_key("app_name", os.getenv("APP_NAME", "Kevin")),
+            "page_title": _("Reset Password | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin")),
             "reset_token": token
         })
 

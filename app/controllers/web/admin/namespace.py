@@ -2,6 +2,9 @@
 Namespace Web Controller
 """
 
+# standard library
+import os
+
 # Django
 from django.views import View
 from django.shortcuts import render
@@ -21,6 +24,9 @@ class Namespace(View):
 
     def get(self, request, namespace):
 
-        self._context.push({'page_title': _('Namespace')})
+        self._context.autoload_options()
+        self._context.push({
+            "page_title": _("Namespace | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+        })
 
         return render(request, self.template_name, self._context.get())

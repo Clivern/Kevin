@@ -2,6 +2,9 @@
 Endpoint Web Controller
 """
 
+# standard library
+import os
+
 # Django
 from django.views import View
 from django.shortcuts import render
@@ -21,6 +24,10 @@ class Endpoint(View):
 
     def get(self, request, namespace, endpoint):
 
-        self._context.push({'page_title': _('Endpoint'), "endpoint": endpoint})
+        self._context.autoload_options()
+        self._context.push({
+            "page_title": _("Endpoint | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin")),
+            "endpoint": endpoint
+        })
 
         return render(request, self.template_name, self._context.get())
