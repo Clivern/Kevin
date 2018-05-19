@@ -17,18 +17,15 @@ from app.modules.core.context import Context
 from app.modules.entity.option_entity import Option_Entity
 
 
-class Not_Found(View):
+def handler404(request, exception=None, template_name='templates/404.html'):
 
     template_name = 'templates/404.html'
+
     _context = Context()
-    _option_entity = Option_Entity()
 
+    _context.autoload_options()
+    _context.push({
+        "page_title": _("404 | %s") % _context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+    })
 
-    def get(self, request):
-
-        self._context.autoload_options()
-        self._context.push({
-            "page_title": _("404 | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
-        })
-
-        return render(request, self.template_name, self._context.get(), status=404)
+    return render(request, template_name, _context.get(), status=404)

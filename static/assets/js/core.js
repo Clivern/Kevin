@@ -50,6 +50,7 @@ kevin_app.endpoint_connect = (function (window, document, $) {
         handler: function(event) {
             event.preventDefault();
             base.el.submitButt.attr('disabled', 'disabled');
+            base.el.submitButt.addClass("btn-loading");
             require(['pace'], function(Pace) {
                 Pace.track(function(){
                     $.post(base.el.form.attr('action'), base.data(), function( response, textStatus, jqXHR ){
@@ -100,6 +101,7 @@ kevin_app.endpoint_connect = (function (window, document, $) {
         },
         error : function(messages){
             base.el.submitButt.removeAttr('disabled');
+            base.el.submitButt.removeClass('btn-loading');
             require(['toastr'], function(toastr) {
                 toastr.clear();
             });

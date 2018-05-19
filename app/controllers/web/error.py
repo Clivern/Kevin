@@ -14,25 +14,17 @@ from django.utils.translation import gettext as _
 
 # local Django
 from app.modules.core.context import Context
-from app.modules.entity.option_entity import Option_Entity
 
 
-class Error(View):
+def handler500(request, exception=None, template_name='templates/500.html'):
 
     template_name = 'templates/500.html'
+
     _context = Context()
-    _option_entity = Option_Entity()
 
+    _context.autoload_options()
+    _context.push({
+        "page_title": _("500 | %s") % _context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+    })
 
-    def get(self, request):
-
-        self._context.push({
-            "page_title": _("500 | %s") % self._option_entity.get_value_by_key("app_name", os.getenv("APP_NAME", "Kevin"))
-        })
-
-        self._context.autoload_options()
-        self._context.push({
-            "page_title": _("500 | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
-        })
-
-        return render(request, self.template_name, self._context.get(), status=500)
+    return render(request, template_name, _context.get(), status=500)
