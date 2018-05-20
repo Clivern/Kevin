@@ -14,9 +14,16 @@ from django.utils.translation import gettext as _
 
 # local Django
 from app.modules.core.context import Context
+from app.modules.util.helpers import Helpers
 
 
 def handler500(request, exception=None, template_name='templates/500.html'):
+
+    helpers = Helpers()
+    logger = helpers.get_logger(__name__)
+
+    if exception != None:
+        logger.error("Server Error: %s" % exception)
 
     template_name = 'templates/500.html'
 

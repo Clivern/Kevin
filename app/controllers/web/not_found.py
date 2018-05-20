@@ -14,10 +14,16 @@ from django.utils.translation import gettext as _
 
 # local Django
 from app.modules.core.context import Context
-from app.modules.entity.option_entity import Option_Entity
+from app.modules.util.helpers import Helpers
 
 
 def handler404(request, exception=None, template_name='templates/404.html'):
+
+    helpers = Helpers()
+    logger = helpers.get_logger(__name__)
+
+    if exception != None:
+        logger.debug("Route Not Found: %s" % exception)
 
     template_name = 'templates/404.html'
 
