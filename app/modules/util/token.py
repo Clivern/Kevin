@@ -27,5 +27,15 @@ class Token():
 
     def generate_token(self, rand_length=15):
         generated_rand = self.gererate_random(randrange(rand_length, rand_length + rand_length))
-        signer = Signer()
+
         return signer.sign(generated_rand)
+
+
+    def validate_token(self, token):
+        signer = Signer()
+        try:
+            original = signer.unsign(token)
+        except Exception as e:
+            return False
+
+        return True if original != "" else False
