@@ -3,14 +3,14 @@ User Entity Module
 """
 
 # Django
+from django.utils import timezone
 from django.contrib.auth.models import User
-from django.utils.crypto import get_random_string
-from django.contrib.auth.hashers import make_password
 
 # local Django
 from app.models import Profile
 from app.models import User_Meta
 from app.modules.util.helpers import Helpers
+
 
 
 class Profile_Entity():
@@ -100,23 +100,61 @@ class Profile_Entity():
             return False
 
 
-    def update_access_token(self, user_id):
-        pass
+    def get_profile_by_access_token(self, access_token):
+        try:
+            profile = Profile.objects.get(access_token=access_token)
+            return False if profile.pk is None else profile
+        except:
+            return False
 
 
-    def update_refresh_token(self, user_id):
-        pass
+    def get_profile_by_refresh_token(self, refresh_token):
+        try:
+            profile = Profile.objects.get(refresh_token=refresh_token)
+            return False if profile.pk is None else profile
+        except:
+            return False
 
 
+    def token_used(self, token):
+        try:
+            profile = Profile.objects.get(Q(refresh_token=token) | Q(access_token=token))
+            return False if profile.pk is None else True
+        except:
+            return False
 
 
+    def access_token_used(self, access_token):
+        try:
+            profile = Profile.objects.get(access_token=access_token)
+            return False if profile.pk is None else True
+        except:
+            return False
 
 
+    def refresh_token_used(self, refresh_token):
+        try:
+            profile = Profile.objects.get(refresh_token=refresh_token)
+            return False if profile.pk is None else True
+        except:
+            return False
 
 
+    def update_access_token(self, user_id, access_token):
+        result = self.update_profile({
+            "user": user_id,
+            "access_token": access_token,
+            "access_token_updated_at": timezone.now()
+        })
+
+        return result
 
 
+    def update_refresh_token(self, user_id, refresh_token):
+        result = self.update_profile({
+            "user": user_id,
+            "refresh_token": refresh_token,
+            "refresh_token_updated_at": timezone.now()
+        })
 
-
-
-
+        return result
