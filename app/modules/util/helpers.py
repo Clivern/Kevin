@@ -5,6 +5,7 @@ Helpers Module
 # standard library
 import json
 import logging
+from pprint import pprint
 from datetime import timedelta
 
 # Django
@@ -44,6 +45,10 @@ class Helpers():
 
     def json_dumps(self, data):
         return json.dumps(data)
+
+
+    def dump_var(self, var):
+        pprint(var)
 
 
     def time_after(self, interval):

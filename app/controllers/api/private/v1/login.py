@@ -35,8 +35,6 @@ class Login(View):
 
     @stop_request_if_authenticated
     def post(self, request):
-        self._logger.debug(_("Request Method: POST"))
-        self._logger.debug(_("Request URL: ") + reverse("app.api.private.v1.login.endpoint"))
 
         if self._login.is_authenticated(request):
             return JsonResponse(self._response.send_private_failure([{

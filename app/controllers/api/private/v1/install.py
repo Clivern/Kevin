@@ -35,8 +35,6 @@ class Install(View):
 
     @stop_request_if_installed
     def post(self, request):
-        self._logger.debug(_("Request Method: POST"))
-        self._logger.debug(_("Request URL: ") + reverse("app.api.private.v1.install.endpoint"))
 
         if self._install.is_installed():
             return JsonResponse(self._response.send_private_failure([{

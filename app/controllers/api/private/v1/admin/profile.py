@@ -32,5 +32,4 @@ class Profile(View):
 
 
     def post(self, request):
-        self._logger.debug(_("Request Method: POST"))
-        self._logger.debug(_("Request URL: ") + reverse("app.api.private.v1.admin.profile.endpoint"))
+        pass
