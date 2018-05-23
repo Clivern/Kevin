@@ -1,0 +1,220 @@
+{% extends 'layouts/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+
+{% block content %}
+    <div class="page-main">
+        {% include 'partials/top-menu.html' %}
+        <div class="my-3 my-md-5">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-status bg-teal"></div>
+                            <div class="card-header">
+                                <h3 class="card-title">{% trans "Namespaces" %}</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-namespaces-activity" style="height: 12rem"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-status bg-red"></div>
+                            <div class="card-header">
+                                <h3 class="card-title">{% trans "Types" %}</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-donut" style="height: 12rem;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-right">
+                        <a href="#" class="btn btn-icon btn-primary btn-secondary"><i class="fe fe-plus"></i> New Namespace</a>
+                    </div>
+                </div>
+                <br/>
+                <div class="row row-cards row-deck">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-outline table-vcenter text-nowrap card-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">{% trans "Namespace" %}</th>
+                                            <th class="text-center">{% trans "Type" %}</th>
+                                            <th class="text-center">{% trans "Endpoints" %}</th>
+                                            <th class="text-center">{% trans "Activity" %}</th>
+                                            <th class="text-center w-1"><i class="fe fe-settings"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-left">
+                                                <div><a href="#">Monk</a></div>
+                                                <div class="small text-muted">
+                                                    Created: Mar 19, 2018
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div>
+                                                    <i class="text-red fe fe-lock" data-toggle="tooltip" data-original-title="{% trans "Private" %}"></i>
+                                                    <i class="text-blue fe fe-unlock" data-toggle="tooltip" data-original-title="{% trans "Public" %}"></i>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div>5</div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="small text-muted">{% trans "Last Update" %}</div>
+                                                <div>4 minutes ago</div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="item-action dropdown">
+                                                    <a href="javascript:void(0)" data-toggle="dropdown" class="icon">
+                                                        <i class="fe fe-more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a href="#" class="dropdown-item">
+                                                            <i class="dropdown-icon fe fe-link"></i> {% trans "View" %}
+                                                        </a>
+                                                        <a href="#" class="dropdown-item">
+                                                            <i class="dropdown-icon fe fe-edit"></i> {% trans "Edit" %}
+                                                        </a>
+                                                        <a href="#" class="dropdown-item">
+                                                            <i class="dropdown-icon fe fe-trash"></i> {% trans "Delete" %}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <br/><br/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      require(['c3', 'jquery'], function(c3, $) {
+        $(document).ready(function(){
+            var chart = c3.generate({
+                bindto: '#chart-namespaces-activity', // id of chart wrapper
+                data: {
+                    columns: [
+                        // each columns data
+                        ['data1', 0, 5, 1, 2, 7, 5, 6, 8, 24, 7, 12, 5, 6, 3, 2, 2, 6, 30, 10, 10, 15, 14, 47, 65, 55],
+                        ['data2', 0, 2, 1, 1, 3, 2, 3, 1, 20, 7, 6, 1, 3, 3, 1, 1, 2, 20, 1, 2, 10, 2, 40, 35, 30],
+                        ['data3', 0, 3, 0, 1, 4, 3, 3, 7, 4, 0, 6, 4, 3, 0, 1, 1, 4, 10, 9, 8, 5, 12, 7, 30, 25]
+                    ],
+                    type: 'area', // default type of chart
+                    groups: [
+                        [ 'data1', 'data2', 'data3']
+                    ],
+                    colors: {
+                        'data1': tabler.colors["blue"],
+                        'data2': tabler.colors["red"],
+                        'data3': tabler.colors["green"]
+                    },
+                    names: {
+                        // name of each serie
+                        'data1': 'Total Namespaces',
+                        'data2': 'Public Namespaces',
+                        'data3': 'Private Namespaces'
+                    }
+                },
+                axis: {
+                    y: {
+                        padding: {
+                            bottom: 0,
+                        },
+                        show: false,
+                            tick: {
+                            outer: false
+                        }
+                    },
+                    x: {
+                        padding: {
+                            left: 0,
+                            right: 0
+                        },
+                        show: false
+                    }
+                },
+                legend: {
+                    position: 'inset',
+                    padding: 0,
+                    inset: {
+                          anchor: 'top-left',
+                        x: 20,
+                        y: 8,
+                        step: 10
+                    }
+                },
+                tooltip: {
+                    format: {
+                        title: function (x) {
+                            return '';
+                        }
+                    }
+                },
+                padding: {
+                    bottom: 0,
+                    left: -1,
+                    right: -1
+                },
+                point: {
+                    show: false
+                }
+            });
+        });
+      });
+
+      require(['c3', 'jquery'], function(c3, $) {
+        $(document).ready(function(){
+            var chart = c3.generate({
+                bindto: '#chart-donut', // id of chart wrapper
+                data: {
+                    columns: [
+                        // each columns data
+                        ['data1', 63],
+                        ['data2', 37]
+                    ],
+                    type: 'donut', // default type of chart
+                    colors: {
+                        'data1': tabler.colors["green"],
+                        'data2': tabler.colors["green-light"]
+                    },
+                    names: {
+                        // name of each serie
+                        'data1': 'Public',
+                        'data2': 'Private'
+                    }
+                },
+                axis: {
+                },
+                legend: {
+                      show: false, //hide legend
+                },
+                padding: {
+                    bottom: 0,
+                    top: 0
+                },
+            });
+        });
+      });
+    </script>
+
+    {% include 'partials/bottom-menu.html' %}
+
+{% endblock %}

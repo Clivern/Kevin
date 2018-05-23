@@ -2,6 +2,9 @@
 Dashboard Web Controller
 """
 
+# standard library
+import os
+
 # Django
 from django.views import View
 from django.shortcuts import render
@@ -21,6 +24,9 @@ class Dashboard(View):
 
     def get(self, request):
 
-        self._context.push({'page_title': _('Dashboard')})
+        self._context.autoload_options()
+        self._context.push({
+            "page_title": _("Dashboard | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+        })
 
         return render(request, self.template_name, self._context.get())

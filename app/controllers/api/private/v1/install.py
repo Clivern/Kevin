@@ -15,6 +15,7 @@ from app.modules.validation.form import Form
 from app.modules.util.helpers import Helpers
 from app.modules.core.request import Request
 from app.modules.core.response import Response
+from app.modules.core.decorators import stop_request_if_installed
 from app.modules.core.install import Install as Install_Module
 
 
@@ -32,6 +33,7 @@ class Install(View):
         self._logger = self._helpers.get_logger(__name__)
 
 
+    @stop_request_if_installed
     def post(self, request):
         self._logger.debug(_("Request Method: POST"))
         self._logger.debug(_("Request URL: ") + reverse("app.api.private.v1.install.endpoint"))

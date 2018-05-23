@@ -49,6 +49,13 @@ class Option_Entity():
         except:
             return False
 
+    def get_value_by_key(self, key, default=""):
+        """Get Option Value By Key"""
+        try:
+            option = Option.objects.get(key=key)
+            return default if option.pk is None else option.value
+        except:
+            return default
 
     def get_many_by_autoload(self, autoload):
         """Get Many Options By Autoload"""

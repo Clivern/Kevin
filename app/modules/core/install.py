@@ -2,6 +2,9 @@
 Install Module
 """
 
+# Django
+from django.core.management import execute_from_command_line
+
 # local Django
 from app.modules.util.helpers import Helpers
 from app.modules.entity.option_entity import Option_Entity
@@ -53,6 +56,12 @@ class Install():
 
 
     def install(self):
+        try:
+            execute_from_command_line(["manage.py", "migrate"])
+        except Exception as e:
+            self._logger.error("Error While Running Migrations: %s" % e)
+            return False
+
         status = True
         status &= self._option_entity.insert_many(self._options)
         status &= (self._user_entity.insert_one(self._admin) != False)

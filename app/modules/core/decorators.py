@@ -39,3 +39,16 @@ def redirect_if_not_installed(function):
             return redirect("app.web.install")
         return function(controller, request, *args, **kwargs)
     return wrap
+
+
+def stop_request_if_installed(function):
+    def wrap(controller, request, *args, **kwargs):
+        installed = False if Option_Entity().get_one_by_key("app_installed") == False else True
+        if installed:
+            response = Response()
+            return JsonResponse(response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Application is already installed.")
+            }]))
+        return function(controller, request, *args, **kwargs)
+    return wrap
