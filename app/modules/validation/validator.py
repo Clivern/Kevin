@@ -7,6 +7,7 @@ import re
 import uuid
 
 # Django
+from django.core.signing import Signer
 from django.core.validators import validate_email
 from django.core.validators import URLValidator
 
@@ -223,3 +224,13 @@ class Validator():
             regex = re.compile(regex, flags)
 
         return bool(regex.match(self._input))
+
+
+    def token(self):
+        signer = Signer()
+        try:
+            original = signer.unsign(self._input)
+        except Exception as e:
+            return False
+
+        return True if original != "" else False

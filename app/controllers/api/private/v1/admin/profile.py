@@ -66,16 +66,67 @@ class Profile(View):
 
 
     def _update_profile(self, request):
-        pass
+        self._request.set_request(request)
+        request_data = self._request.get_request_data("post", {
+            "action" : ""
+        })
+
+        self._form.add_inputs({
+
+        })
+
+        self._form.process()
+
+        if not self._form.is_passed():
+            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
 
 
     def _update_password(self, request):
-        pass
+
+        self._request.set_request(request)
+        request_data = self._request.get_request_data("post", {
+            "action" : ""
+        })
+
+        self._form.add_inputs({
+
+        })
+
+        self._form.process()
+
+        if not self._form.is_passed():
+            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
 
 
     def _update_access_token(self, request):
-        pass
+
+        self._request.set_request(request)
+        request_data = self._request.get_request_data("post", {
+            "access_token" : "",
+        })
+
+        self._form.add_inputs({
+
+        })
+
+        self._form.process()
+
+        if not self._form.is_passed():
+            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
 
 
     def _update_refresh_token(self, request):
-        pass
+
+        self._request.set_request(request)
+        request_data = self._request.get_request_data("post", {
+            "refresh_token" : ""
+        })
+
+        self._form.add_inputs({
+
+        })
+
+        self._form.process()
+
+        if not self._form.is_passed():
+            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))

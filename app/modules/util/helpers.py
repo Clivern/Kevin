@@ -51,6 +51,10 @@ class Helpers():
         pprint(var)
 
 
+    def substr(self, haystack, needle):
+        return False if haystack.find(needle) < 0 else True
+
+
     def time_after(self, interval):
         datetime = timezone.now()
         for key, value in interval.items():

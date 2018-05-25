@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 from app.modules.util.helpers import Helpers
 
 
-class Errors:
+class Errors():
 
     _helpers = Helpers()
     _logger = None
