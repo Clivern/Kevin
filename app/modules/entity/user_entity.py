@@ -129,6 +129,13 @@ class User_Entity():
         return False
 
 
+    def validate_password_by_user_id(self, user_id, password):
+        user = self.get_one_by_id(user_id)
+        if user != False and user.check_password(password) == True:
+            return True
+        return False
+
+
     def update_password_by_user_id(self, user_id, new_password):
         user = self.get_one_by_id(user_id)
         if user != False:

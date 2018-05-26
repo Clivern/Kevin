@@ -55,6 +55,10 @@ class Profile():
         return self._user_entity.update_password_by_user_id(user_id, password)
 
 
+    def validate_password(self, user_id, password):
+        return self._user_entity.validate_password_by_user_id(user_id, password)
+
+
     def update_user(self, user_id, user_data):
         return self._user_entity.update_one_by_id(self, user_id, user_data)
 

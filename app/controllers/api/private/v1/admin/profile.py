@@ -74,7 +74,16 @@ class Profile(View):
 
         self._request.set_request(request)
         request_data = self._request.get_request_data("post", {
-            "action" : ""
+            "first_name" : "",
+            "last_name" : "",
+            "username" : "",
+            "email" : "",
+            "job_title" : "",
+            "company" : "",
+            "address" : "",
+            "github_url" : "",
+            "twitter_url" : "",
+            "facebook_url" : ""
         })
 
         self._form.add_inputs({
@@ -91,17 +100,60 @@ class Profile(View):
 
         self._request.set_request(request)
         request_data = self._request.get_request_data("post", {
-            "action" : ""
+            "old_password" : "",
+            "new_password" : ""
         })
 
         self._form.add_inputs({
-
+            'old_password': {
+                'value': request_data["old_password"],
+                'validate': {
+                    'password': {
+                        'error': _("Error! Old password is invalid.")
+                    },
+                    'length_between':{
+                        'param': [7, 20],
+                        'error': _("Error! Old password is invalid.")
+                    }
+                }
+            },
+            'new_password': {
+                'value': request_data["new_password"],
+                'validate': {
+                    'password': {
+                        'error': _('Error! New Password must contain at least uppercase letter, lowercase letter, numbers and special character.')
+                    },
+                    'length_between':{
+                        'param': [7, 20],
+                        'error': _('Error! New Password length must be from 8 to 20 characters.')
+                    }
+                }
+            }
         })
 
         self._form.process()
 
         if not self._form.is_passed():
             return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+
+        if not self._profile_module.validate_password(self._user_id, self._form.get_input_value("old_password")):
+            return JsonResponse(self._response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Old password is invalid.")
+            }]))
+
+        result = self._profile_module.change_password(self._user_id, self._form.get_input_value("new_password"))
+
+        if result:
+            return JsonResponse(self._response.send_private_success([{
+                "type": "success",
+                "message": _("Password updated successfully.")
+            }]))
+        else:
+            return JsonResponse(self._response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Something goes wrong while updating your password.")
+            }]))
 
 
     def _update_access_token(self, request):
@@ -138,7 +190,7 @@ class Profile(View):
         else:
             return JsonResponse(self._response.send_private_failure([{
                 "type": "error",
-                "message": _("Error while updating access token.")
+                "message": _("Error! Something goes wrong while updating access token.")
             }]))
 
 
@@ -176,5 +228,5 @@ class Profile(View):
         else:
             return JsonResponse(self._response.send_private_failure([{
                 "type": "error",
-                "message": _("Error while updating refresh token.")
+                "message": _("Error! Something goes wrong while updating refresh token.")
             }]))
