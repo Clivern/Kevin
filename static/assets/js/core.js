@@ -49,8 +49,8 @@ kevin_app.endpoint_connect = (function (window, document, $) {
         },
         handler: function(event) {
             event.preventDefault();
-            base.el.submitButt.attr('disabled', 'disabled');
-            base.el.submitButt.addClass("btn-loading");
+            $(this).find("button[type='submit']").attr('disabled', 'disabled');
+            $(this).find("button[type='submit']").addClass("btn-loading");
             require(['pace'], function(Pace) {
                 Pace.track(function(){
                     $.post(base.el.form.attr('action'), base.data(), function( response, textStatus, jqXHR ){
@@ -97,6 +97,11 @@ kevin_app.endpoint_connect = (function (window, document, $) {
                 }else{
                     location.href = base.actions.after_success.url;
                 }
+            }
+
+            if( base.actions.after_success.type == "nothing" ){
+                base.el.submitButt.removeAttr('disabled');
+                base.el.submitButt.removeClass('btn-loading');
             }
         },
         error : function(messages){

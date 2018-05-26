@@ -16,7 +16,7 @@ from app.modules.util.helpers import Helpers
 class Profile_Entity():
 
 
-    def profile_exists(user_id):
+    def profile_exists(self, user_id):
         try:
             user = Profile.objects.get(user=user_id)
             return False if user.pk is None else True
@@ -24,7 +24,7 @@ class Profile_Entity():
             return False
 
 
-    def create_profile(profile_data):
+    def create_profile(self, profile_data):
 
         if not "user" in profile_data:
             return False
@@ -47,7 +47,7 @@ class Profile_Entity():
         return False if profile.pk is None else profile
 
 
-    def update_profile(profile_data):
+    def update_profile(self, profile_data):
 
         if not "user" in profile_data:
             return False
@@ -89,7 +89,8 @@ class Profile_Entity():
             profile.save()
 
             return True
-        return False
+        else:
+            return self.create_profile(profile_data)
 
 
     def get_profile_by_user_id(self, user_id):

@@ -37,18 +37,18 @@ class Profile():
 
     def update_access_token(self, user_id):
         token = self._token.generate_token()
-        while self._token.token_used(toke) != False:
+        while self._profile_entity.token_used(token) != False:
             token = self._token.generate_token()
 
-        return token if self._profile_entity.update_access_token(self, user_id, token) else False
+        return token if self._profile_entity.update_access_token(user_id, token) else False
 
 
     def update_refresh_token(self, user_id):
         token = self._token.generate_token()
-        while self._token.token_used(toke) != False:
+        while self._profile_entity.token_used(token) != False:
             token = self._token.generate_token()
 
-        return token if self._profile_entity.update_refresh_token(self, user_id, token) else False
+        return token if self._profile_entity.update_refresh_token(user_id, token) else False
 
 
     def change_password(self, user_id, password):

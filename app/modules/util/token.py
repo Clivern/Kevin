@@ -27,7 +27,7 @@ class Token():
 
     def generate_token(self, rand_length=15):
         generated_rand = self.gererate_random(randrange(rand_length, rand_length + rand_length))
-
+        signer = Signer()
         return signer.sign(generated_rand)
 
 
