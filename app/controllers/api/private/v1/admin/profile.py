@@ -1,5 +1,5 @@
 """
-Install API Endpoint
+Profile API Endpoint
 """
 
 # Django

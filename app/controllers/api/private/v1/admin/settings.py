@@ -1,5 +1,5 @@
 """
-Install API Endpoint
+Settings API Endpoint
 """
 
 # Django
