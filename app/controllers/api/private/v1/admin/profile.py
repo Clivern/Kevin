@@ -87,13 +87,198 @@ class Profile(View):
         })
 
         self._form.add_inputs({
-
+            'first_name': {
+                'value': request_data["first_name"],
+                'sanitize': {
+                    'strip': {}
+                },
+                'validate': {
+                    'names': {
+                        'error': _('Error! First name contains invalid characters.')
+                    },
+                    'length_between':{
+                        'param': [0, 20],
+                        'error': _('Error! First name must be 1 to 20 characters long.')
+                    }
+                }
+            },
+            'last_name': {
+                'value': request_data["last_name"],
+                'sanitize': {
+                    'strip': {}
+                },
+                'validate': {
+                    'names': {
+                        'error': _('Error! Last name contains invalid characters.')
+                    },
+                    'length_between':{
+                        'param': [0, 20],
+                        'error': _('Error! Last name must be 1 to 20 characters long.')
+                    }
+                }
+            },
+            'username': {
+                'value': request_data["username"],
+                'sanitize': {
+                    'escape': {},
+                    'strip': {}
+                },
+                'validate': {
+                    'alpha_numeric': {
+                        'error': _('Error! Username must be alpha numeric.')
+                    },
+                    'length_between':{
+                        'param': [4, 10],
+                        'error': _('Error! Username must be 5 to 10 characters long.')
+                    }
+                }
+            },
+            'email': {
+                'value': request_data["email"],
+                'sanitize': {
+                    'escape': {},
+                    'strip': {}
+                },
+                'validate': {
+                    'email': {
+                        'error': _('Error! Admin email is invalid.')
+                    }
+                }
+            },
+            'job_title': {
+                'value': request_data["job_title"],
+                'sanitize': {
+                    'strip': {}
+                },
+                'validate': {
+                    'length_between':{
+                        'param': [0, 80],
+                        'error': _('Error! Job title is very long.')
+                    },
+                    'optional': {}
+                }
+            },
+            'company': {
+                'value': request_data["company"],
+                'sanitize': {
+                    'strip': {}
+                },
+                'validate': {
+                    'length_between':{
+                        'param': [0, 80],
+                        'error': _('Error! Company is very long.')
+                    },
+                    'optional': {}
+                }
+            },
+            'address': {
+                'value': request_data["address"],
+                'sanitize': {
+                    'strip': {}
+                },
+                'validate': {
+                    'length_between':{
+                        'param': [0, 80],
+                        'error': _('Error! Address is very long.')
+                    },
+                    'optional': {}
+                }
+            },
+            'github_url': {
+                'value': request_data["github_url"],
+                'sanitize': {
+                    'escape': {},
+                    'strip': {}
+                },
+                'validate': {
+                    'url': {
+                        'error': _('Error! Github url is invalid.')
+                    },
+                    'length_between':{
+                        'param': [0, 80],
+                        'error': _('Error! Github url is very long.')
+                    },
+                    'optional': {}
+                }
+            },
+            'twitter_url': {
+                'value': request_data["twitter_url"],
+                'sanitize': {
+                    'escape': {},
+                    'strip': {}
+                },
+                'validate': {
+                    'url': {
+                        'error': _('Error! Twitter url is invalid.')
+                    },
+                    'length_between':{
+                        'param': [0, 80],
+                        'error': _('Error! Twitter url is very long.')
+                    },
+                    'optional': {}
+                }
+            },
+            'facebook_url': {
+                'value': request_data["facebook_url"],
+                'sanitize': {
+                    'escape': {},
+                    'strip': {}
+                },
+                'validate': {
+                    'url': {
+                        'error': _('Error! Facebook url is invalid.')
+                    },
+                    'length_between':{
+                        'param': [0, 80],
+                        'error': _('Error! Facebook url is very long.')
+                    },
+                    'optional': {}
+                }
+            }
         })
 
         self._form.process()
 
         if not self._form.is_passed():
             return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+
+        if self._profile_module.username_used_elsewhere(self._user_id, self._form.get_input_value("username")):
+            return JsonResponse(self._response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Username is already used.")
+            }]))
+
+
+        if self._profile_module.email_used_elsewhere(self._user_id, self._form.get_input_value("email")):
+            return JsonResponse(self._response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Email is already used.")
+            }]))
+
+        result = self._profile_module.update_profile(self._user_id, {
+            "first_name": self._form.get_input_value("first_name"),
+            "last_name": self._form.get_input_value("last_name"),
+            "username": self._form.get_input_value("username"),
+            "email": self._form.get_input_value("email"),
+            "job_title": self._form.get_input_value("job_title"),
+            "company": self._form.get_input_value("company"),
+            "address": self._form.get_input_value("address"),
+            "github_url": self._form.get_input_value("github_url"),
+            "twitter_url": self._form.get_input_value("twitter_url"),
+            "facebook_url": self._form.get_input_value("facebook_url")
+        })
+
+        if result:
+            return JsonResponse(self._response.send_private_success([{
+                "type": "success",
+                "message": _("Profile updated successfully.")
+            }]))
+
+        else:
+            return JsonResponse(self._response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Something goes wrong while updating your profile.")
+            }]))
 
 
     def _update_password(self, request):

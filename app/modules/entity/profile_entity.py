@@ -89,8 +89,6 @@ class Profile_Entity():
             profile.save()
 
             return True
-        else:
-            return self.create_profile(profile_data)
 
 
     def get_profile_by_user_id(self, user_id):

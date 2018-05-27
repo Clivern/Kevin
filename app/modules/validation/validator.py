@@ -234,3 +234,6 @@ class Validator():
             return False
 
         return True if original != "" else False
+
+    def optional(self):
+        return self._input == ""

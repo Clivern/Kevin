@@ -9,6 +9,7 @@ from django.contrib.auth import update_session_auth_hash
 # local Django
 from app.modules.util.token import Token
 from app.modules.util.helpers import Helpers
+from app.modules.util.gravatar import Gravatar
 from app.modules.entity.profile_entity import Profile_Entity
 from app.modules.entity.option_entity import Option_Entity
 from app.modules.entity.user_entity import User_Entity
@@ -28,12 +29,57 @@ class Profile():
         self._logger = self._helpers.get_logger(__name__)
 
 
+    def get_profile(self, user_id):
+
+        profile_data = {
+            "first_name" : "",
+            "last_name" : "",
+            "username" : "",
+            "email" : "",
+            "job_title" : "",
+            "company" : "",
+            "address" : "",
+            "github_url" : "",
+            "twitter_url" : "",
+            "facebook_url" : "",
+            "access_token": "",
+            "refresh_token": "",
+            "avatar": ""
+        }
+
+        user = self._user_entity.get_one_by_id(user_id)
+        profile = self._profile_entity.get_profile_by_user_id(user_id)
+
+        if user != False:
+            profile_data["first_name"] = user.first_name
+            profile_data["last_name"] = user.last_name
+            profile_data["username"] = user.username
+            profile_data["email"] = user.email
+            profile_data["avatar"] = Gravatar(user.email).get_image()
+
+        if profile != False:
+            profile_data["job_title"] = profile.job_title
+            profile_data["company"] = profile.company
+            profile_data["address"] = profile.address
+            profile_data["github_url"] = profile.github_url
+            profile_data["twitter_url"] = profile.twitter_url
+            profile_data["facebook_url"] = profile.facebook_url
+            profile_data["access_token"] = profile.access_token
+            profile_data["refresh_token"] = profile.refresh_token
+
+        return profile_data
+
+
     def update_profile(self, user_id, user_data):
         user_data["user"] = user_id
         if self._profile_entity.profile_exists(user_data["user"]):
-            return self._profile_entity.update_profile(user_data)
+            status = self._profile_entity.update_profile(user_data)
+            status &= self._user_entity.update_one_by_id(user_data["user"], user_data)
+            return status
         else:
-            return self._profile_entity.create_profile(user_data)
+            status = self._profile_entity.create_profile(user_data)
+            status &= self._user_entity.update_one_by_id(user_data["user"], user_data)
+            return status
 
 
     def update_access_token(self, user_id):
