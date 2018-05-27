@@ -145,10 +145,12 @@ class Profile(View):
         result = self._profile_module.change_password(self._user_id, self._form.get_input_value("new_password"))
 
         if result:
+            self._profile_module.restore_session(self._user_id, request)
             return JsonResponse(self._response.send_private_success([{
                 "type": "success",
                 "message": _("Password updated successfully.")
             }]))
+
         else:
             return JsonResponse(self._response.send_private_failure([{
                 "type": "error",

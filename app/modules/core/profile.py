@@ -4,6 +4,7 @@ Profile Module
 
 # Django
 from django.utils.translation import gettext as _
+from django.contrib.auth import update_session_auth_hash
 
 # local Django
 from app.modules.util.token import Token
@@ -53,6 +54,10 @@ class Profile():
 
     def change_password(self, user_id, password):
         return self._user_entity.update_password_by_user_id(user_id, password)
+
+
+    def restore_session(self, user_id, request):
+        return update_session_auth_hash(request, self._user_entity.get_one_by_id(user_id))
 
 
     def validate_password(self, user_id, password):
