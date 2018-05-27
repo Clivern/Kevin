@@ -24,6 +24,7 @@ class Context():
         self._data["REPO_URL"] = REPO_URL
         self._data["AUTHOR_URL"] = AUTHOR_URL
         self._data["RELEASES"] = RELEASES
+        self._data["SUPPORT_URL"] = SUPPORT_URL
 
 
     def push(self, new_data):

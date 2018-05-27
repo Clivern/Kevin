@@ -72,20 +72,20 @@
                             <div class="card-body text-center">
                                 <div class="tag tag-dark">
                                     {% trans "Github" %}
-                                    <a href="#" class="tag-addon tag-warning" target="_blank">Kevin</a>
+                                    <a href="{{ REPO_URL }}" class="tag-addon tag-warning" target="_blank">Kevin</a>
                                 </div>
                                 <div class="tag">
                                     {% trans "Version" %}
-                                    <a href="#" class="tag-addon tag-success" target="_blank">1.0.0</a>
+                                    <a href="{{ current.download_url }}" class="tag-addon tag-success" target="_blank">{{ current.version }}</a>
                                 </div>
                                 <div class="tag">
                                     {% trans "Latest" %}
-                                    <a href="#" class="tag-addon tag-info" target="_blank">1.0.0</a>
+                                    <a href="{{ latest.download_url }}" class="tag-addon tag-info" target="_blank">{{ latest.version }}</a>
                                 </div>
                                 <br/><br/>
                                 <div class="tag tag-danger">
                                     {% trans "Support" %}
-                                    <a href="#" class="tag-addon" target="_blank"><i class="fa fa-support"></i></a>
+                                    <a href="{{ SUPPORT_URL }}" class="tag-addon" target="_blank"><i class="fa fa-support"></i></a>
                                 </div>
                             </div>
                         </div>

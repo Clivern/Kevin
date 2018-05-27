@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import gettext as _
 
 # local Django
+from app.modules.core.upgrade import Upgrade
 from app.modules.core.context import Context
 
 
@@ -20,6 +21,7 @@ class Settings(View):
 
     template_name = 'templates/admin/settings.html'
     _context = Context()
+    _upgrade = Upgrade()
 
 
     def get(self, request):
@@ -34,6 +36,12 @@ class Settings(View):
             "reset_mails_messages_count": "",
             "reset_mails_expire_after": ""
         })
+
+        self._context.push({
+            "current": self._upgrade.get_current_version(),
+            "latest": self._upgrade.get_latest_version()
+        })
+
         self._context.push({
             "page_title": _("Settings | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
