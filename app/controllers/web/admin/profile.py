@@ -22,7 +22,7 @@ class Profile(View):
     template_name = 'templates/admin/profile.html'
     _context = Context()
     _profile = Profile()
-    _user = None
+    _user_id = None
 
 
     def get(self, request):
