@@ -103,10 +103,17 @@ class Form():
                         current_status = getattr(self._validator, rule_name)(*rule_args['param'])
                     else:
                         current_status = getattr(self._validator, rule_name)()
+
+                    if "optional" in validation_rule['validate'] and self._inputs[current_input]['value'] == "":
+                        current_status = True
+
                     self._inputs[current_input]['status'] = current_status
                     status &= current_status
                     if not current_status and 'error' in rule_args.keys():
                         self._errors[current_input].append(rule_args['error'])
+
+
+
 
         self._vstatus = status
         return status

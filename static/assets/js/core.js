@@ -27,21 +27,6 @@ kevin_app.endpoint_connect = (function (window, document, $) {
         init: function(){
             if( base.el.form.length ){
                 base.submit();
-
-                var afterSuccessType = base.el.form.attr('data-succ-type');
-                var afterSuccessUrl = base.el.form.attr('data-succ-url');
-                var afterSuccessWait = base.el.form.attr('data-succ-wait');
-
-                if (typeof afterSuccessType !== typeof undefined && afterSuccessType !== false) {
-                    base.actions.after_success.type = afterSuccessType;
-                }
-                if (typeof afterSuccessUrl !== typeof undefined && afterSuccessUrl !== false) {
-                    base.actions.after_success.url = afterSuccessUrl;
-                }
-                if (typeof afterSuccessWait !== typeof undefined && afterSuccessWait !== false) {
-                    base.actions.after_success.wait = afterSuccessWait;
-                }
-
             }
         },
         submit : function(){
@@ -49,38 +34,60 @@ kevin_app.endpoint_connect = (function (window, document, $) {
         },
         handler: function(event) {
             event.preventDefault();
-            base.el.submitButt.attr('disabled', 'disabled');
-            base.el.submitButt.addClass("btn-loading");
+
+            base.actions.after_success.type = false;
+            base.actions.after_success.url = false;
+            base.actions.after_success.wait = false;
+
+            var _form = $(this);
+            var _button = $(this).find("button[type='submit']");
+
+            var afterSuccessType = _form.attr('data-succ-type');
+            var afterSuccessUrl = _form.attr('data-succ-url');
+            var afterSuccessWait = _form.attr('data-succ-wait');
+
+            if (typeof afterSuccessType !== typeof undefined && afterSuccessType !== false) {
+                base.actions.after_success.type = afterSuccessType;
+            }
+            if (typeof afterSuccessUrl !== typeof undefined && afterSuccessUrl !== false) {
+                base.actions.after_success.url = afterSuccessUrl;
+            }
+            if (typeof afterSuccessWait !== typeof undefined && afterSuccessWait !== false) {
+                base.actions.after_success.wait = afterSuccessWait;
+            }
+
+            _button.attr('disabled', 'disabled');
+            _button.addClass("btn-loading");
             require(['pace'], function(Pace) {
                 Pace.track(function(){
-                    $.post(base.el.form.attr('action'), base.data(), function( response, textStatus, jqXHR ){
+                    $.post(_form.attr('action'), base.data(_form, _button), function( response, textStatus, jqXHR ){
                         if( jqXHR.status == 200 && textStatus == 'success' ) {
                             if( response.status == "success" ){
-                                base.success(response.messages);
+                                base.success(response.messages, _form, _button);
                             }else{
-                                base.error(response.messages);
+                                base.error(response.messages, _form, _button);
                             }
                         }
                     }, 'json');
                 });
             });
         },
-        data : function(){
+        data : function(form, button){
             var inputs = {};
-            base.el.form.serializeArray().map(function(item, index) {
+            form.serializeArray().map(function(item, index) {
                 inputs[item.name] = item.value;
             });
             return inputs;
         },
-        success : function(messages){
+        success : function(messages, form, button){
             for(var messageObj of messages) {
                 require(['toastr'], function(toastr) {
+                    toastr.clear();
                     toastr.success(messageObj.message);
                 });
                 break;
             }
             if( base.actions.after_success.type == "reload" ){
-
                 if( base.actions.after_success.wait != false ){
                     setTimeout(function(){
                         location.reload();
@@ -98,15 +105,125 @@ kevin_app.endpoint_connect = (function (window, document, $) {
                     location.href = base.actions.after_success.url;
                 }
             }
+
+            if( base.actions.after_success.type == "nothing" ){
+                button.removeAttr('disabled');
+                button.removeClass('btn-loading');
+            }
+            if( base.actions.after_success.type == "reset" ){
+                form[0].reset();
+                button.removeAttr('disabled');
+                button.removeClass('btn-loading');
+            }
         },
-        error : function(messages){
-            base.el.submitButt.removeAttr('disabled');
-            base.el.submitButt.removeClass('btn-loading');
-            require(['toastr'], function(toastr) {
-                toastr.clear();
-            });
+        error : function(messages, form, button){
+            button.removeAttr('disabled');
+            button.removeClass('btn-loading');
             for(var messageObj of messages) {
                 require(['toastr'], function(toastr) {
+                    toastr.clear();
+                    toastr.error(messageObj.message);
+                });
+                break;
+            }
+        }
+    };
+
+   return {
+        init: base.init
+    };
+
+})(window, document, jQuery);
+
+
+
+kevin_app.profile = (function (window, document, $) {
+
+    'use strict';
+
+    var base = {
+
+        el: {
+            update_access_token : $("#profile_update_access_token"),
+            update_refresh_token : $("#profile_update_refresh_token"),
+        },
+        init: function(){
+            if( base.el.update_access_token.length ){
+                base.el.update_access_token.find("button").on("click", function(event){
+                    event.preventDefault();
+                    var _self = $(this);
+                    _self.attr('disabled', 'disabled');
+                    _self.addClass("btn-loading");
+
+                    require(['pace', 'jscookie'], function(Pace, Cookies) {
+                        Pace.track(function(){
+                            $.post(_self.attr('data-url'), {
+                                "action": _self.attr('data-action'),
+                                "token": base.el.update_access_token.find("input").val(),
+                                "csrfmiddlewaretoken": Cookies.get('csrftoken')
+                            }, function( response, textStatus, jqXHR ){
+                                if( jqXHR.status == 200 && textStatus == 'success' ) {
+                                    if( response.status == "success" ){
+                                        base.success(response.messages);
+                                        base.el.update_access_token.find("input").val(response.payload.token);
+                                        _self.removeAttr('disabled');
+                                        _self.removeClass("btn-loading");
+                                    }else{
+                                        base.error(response.messages);
+                                        _self.removeAttr('disabled');
+                                        _self.removeClass("btn-loading");
+                                    }
+                                }
+                            }, 'json');
+                        });
+                    });
+                })
+            }
+            if( base.el.update_refresh_token.length ){
+                base.el.update_refresh_token.find("button").on("click", function(event){
+                    event.preventDefault();
+                    var _self = $(this);
+                    _self.attr('disabled', 'disabled');
+                    _self.addClass("btn-loading");
+
+                    require(['pace', 'jscookie'], function(Pace, Cookies) {
+                        Pace.track(function(){
+                            $.post(_self.attr('data-url'), {
+                                "action": _self.attr('data-action'),
+                                "token": base.el.update_refresh_token.find("input").val(),
+                                "csrfmiddlewaretoken": Cookies.get('csrftoken')
+                            }, function( response, textStatus, jqXHR ){
+                                if( jqXHR.status == 200 && textStatus == 'success' ) {
+                                    if( response.status == "success" ){
+                                        base.success(response.messages);
+                                        base.el.update_refresh_token.find("input").val(response.payload.token);
+                                        _self.removeAttr('disabled');
+                                        _self.removeClass("btn-loading");
+                                    }else{
+                                        base.error(response.messages);
+                                        _self.removeAttr('disabled');
+                                        _self.removeClass("btn-loading");
+                                    }
+                                }
+                            }, 'json');
+                        });
+                    });
+                })
+            }
+        },
+        success : function(messages){
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.clear();
+                    toastr.success(messageObj.message);
+                });
+                break;
+            }
+        },
+        error : function(messages){
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.clear();
                     toastr.error(messageObj.message);
                 });
                 break;
@@ -149,6 +266,7 @@ $(document).ready(function() {
     const DIV_CARD = 'div.card';
 
     kevin_app.endpoint_connect.init();
+    kevin_app.profile.init();
 
     require(['jscookie'], function(Cookies) {
         console.log(Cookies.get('csrftoken'))

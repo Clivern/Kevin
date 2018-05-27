@@ -33,8 +33,6 @@ class Forgot_Password(View):
 
     @stop_request_if_authenticated
     def post(self, request):
-        self._logger.debug(_("Request Method: POST"))
-        self._logger.debug(_("Request URL: ") + reverse("app.api.private.v1.forgot_password.endpoint"))
 
         self._request.set_request(request)
 

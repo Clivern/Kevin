@@ -1,5 +1,5 @@
 """
-Install API Endpoint
+Settings API Endpoint
 """
 
 # Django
@@ -32,5 +32,4 @@ class Settings(View):
 
 
     def post(self, request):
-        self._logger.debug(_("Request Method: POST"))
-        self._logger.debug(_("Request URL: ") + reverse("app.api.private.v1.admin.settings.endpoint"))
+        pass
