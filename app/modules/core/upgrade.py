@@ -2,20 +2,45 @@
 Upgrade Module
 """
 
+# third-party
+import requests
+
+# local Django
+from app.settings.info import *
+
 
 class Upgrade():
 
 
     def need_upgrade(self):
-        """Check if Application need upgrade"""
-        pass
+        latest = self.get_latest_version()
+        current = self.get_current_version()
+
+        latest_version = int(latest["version"].replace(".", ""))
+        current_version = int(current["version"].replace(".", ""))
+
+        return latest_version > current_version
 
 
-    def _get_latest_version(self):
-        """Get Latest Stable Release"""
-        pass
+    def get_latest_version(self):
+        r = requests.get(RELEASES)
+
+        if r.status_code == 200 and r.headers['content-type'].find("json"):
+            result = r.json()
+            if len(result) > 0 and "tag_name" in result[0] and "html_url" in result[0]:
+                return {
+                    "version": result[0]["tag_name"],
+                    "download_url": result[0]["html_url"]
+                }
+            else:
+                return {
+                    "version": VERSION,
+                    "download_url": DOWNLOAD_URL
+                }
 
 
-    def _get_current_version(self):
-        """Get Current Version"""
-        pass
+    def get_current_version(self):
+        return {
+            "version": VERSION,
+            "download_url": DOWNLOAD_URL
+        }
