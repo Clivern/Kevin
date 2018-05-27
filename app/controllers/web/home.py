@@ -19,6 +19,8 @@ from app.modules.entity.option_entity import Option_Entity
 from app.modules.core.decorators import redirect_if_not_installed
 
 
+from app.modules.core.upgrade import Upgrade
+
 class Home(View):
 
     template_name = 'templates/home.html'
