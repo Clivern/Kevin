@@ -16,9 +16,10 @@ class Install():
     _option_entity = None
     _user_entity = None
     _options = [
-        {"key": "app_installed", "value": "true", "autoload": False},
+        {"key": "app_installed", "value": "true", "autoload": True},
         {"key": "reset_mails_messages_count", "value": "5", "autoload": False},
-        {"key": "reset_mails_expire_after", "value": "24", "autoload": False}
+        {"key": "reset_mails_expire_after", "value": "24", "autoload": False},
+        {"key": "google_analytics_account", "value": "", "autoload": True}
     ]
     _admin = {
         "username" : "",
