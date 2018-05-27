@@ -58,35 +58,35 @@ class Validator():
 
 
     def greater_than(self, number):
-        if self._input > number:
+        if int(self._input) > number:
             return True
         else:
             return False
 
 
     def greater_than_equal(self, number):
-        if self._input >= number:
+        if int(self._input) >= number:
             return True
         else:
             return False
 
 
     def less_than(self, number):
-        if self._input < number:
+        if int(self._input) < number:
             return True
         else:
             return False
 
 
     def less_than_equal(self, number):
-        if self._input <= number:
+        if int(self._input) <= number:
             return True
         else:
             return False
 
 
     def equal(self, number):
-        if self._input == number:
+        if int(self._input) == number:
             return True
         else:
             return False

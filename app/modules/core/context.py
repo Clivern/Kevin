@@ -29,11 +29,12 @@ class Context():
     def push(self, new_data):
         self._data.update(new_data)
 
+
     def load_options(self, options):
         options_to_load = {}
         for key in options.keys():
+            options_to_load[key] = options[key]
             if not key in self._data.keys():
-                options_to_load[key] = options[key]
                 self._data[key] = options[key]
 
         if len(options_to_load.keys()) > 0:
@@ -46,6 +47,7 @@ class Context():
         options = self._option_entity.get_many_by_autoload(True)
         for option in options:
             self._data[option.key] = option.value
+
 
     def get(self, key = None, default = None):
         if key != None:
