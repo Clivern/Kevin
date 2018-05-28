@@ -25,6 +25,7 @@ class Dashboard(View):
     def get(self, request):
 
         self._context.autoload_options()
+        self._context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self._context.push({
             "page_title": _("Dashboard | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })

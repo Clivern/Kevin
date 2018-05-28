@@ -77,7 +77,7 @@ class Profile():
             status &= self._user_entity.update_one_by_id(user_data["user"], user_data)
             return status
         else:
-            status = self._profile_entity.create_profile(user_data)
+            status = (self._profile_entity.create_profile(user_data) != False)
             status &= self._user_entity.update_one_by_id(user_data["user"], user_data)
             return status
 

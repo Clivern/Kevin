@@ -25,6 +25,7 @@ class Endpoints_List(View):
     def get(self, request, namespace):
 
         self._context.autoload_options()
+        self._context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self._context.push({
             "page_title": _("%s Endpoints | %s") % ("Item", self._context.get("app_name", os.getenv("APP_NAME", "Kevin")))
         })
@@ -41,6 +42,7 @@ class Endpoint_View(View):
     def get(self, request, namespace, endpoint):
 
         self._context.autoload_options()
+        self._context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self._context.push({
             "page_title": _("%s Endpoint Activity | %s") % ("Item", self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
             "endpoint": endpoint

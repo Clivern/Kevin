@@ -25,6 +25,7 @@ class Namespaces_List(View):
     def get(self, request):
 
         self._context.autoload_options()
+        self._context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self._context.push({
             "page_title": _("Namespaces | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
@@ -41,6 +42,7 @@ class Namespace_Create(View):
     def get(self, request):
 
         self._context.autoload_options()
+        self._context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self._context.push({
             "page_title": _("Create a Namespace | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
@@ -57,6 +59,7 @@ class Namespace_Edit(View):
     def get(self, request, namespace):
 
         self._context.autoload_options()
+        self._context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self._context.push({
             "page_title": _("Edit %s Namespace | %s") % ("Item", self._context.get("app_name", os.getenv("APP_NAME", "Kevin")))
         })

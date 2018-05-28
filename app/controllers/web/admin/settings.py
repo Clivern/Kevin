@@ -27,6 +27,7 @@ class Settings(View):
     def get(self, request):
 
         self._context.autoload_options()
+        self._context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self._context.load_options({
             "app_name": "",
             "app_email": "",

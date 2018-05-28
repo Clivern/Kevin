@@ -30,6 +30,7 @@ class Profile(View):
         self._user_id = request.user.id
 
         self._context.autoload_options()
+        self._context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self._context.push({
             "page_title": _("Profile | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
