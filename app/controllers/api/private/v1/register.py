@@ -21,24 +21,24 @@ from app.modules.core.decorators import stop_request_if_authenticated
 
 class Register(View):
 
-    _request = Request()
-    _response = Response()
-    _helpers = Helpers()
-    _form = Form()
-    _register = Register_Module()
-    _logger = None
+    __request = Request()
+    __response = Response()
+    __helpers = Helpers()
+    __form = Form()
+    __register = Register_Module()
+    __logger = None
 
 
     def __init__(self):
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     @stop_request_if_authenticated
     def post(self, request):
 
-        self._request.set_request(request)
+        self.__request.set_request(request)
 
-        request_data = self._request.get_request_data("post", {
+        request_data = self.__request.get_request_data("post", {
             "first_name" : "",
             "last_name" : "",
             "username" : "",
@@ -46,7 +46,7 @@ class Register(View):
             "password" : ""
         })
 
-        self._form.add_inputs({
+        self.__form.add_inputs({
             'first_name': {
                 'value': request_data["first_name"],
                 'sanitize': {
@@ -119,38 +119,38 @@ class Register(View):
             }
         })
 
-        self._form.process()
+        self.__form.process()
 
-        if not self._form.is_passed():
-            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+        if not self.__form.is_passed():
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
 
-        if self._register.username_used(self._form.get_input_value("username")):
-            return JsonResponse(self._response.send_private_failure([{
+        if self.__register.username_used(self.__form.get_input_value("username")):
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Username is already used.")
             }]))
 
-        if self._register.email_used(self._form.get_input_value("email")):
-            return JsonResponse(self._response.send_private_failure([{
+        if self.__register.email_used(self.__form.get_input_value("email")):
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Email is already used for other account.")
             }]))
 
-        result = self._register.create_user({
-            "username": self._form.get_input_value("username"),
-            "email": self._form.get_input_value("email"),
-            "first_name": self._form.get_input_value("first_name"),
-            "last_name": self._form.get_input_value("last_name"),
-            "password": self._form.get_input_value("password"),
+        result = self.__register.create_user({
+            "username": self.__form.get_input_value("username"),
+            "email": self.__form.get_input_value("email"),
+            "first_name": self.__form.get_input_value("first_name"),
+            "last_name": self.__form.get_input_value("last_name"),
+            "password": self.__form.get_input_value("password"),
         })
 
         if result:
-            return JsonResponse(self._response.send_private_success([{
+            return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Account created successfully.")
             }]))
         else:
-            return JsonResponse(self._response.send_private_failure([{
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Something goes wrong while creating your account.")
             }]))

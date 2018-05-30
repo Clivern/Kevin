@@ -24,16 +24,16 @@ from app.modules.core.upgrade import Upgrade
 class Home(View):
 
     template_name = 'templates/home.html'
-    _context = Context()
-    _option_entity = Option_Entity()
+    __context = Context()
+    __option_entity = Option_Entity()
 
 
     @redirect_if_not_installed
     def get(self, request):
 
-        self._context.autoload_options()
-        self._context.push({
-            "page_title": _("Home | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+        self.__context.autoload_options()
+        self.__context.push({
+            "page_title": _("Home | %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
 
-        return render(request, self.template_name, self._context.get())
+        return render(request, self.template_name, self.__context.get())

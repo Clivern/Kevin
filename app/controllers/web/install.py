@@ -21,19 +21,18 @@ from app.modules.core.install import Install as Install_Module
 class Install(View):
 
     template_name = 'templates/install.html'
-    _install = None
-    _context = Context()
-    _install = Install_Module()
-    _option_entity = Option_Entity()
+    __context = Context()
+    __install = Install_Module()
+    __option_entity = Option_Entity()
 
 
     def get(self, request):
 
-        if self._install.is_installed():
+        if self.__install.is_installed():
             return redirect("app.web.login")
 
-        self._context.push({
-            "page_title": _("Installation | %s") % self._option_entity.get_value_by_key("app_name", os.getenv("APP_NAME", "Kevin"))
+        self.__context.push({
+            "page_title": _("Installation | %s") % self.__option_entity.get_value_by_key("app_name", os.getenv("APP_NAME", "Kevin"))
         })
 
-        return render(request, self.template_name, self._context.get())
+        return render(request, self.template_name, self.__context.get())

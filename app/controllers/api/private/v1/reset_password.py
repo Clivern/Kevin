@@ -19,29 +19,29 @@ from app.modules.core.reset_password import Reset_Password as Reset_Password_Mod
 
 class Reset_Password(View):
 
-    _request = Request()
-    _response = Response()
-    _helpers = Helpers()
-    _form = Form()
-    _logger = None
-    _reset_password = Reset_Password_Module()
+    __request = Request()
+    __response = Response()
+    __helpers = Helpers()
+    __form = Form()
+    __logger = None
+    __reset_password = Reset_Password_Module()
 
 
     def __init__(self):
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     @stop_request_if_authenticated
     def post(self, request):
 
-        self._request.set_request(request)
+        self.__request.set_request(request)
 
-        request_data = self._request.get_request_data("post", {
+        request_data = self.__request.get_request_data("post", {
             "reset_token" : "",
             "new_password" : ""
         })
 
-        self._form.add_inputs({
+        self.__form.add_inputs({
             'reset_token': {
                 'value': request_data["reset_token"],
                 'sanitize': {
@@ -64,31 +64,31 @@ class Reset_Password(View):
             }
         })
 
-        self._form.process()
+        self.__form.process()
 
-        if not self._form.is_passed():
-            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+        if not self.__form.is_passed():
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
 
-        if not self._reset_password.check_token(self._form.get_input_value("reset_token")):
-            return JsonResponse(self._response.send_private_failure([{
+        if not self.__reset_password.check_token(self.__form.get_input_value("reset_token")):
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Reset token is expired or invalid.")
             }]))
 
-        result = self._reset_password.reset_password(
-            self._form.get_input_value("reset_token"),
-            self._form.get_input_value("new_password")
+        result = self.__reset_password.reset_password(
+            self.__form.get_input_value("reset_token"),
+            self.__form.get_input_value("new_password")
         )
 
-        result &= self._reset_password.delete_reset_request(self._form.get_input_value("reset_token"))
+        result &= self.__reset_password.delete_reset_request(self.__form.get_input_value("reset_token"))
 
         if result == False:
-            return JsonResponse(self._response.send_private_failure([{
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Something goes wrong while resetting password.")
             }]))
         else:
-            return JsonResponse(self._response.send_private_success([{
+            return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Password updated successfully.")
             }]))

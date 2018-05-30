@@ -20,30 +20,30 @@ from app.modules.core.response import Response
 
 class Profile(View):
 
-    _request = Request()
-    _response = Response()
-    _helpers = Helpers()
-    _form = Form()
-    _settings = None
-    _logger = None
-    _user_id = None
-    _profile_module = Profile_Module()
+    __request = Request()
+    __response = Response()
+    __helpers = Helpers()
+    __form = Form()
+    __settings = None
+    __logger = None
+    __user_id = None
+    __profile_module = Profile_Module()
 
 
     def __init__(self):
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     def post(self, request):
 
-        self._user_id = request.user.id
+        self.__user_id = request.user.id
 
-        self._request.set_request(request)
-        request_data = self._request.get_request_data("post", {
+        self.__request.set_request(request)
+        request_data = self.__request.get_request_data("post", {
             "action" : ""
         })
 
-        self._form.add_inputs({
+        self.__form.add_inputs({
             'action': {
                 'value': request_data["action"],
                 'validate': {
@@ -55,25 +55,25 @@ class Profile(View):
             }
         })
 
-        self._form.process()
+        self.__form.process()
 
-        if not self._form.is_passed():
-            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+        if not self.__form.is_passed():
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
 
-        if self._form.get_input_value("action") == "_update_profile":
-            return self._update_profile(request)
-        elif self._form.get_input_value("action") == "_update_password":
-            return self._update_password(request)
-        elif self._form.get_input_value("action") == "_update_access_token":
-            return self._update_access_token(request)
-        elif self._form.get_input_value("action") == "_update_refresh_token":
-            return self._update_refresh_token(request)
+        if self.__form.get_input_value("action") == "_update_profile":
+            return self.__update_profile(request)
+        elif self.__form.get_input_value("action") == "_update_password":
+            return self.__update_password(request)
+        elif self.__form.get_input_value("action") == "_update_access_token":
+            return self.__update_access_token(request)
+        elif self.__form.get_input_value("action") == "_update_refresh_token":
+            return self.__update_refresh_token(request)
 
 
-    def _update_profile(self, request):
+    def __update_profile(self, request):
 
-        self._request.set_request(request)
-        request_data = self._request.get_request_data("post", {
+        self.__request.set_request(request)
+        request_data = self.__request.get_request_data("post", {
             "first_name" : "",
             "last_name" : "",
             "username" : "",
@@ -86,7 +86,7 @@ class Profile(View):
             "facebook_url" : ""
         })
 
-        self._form.add_inputs({
+        self.__form.add_inputs({
             'first_name': {
                 'value': request_data["first_name"],
                 'sanitize': {
@@ -237,59 +237,59 @@ class Profile(View):
             }
         })
 
-        self._form.process()
+        self.__form.process()
 
-        if not self._form.is_passed():
-            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+        if not self.__form.is_passed():
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
 
-        if self._profile_module.username_used_elsewhere(self._user_id, self._form.get_input_value("username")):
-            return JsonResponse(self._response.send_private_failure([{
+        if self.__profile_module.username_used_elsewhere(self.__user_id, self.__form.get_input_value("username")):
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Username is already used.")
             }]))
 
 
-        if self._profile_module.email_used_elsewhere(self._user_id, self._form.get_input_value("email")):
-            return JsonResponse(self._response.send_private_failure([{
+        if self.__profile_module.email_used_elsewhere(self.__user_id, self.__form.get_input_value("email")):
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Email is already used.")
             }]))
 
-        result = self._profile_module.update_profile(self._user_id, {
-            "first_name": self._form.get_input_value("first_name"),
-            "last_name": self._form.get_input_value("last_name"),
-            "username": self._form.get_input_value("username"),
-            "email": self._form.get_input_value("email"),
-            "job_title": self._form.get_input_value("job_title"),
-            "company": self._form.get_input_value("company"),
-            "address": self._form.get_input_value("address"),
-            "github_url": self._form.get_input_value("github_url"),
-            "twitter_url": self._form.get_input_value("twitter_url"),
-            "facebook_url": self._form.get_input_value("facebook_url")
+        result = self.__profile_module.update_profile(self.__user_id, {
+            "first_name": self.__form.get_input_value("first_name"),
+            "last_name": self.__form.get_input_value("last_name"),
+            "username": self.__form.get_input_value("username"),
+            "email": self.__form.get_input_value("email"),
+            "job_title": self.__form.get_input_value("job_title"),
+            "company": self.__form.get_input_value("company"),
+            "address": self.__form.get_input_value("address"),
+            "github_url": self.__form.get_input_value("github_url"),
+            "twitter_url": self.__form.get_input_value("twitter_url"),
+            "facebook_url": self.__form.get_input_value("facebook_url")
         })
 
         if result:
-            return JsonResponse(self._response.send_private_success([{
+            return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Profile updated successfully.")
             }]))
 
         else:
-            return JsonResponse(self._response.send_private_failure([{
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Something goes wrong while updating your profile.")
             }]))
 
 
-    def _update_password(self, request):
+    def __update_password(self, request):
 
-        self._request.set_request(request)
-        request_data = self._request.get_request_data("post", {
+        self.__request.set_request(request)
+        request_data = self.__request.get_request_data("post", {
             "old_password" : "",
             "new_password" : ""
         })
 
-        self._form.add_inputs({
+        self.__form.add_inputs({
             'old_password': {
                 'value': request_data["old_password"],
                 'validate': {
@@ -316,41 +316,41 @@ class Profile(View):
             }
         })
 
-        self._form.process()
+        self.__form.process()
 
-        if not self._form.is_passed():
-            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+        if not self.__form.is_passed():
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
 
-        if not self._profile_module.validate_password(self._user_id, self._form.get_input_value("old_password")):
-            return JsonResponse(self._response.send_private_failure([{
+        if not self.__profile_module.validate_password(self.__user_id, self.__form.get_input_value("old_password")):
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Old password is invalid.")
             }]))
 
-        result = self._profile_module.change_password(self._user_id, self._form.get_input_value("new_password"))
+        result = self.__profile_module.change_password(self.__user_id, self.__form.get_input_value("new_password"))
 
         if result:
-            self._profile_module.restore_session(self._user_id, request)
-            return JsonResponse(self._response.send_private_success([{
+            self.__profile_module.restore_session(self.__user_id, request)
+            return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Password updated successfully.")
             }]))
 
         else:
-            return JsonResponse(self._response.send_private_failure([{
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Something goes wrong while updating your password.")
             }]))
 
 
-    def _update_access_token(self, request):
+    def __update_access_token(self, request):
 
-        self._request.set_request(request)
-        request_data = self._request.get_request_data("post", {
+        self.__request.set_request(request)
+        request_data = self.__request.get_request_data("post", {
             "token" : "",
         })
 
-        self._form.add_inputs({
+        self.__form.add_inputs({
             'token': {
                 'value': request_data["token"],
                 'validate': {
@@ -361,34 +361,34 @@ class Profile(View):
             }
         })
 
-        self._form.process()
+        self.__form.process()
 
-        if not self._form.is_passed() and request_data["token"] != "":
-            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+        if not self.__form.is_passed() and request_data["token"] != "":
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
 
 
-        result = self._profile_module.update_access_token(self._user_id)
+        result = self.__profile_module.update_access_token(self.__user_id)
 
         if result != False:
-            return JsonResponse(self._response.send_private_success([{
+            return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Access token updated successfully.")
             }], {"token": result}))
         else:
-            return JsonResponse(self._response.send_private_failure([{
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Something goes wrong while updating access token.")
             }]))
 
 
-    def _update_refresh_token(self, request):
+    def __update_refresh_token(self, request):
 
-        self._request.set_request(request)
-        request_data = self._request.get_request_data("post", {
+        self.__request.set_request(request)
+        request_data = self.__request.get_request_data("post", {
             "token" : "",
         })
 
-        self._form.add_inputs({
+        self.__form.add_inputs({
             'token': {
                 'value': request_data["token"],
                 'validate': {
@@ -399,21 +399,21 @@ class Profile(View):
             }
         })
 
-        self._form.process()
+        self.__form.process()
 
-        if not self._form.is_passed() and request_data["token"] != "":
-            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+        if not self.__form.is_passed() and request_data["token"] != "":
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
 
 
-        result = self._profile_module.update_refresh_token(self._user_id)
+        result = self.__profile_module.update_refresh_token(self.__user_id)
 
         if result != False:
-            return JsonResponse(self._response.send_private_success([{
+            return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Refresh token updated successfully.")
             }], {"token": result}))
         else:
-            return JsonResponse(self._response.send_private_failure([{
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Something goes wrong while updating refresh token.")
             }]))

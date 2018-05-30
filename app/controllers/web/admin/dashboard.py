@@ -19,15 +19,15 @@ from app.modules.core.context import Context
 class Dashboard(View):
 
     template_name = 'templates/admin/dashboard.html'
-    _context = Context()
+    __context = Context()
 
 
     def get(self, request):
 
-        self._context.autoload_options()
-        self._context.autoload_user(request.user.id if request.user.is_authenticated else None)
-        self._context.push({
-            "page_title": _("Dashboard | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+        self.__context.autoload_options()
+        self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
+        self.__context.push({
+            "page_title": _("Dashboard | %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
 
-        return render(request, self.template_name, self._context.get())
+        return render(request, self.template_name, self.__context.get())

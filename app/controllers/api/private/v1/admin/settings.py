@@ -20,22 +20,22 @@ from app.modules.core.settings import Settings as Settings_Module
 
 class Settings(View):
 
-    _request = Request()
-    _response = Response()
-    _helpers = Helpers()
-    _form = Form()
-    _settings_module = Settings_Module()
-    _logger = None
+    __request = Request()
+    __response = Response()
+    __helpers = Helpers()
+    __form = Form()
+    __settings_module = Settings_Module()
+    __logger = None
 
 
     def __init__(self):
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     def post(self, request):
 
-        self._request.set_request(request)
-        request_data = self._request.get_request_data("post", {
+        self.__request.set_request(request)
+        request_data = self.__request.get_request_data("post", {
             "app_name": "",
             "app_email": "",
             "app_url": "",
@@ -45,7 +45,7 @@ class Settings(View):
             "reset_mails_expire_after": ""
         })
 
-        self._form.add_inputs({
+        self.__form.add_inputs({
             'app_name': {
                 'value': request_data["app_name"],
                 'sanitize': {
@@ -144,29 +144,29 @@ class Settings(View):
             }
         })
 
-        self._form.process()
+        self.__form.process()
 
-        if not self._form.is_passed():
-            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+        if not self.__form.is_passed():
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
 
-        result = self._settings_module.update_options({
-            "app_name": self._form.get_input_value("app_name"),
-            "app_email": self._form.get_input_value("app_email"),
-            "app_url": self._form.get_input_value("app_url"),
-            "app_description": self._form.get_input_value("app_description"),
-            "google_analytics_account": self._form.get_input_value("google_analytics_account"),
-            "reset_mails_messages_count": self._form.get_input_value("reset_mails_messages_count"),
-            "reset_mails_expire_after": self._form.get_input_value("reset_mails_expire_after")
+        result = self.__settings_module.update_options({
+            "app_name": self.__form.get_input_value("app_name"),
+            "app_email": self.__form.get_input_value("app_email"),
+            "app_url": self.__form.get_input_value("app_url"),
+            "app_description": self.__form.get_input_value("app_description"),
+            "google_analytics_account": self.__form.get_input_value("google_analytics_account"),
+            "reset_mails_messages_count": self.__form.get_input_value("reset_mails_messages_count"),
+            "reset_mails_expire_after": self.__form.get_input_value("reset_mails_expire_after")
         })
 
         if result:
-            return JsonResponse(self._response.send_private_success([{
+            return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Settings updated successfully.")
             }]))
 
         else:
-            return JsonResponse(self._response.send_private_failure([{
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Something goes wrong while updating settings.")
             }]))
