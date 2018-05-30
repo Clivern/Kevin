@@ -11,22 +11,22 @@ from app.modules.util.helpers import Helpers
 
 class Funnel():
 
-    _helpers = Helpers()
-    _logger = None
-    _rules = {}
-    _request = {}
+    __helpers = Helpers()
+    __logger = None
+    __rules = {}
+    __request = {}
 
 
     def __init__(self):
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     def set_rules(self, rules):
-        self._rules = rules
+        self.__rules = rules
 
 
     def set_request(self, request):
-        self._request = request
+        self.__request = request
 
 
     def action_needed(self):

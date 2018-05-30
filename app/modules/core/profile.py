@@ -17,16 +17,16 @@ from app.modules.entity.user_entity import User_Entity
 
 class Profile():
 
-    _option_entity = Option_Entity()
-    _user_entity = User_Entity()
-    _helpers = Helpers()
-    _logger = None
-    _token = Token()
-    _profile_entity = Profile_Entity()
+    __option_entity = Option_Entity()
+    __user_entity = User_Entity()
+    __helpers = Helpers()
+    __logger = None
+    __token = Token()
+    __profile_entity = Profile_Entity()
 
 
     def __init__(self):
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     def get_profile(self, user_id):
@@ -47,8 +47,8 @@ class Profile():
             "avatar": ""
         }
 
-        user = self._user_entity.get_one_by_id(user_id)
-        profile = self._profile_entity.get_profile_by_user_id(user_id)
+        user = self.__user_entity.get_one_by_id(user_id)
+        profile = self.__profile_entity.get_profile_by_user_id(user_id)
 
         if user != False:
             profile_data["first_name"] = user.first_name
@@ -72,53 +72,53 @@ class Profile():
 
     def update_profile(self, user_id, user_data):
         user_data["user"] = user_id
-        if self._profile_entity.profile_exists(user_data["user"]):
-            status = self._profile_entity.update_profile(user_data)
-            status &= self._user_entity.update_one_by_id(user_data["user"], user_data)
+        if self.__profile_entity.profile_exists(user_data["user"]):
+            status = self.__profile_entity.update_profile(user_data)
+            status &= self.__user_entity.update_one_by_id(user_data["user"], user_data)
             return status
         else:
-            status = (self._profile_entity.create_profile(user_data) != False)
-            status &= self._user_entity.update_one_by_id(user_data["user"], user_data)
+            status = (self.__profile_entity.create_profile(user_data) != False)
+            status &= self.__user_entity.update_one_by_id(user_data["user"], user_data)
             return status
 
 
     def update_access_token(self, user_id):
-        token = self._token.generate_token()
-        while self._profile_entity.token_used(token) != False:
-            token = self._token.generate_token()
+        token = self.__token.generate_token()
+        while self.__profile_entity.token_used(token) != False:
+            token = self.__token.generate_token()
 
-        return token if self._profile_entity.update_access_token(user_id, token) else False
+        return token if self.__profile_entity.update_access_token(user_id, token) else False
 
 
     def update_refresh_token(self, user_id):
-        token = self._token.generate_token()
-        while self._profile_entity.token_used(token) != False:
-            token = self._token.generate_token()
+        token = self.__token.generate_token()
+        while self.__profile_entity.token_used(token) != False:
+            token = self.__token.generate_token()
 
-        return token if self._profile_entity.update_refresh_token(user_id, token) else False
+        return token if self.__profile_entity.update_refresh_token(user_id, token) else False
 
 
     def change_password(self, user_id, password):
-        return self._user_entity.update_password_by_user_id(user_id, password)
+        return self.__user_entity.update_password_by_user_id(user_id, password)
 
 
     def restore_session(self, user_id, request):
-        return update_session_auth_hash(request, self._user_entity.get_one_by_id(user_id))
+        return update_session_auth_hash(request, self.__user_entity.get_one_by_id(user_id))
 
 
     def validate_password(self, user_id, password):
-        return self._user_entity.validate_password_by_user_id(user_id, password)
+        return self.__user_entity.validate_password_by_user_id(user_id, password)
 
 
     def update_user(self, user_id, user_data):
-        return self._user_entity.update_one_by_id(self, user_id, user_data)
+        return self.__user_entity.update_one_by_id(self, user_id, user_data)
 
 
     def username_used_elsewhere(self, user_id, username):
-        user = self._user_entity.get_one_by_username(username)
+        user = self.__user_entity.get_one_by_username(username)
         return False if user == False or user.id == user_id else True
 
 
     def email_used_elsewhere(self, user_id, email):
-        user = self._user_entity.get_one_by_email(email)
+        user = self.__user_entity.get_one_by_email(email)
         return False if user == False or user.id == user_id else True

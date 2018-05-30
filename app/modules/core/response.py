@@ -12,32 +12,32 @@ from app.modules.util.helpers import Helpers
 
 class Response():
 
-    _private = {}
-    _public = {}
-    _helpers = None
-    _logger = None
+    __private = {}
+    __public = {}
+    __helpers = None
+    __logger = None
 
 
     def __init__(self):
-        self._helpers = Helpers()
-        self._logger = self._helpers.get_logger(__name__)
+        self.__helpers = Helpers()
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     def send_private_success(self, messages, payload={}):
-        self._private["status"] = "success"
-        self._private["messages"] = messages
+        self.__private["status"] = "success"
+        self.__private["messages"] = messages
         if len(payload) > 0:
-            self._private["payload"] = payload
+            self.__private["payload"] = payload
 
-        self._logger.debug(_("App Response: ") + self._helpers.json_dumps(self._private) + "\n")
-        return self._private
+        self.__logger.debug(_("App Response: ") + self.__helpers.json_dumps(self.__private) + "\n")
+        return self.__private
 
 
     def send_private_failure(self, messages, payload={}):
-        self._private["status"] = "failure"
-        self._private["messages"] = messages
+        self.__private["status"] = "failure"
+        self.__private["messages"] = messages
         if len(payload) > 0:
-            self._private["payload"] = payload
+            self.__private["payload"] = payload
 
-        self._logger.debug(_("App Response: ") + self._helpers.json_dumps(self._private) + "\n")
-        return self._private
+        self.__logger.debug(_("App Response: ") + self.__helpers.json_dumps(self.__private) + "\n")
+        return self.__private

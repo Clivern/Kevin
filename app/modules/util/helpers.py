@@ -16,7 +16,7 @@ from django.utils.translation import activate
 
 class Helpers():
 
-    _loggers = {}
+    __loggers = {}
 
 
     def slugify(self, text, allow_unicode=False):
@@ -24,10 +24,10 @@ class Helpers():
 
 
     def get_logger(self, name = __name__):
-        if name in self._loggers:
-            return self._loggers[name]
-        self._loggers[name] = logging.getLogger(name)
-        return self._loggers[name]
+        if name in self.__loggers:
+            return self.__loggers[name]
+        self.__loggers[name] = logging.getLogger(name)
+        return self.__loggers[name]
 
 
     def switch_language(self, language):
