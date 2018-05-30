@@ -15,6 +15,7 @@ from app.modules.validation.form import Form
 from app.modules.util.helpers import Helpers
 from app.modules.core.request import Request
 from app.modules.core.response import Response
+from app.modules.core.namespace import Namespace as Namespace_Module
 
 
 class Namespaces_List(View):
@@ -25,6 +26,7 @@ class Namespaces_List(View):
     __form = Form()
     __logger = None
     __user_id = None
+    __namespace_module = Namespace_Module()
 
 
     def __init__(self):
@@ -36,6 +38,7 @@ class Namespaces_List(View):
         self.__user_id = request.user.id
 
 
+
 class Namespace_Create(View):
 
     __request = Request()
@@ -44,6 +47,7 @@ class Namespace_Create(View):
     __form = Form()
     __logger = None
     __user_id = None
+    __namespace_module = Namespace_Module()
 
 
     def __init__(self):
@@ -53,6 +57,82 @@ class Namespace_Create(View):
     def post(self, request):
 
         self.__user_id = request.user.id
+
+        request_data = self.__request.get_request_data("post", {
+            "name" : "",
+            "slug" : "",
+            "is_public": "on"
+        })
+
+        self.__form.add_inputs({
+            'name': {
+                'value': request_data["name"],
+                'validate': {
+                    'password': {
+                        'error': _("Error! Old password is invalid.")
+                    },
+                    'length_between':{
+                        'param': [7, 20],
+                        'error': _("Error! Old password is invalid.")
+                    }
+                }
+            },
+            'slug': {
+                'value': request_data["slug"],
+                'validate': {
+                    'password': {
+                        'error': _('Error! New Password must contain at least uppercase letter, lowercase letter, numbers and special character.')
+                    },
+                    'length_between':{
+                        'param': [7, 20],
+                        'error': _('Error! New Password length must be from 8 to 20 characters.')
+                    }
+                }
+            },
+            'is_public': {
+                'value': request_data["is_public"],
+                'validate': {
+                    'password': {
+                        'error': _('Error! New Password must contain at least uppercase letter, lowercase letter, numbers and special character.')
+                    },
+                    'length_between':{
+                        'param': [7, 20],
+                        'error': _('Error! New Password length must be from 8 to 20 characters.')
+                    }
+                }
+            }
+        })
+
+        self.__form.process()
+
+        if not self.__form.is_passed():
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
+
+        if self.__namespace_module.slug_used(self.__form.get_input_value("slug")):
+            return JsonResponse(self.__response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Namespace slug is already used.")
+            }]))
+
+        result = self.__namespace_module.insert_one({
+            "name": self.__form.get_input_value("name"),
+            "slug": self.__form.get_input_value("slug"),
+            "is_public": self.__form.get_input_value("is_public") == "on",
+            "user_id": self.__user_id
+        })
+
+        if result:
+            return JsonResponse(self.__response.send_private_success([{
+                "type": "success",
+                "message": _("Namespace created successfully.")
+            }]))
+
+        else:
+            return JsonResponse(self.__response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Something goes wrong while creating namespace.")
+            }]))
+
 
 
 class Namespace_Edit(View):
@@ -64,6 +144,7 @@ class Namespace_Edit(View):
     __logger = None
     __user_id = None
     __namespace_id = None
+    __namespace_module = Namespace_Module()
 
 
     def __init__(self):
@@ -73,6 +154,89 @@ class Namespace_Edit(View):
     def put(self, request, namespace_id):
 
         self.__user_id = request.user.id
+        self.__namespace_id = namespace_id
+
+        if not self.__namespace_module.user_owns(self.__namespace_id, self.__user_id):
+            return JsonResponse(self.__response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Invalid Request.")
+            }]))
+
+        request_data = self.__request.get_request_data("post", {
+            "name" : "",
+            "slug" : "",
+            "is_public": "on"
+        })
+
+        self.__form.add_inputs({
+            'name': {
+                'value': request_data["name"],
+                'validate': {
+                    'password': {
+                        'error': _("Error! Old password is invalid.")
+                    },
+                    'length_between':{
+                        'param': [7, 20],
+                        'error': _("Error! Old password is invalid.")
+                    }
+                }
+            },
+            'slug': {
+                'value': request_data["slug"],
+                'validate': {
+                    'password': {
+                        'error': _('Error! New Password must contain at least uppercase letter, lowercase letter, numbers and special character.')
+                    },
+                    'length_between':{
+                        'param': [7, 20],
+                        'error': _('Error! New Password length must be from 8 to 20 characters.')
+                    }
+                }
+            },
+            'is_public': {
+                'value': request_data["is_public"],
+                'validate': {
+                    'password': {
+                        'error': _('Error! New Password must contain at least uppercase letter, lowercase letter, numbers and special character.')
+                    },
+                    'length_between':{
+                        'param': [7, 20],
+                        'error': _('Error! New Password length must be from 8 to 20 characters.')
+                    }
+                }
+            }
+        })
+
+        self.__form.process()
+
+        if not self.__form.is_passed():
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
+
+        if self.__namespace_module.slug_used_elsewhere(self.__namespace_id, self.__form.get_input_value("slug")):
+            return JsonResponse(self.__response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Namespace slug is already used.")
+            }]))
+
+        result = self.__namespace_module.update_one_by_id(self.__namespace_id, {
+            "name": self.__form.get_input_value("name"),
+            "slug": self.__form.get_input_value("slug"),
+            "is_public": self.__form.get_input_value("is_public") == "on",
+            "user_id": self.__user_id
+        })
+
+        if result:
+            return JsonResponse(self.__response.send_private_success([{
+                "type": "success",
+                "message": _("Namespace updated successfully.")
+            }]))
+
+        else:
+            return JsonResponse(self.__response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Something goes wrong while creating namespace.")
+            }]))
+
 
 
 class Namespace_Delete(View):
@@ -83,6 +247,8 @@ class Namespace_Delete(View):
     __form = Form()
     __logger = None
     __user_id = None
+    __namespace_id = None
+    __namespace_module = Namespace_Module()
 
 
     def __init__(self):
@@ -92,3 +258,22 @@ class Namespace_Delete(View):
     def delete(self, request, namespace_id):
 
         self.__user_id = request.user.id
+        self.__namespace_id = namespace_id
+
+        if not self.__namespace_module.user_owns(self.__namespace_id, self.__user_id):
+            return JsonResponse(self.__response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Invalid Request.")
+            }]))
+
+        if self.__namespace_module.delete_namespace(namespace_id):
+            return JsonResponse(self.__response.send_private_success([{
+                "type": "success",
+                "message": _("Namespace deleted successfully.")
+            }]))
+
+        else:
+            return JsonResponse(self.__response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Something goes wrong while deleting a namespace.")
+            }]))

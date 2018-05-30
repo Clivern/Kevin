@@ -19,9 +19,6 @@ class Namespace_Entity():
         if "slug" not in namespace:
             namespace["slug"] = Helpers().slugify(namespace["name"])
 
-        if namespace["slug"] == "" or self.get_one_by_slug(namespace["slug"]):
-            return False
-
         namespace = Namespace(
             name=namespace["name"],
             slug=namespace["slug"],
@@ -46,6 +43,15 @@ class Namespace_Entity():
         try:
             namespace = Namespace.objects.get(pk=id)
             return False if namespace.pk is None else namespace
+        except:
+            return False
+
+
+    def user_owns(self, namespace_id, user_id):
+        """Get Namespace By ID and User ID"""
+        try:
+            namespace = Namespace.objects.get(pk=id, user=user_id)
+            return False if namespace.pk is None else True
         except:
             return False
 
