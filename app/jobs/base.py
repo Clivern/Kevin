@@ -9,10 +9,10 @@ from app.modules.entity.option_entity import Option_Entity
 
 class Base():
 
-    _option_entity = Option_Entity()
-    _helpers = Helpers()
-    _logger = None
-    _arguments = {
+    __option_entity = Option_Entity()
+    __helpers = Helpers()
+    __logger = None
+    __arguments = {
         "app_name": "",
         "app_email": "",
         "app_url": ""
@@ -20,13 +20,13 @@ class Base():
 
 
     def __init__(self, arguments):
-        self._logger = self._helpers.get_logger(__name__)
-        self._arguments.update(arguments)
-        self._load_options()
+        self.__logger = self.__helpers.get_logger(__name__)
+        self.__arguments.update(arguments)
+        self.__load_options()
 
 
-    def _load_options(self):
-        options = self._option_entity.get_many_by_keys(["app_name", "app_email", "app_url"])
+    def __load_options(self):
+        options = self.__option_entity.get_many_by_keys(["app_name", "app_email", "app_url"])
         for option in options:
-            if option.key in self._arguments.keys():
-                self._arguments[option.key] = option.value
+            if option.key in self.__arguments.keys():
+                self.__arguments[option.key] = option.value
