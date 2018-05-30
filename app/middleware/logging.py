@@ -11,19 +11,19 @@ from app.modules.util.helpers import Helpers
 
 class Logging():
 
-    _helpers = Helpers()
-    _logger = None
+    __helpers = Helpers()
+    __logger = None
 
 
     def __init__(self, get_response):
         self.get_response = get_response
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     def __call__(self, request):
-        self._logger.debug(_("Request Method: %s") % request.method)
-        self._logger.debug(_("Request URL: %s") % request.path)
-        self._logger.debug(_("Request Body: %s") % request.body)
+        self.__logger.debug(_("Request Method: %s") % request.method)
+        self.__logger.debug(_("Request URL: %s") % request.path)
+        self.__logger.debug(_("Request Body: %s") % request.body)
 
         response = self.get_response(request)
 

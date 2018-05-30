@@ -16,26 +16,26 @@ from app.modules.entity.option_entity import Option_Entity
 
 class API_Funnel():
 
-    _helpers = Helpers()
-    _logger = None
-    _funnel = Funnel()
-    _roles = {
+    __helpers = Helpers()
+    __logger = None
+    __funnel = Funnel()
+    __roles = {
 
     }
 
 
     def __init__(self, get_response):
         self.get_response = get_response
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     def __call__(self, request):
 
-        self._funnel.set_rules(self._roles)
-        self._funnel.set_request(request)
+        self.__funnel.set_rules(self.__roles)
+        self.__funnel.set_request(request)
 
-        if self._funnel.action_needed():
-            return self._funnel.fire()
+        if self.__funnel.action_needed():
+            return self.__funnel.fire()
 
         response = self.get_response(request)
 
