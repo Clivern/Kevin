@@ -148,6 +148,16 @@ class Validator():
         return self.email() or self.alpha_numeric()
 
 
+    def namespace_slug(self):
+        regex = re.compile('^[a-z0-9-_]+$')
+        return bool(regex.match(self.__input))
+
+
+    def namespace_name(self):
+        regex = re.compile('^[a-zA-Z0-9-_\s]+$')
+        return bool(regex.match(self.__input))
+
+
     def digit(self):
         if not isinstance(self.__input, (str)):
             return False

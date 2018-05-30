@@ -68,36 +68,33 @@ class Namespace_Create(View):
             'name': {
                 'value': request_data["name"],
                 'validate': {
-                    'password': {
-                        'error': _("Error! Old password is invalid.")
+                    'namespace_name': {
+                        'error': _("Error! Namespace Name is invalid.")
                     },
                     'length_between':{
-                        'param': [7, 20],
-                        'error': _("Error! Old password is invalid.")
+                        'param': [3, 41],
+                        'error': _("Error! Namespace slug length must be from 4 to 40 characters.")
                     }
                 }
             },
             'slug': {
                 'value': request_data["slug"],
                 'validate': {
-                    'password': {
-                        'error': _('Error! New Password must contain at least uppercase letter, lowercase letter, numbers and special character.')
+                    'namespace_slug': {
+                        'error': _('Error! Namespace slug is not valid.')
                     },
                     'length_between':{
-                        'param': [7, 20],
-                        'error': _('Error! New Password length must be from 8 to 20 characters.')
+                        'param': [3, 21],
+                        'error': _('Error! Namespace slug length must be from 4 to 20 characters.')
                     }
                 }
             },
             'is_public': {
                 'value': request_data["is_public"],
                 'validate': {
-                    'password': {
-                        'error': _('Error! New Password must contain at least uppercase letter, lowercase letter, numbers and special character.')
-                    },
-                    'length_between':{
-                        'param': [7, 20],
-                        'error': _('Error! New Password length must be from 8 to 20 characters.')
+                    'any_of':{
+                        'param': ["on", "off"],
+                        'error': _('Error! Is public value is invalid.')
                     }
                 }
             }
@@ -172,36 +169,33 @@ class Namespace_Edit(View):
             'name': {
                 'value': request_data["name"],
                 'validate': {
-                    'password': {
-                        'error': _("Error! Old password is invalid.")
+                    'namespace_name': {
+                        'error': _("Error! Namespace Name is invalid.")
                     },
                     'length_between':{
-                        'param': [7, 20],
-                        'error': _("Error! Old password is invalid.")
+                        'param': [3, 41],
+                        'error': _("Error! Namespace slug length must be from 4 to 40 characters.")
                     }
                 }
             },
             'slug': {
                 'value': request_data["slug"],
                 'validate': {
-                    'password': {
-                        'error': _('Error! New Password must contain at least uppercase letter, lowercase letter, numbers and special character.')
+                    'namespace_slug': {
+                        'error': _('Error! Namespace slug is not valid.')
                     },
                     'length_between':{
-                        'param': [7, 20],
-                        'error': _('Error! New Password length must be from 8 to 20 characters.')
+                        'param': [3, 21],
+                        'error': _('Error! Namespace slug length must be from 4 to 20 characters.')
                     }
                 }
             },
             'is_public': {
                 'value': request_data["is_public"],
                 'validate': {
-                    'password': {
-                        'error': _('Error! New Password must contain at least uppercase letter, lowercase letter, numbers and special character.')
-                    },
-                    'length_between':{
-                        'param': [7, 20],
-                        'error': _('Error! New Password length must be from 8 to 20 characters.')
+                    'any_of':{
+                        'param': ["on", "off"],
+                        'error': _('Error! Is public value is invalid.')
                     }
                 }
             }
