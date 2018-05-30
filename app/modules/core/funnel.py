@@ -38,9 +38,9 @@ class Funnel():
 
 
     def _parse(self):
-        #_route_name = request.resolver_match.url_name
+        #__route_name = request.resolver_match.url_name
         #if request.user and request.user.is_authenticated:
-        #    self._is_auth = True
-        #    self._user_id = request.user.id
-        #    self._username = request.user
+        #    self.__is_auth = True
+        #    self.__user_id = request.user.id
+        #    self.__username = request.user
         pass
