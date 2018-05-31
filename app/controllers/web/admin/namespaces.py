@@ -56,7 +56,7 @@ class Namespace_Edit(View):
     __context = Context()
 
 
-    def get(self, request, namespace):
+    def get(self, request, namespace_slug):
 
         self.__context.autoload_options()
         self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)

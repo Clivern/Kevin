@@ -114,7 +114,7 @@ class Namespace_Create(View):
         result = self.__namespace_module.insert_one({
             "name": self.__form.get_input_value("name"),
             "slug": self.__form.get_input_value("slug"),
-            "is_public": self.__form.get_input_value("is_public") == "on",
+            "is_public": (self.__form.get_input_value("is_public") == "on"),
             "user_id": self.__user_id
         })
 
@@ -215,7 +215,7 @@ class Namespace_Edit(View):
         result = self.__namespace_module.update_one_by_id(self.__namespace_id, {
             "name": self.__form.get_input_value("name"),
             "slug": self.__form.get_input_value("slug"),
-            "is_public": self.__form.get_input_value("is_public") == "on",
+            "is_public": (self.__form.get_input_value("is_public") == "on"),
             "user_id": self.__user_id
         })
 
