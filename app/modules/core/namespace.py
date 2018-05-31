@@ -38,5 +38,10 @@ class Namespace():
     def insert_one(self, namespace):
         return self.__namespace_entity.insert_one(namespace)
 
+
     def update_one_by_id(self, namespace_id, new_data):
-        return self.__namespace_entity.update_one_by_id(self, namespace_id, new_data)
+        return self.__namespace_entity.update_one_by_id(namespace_id, new_data)
+
+
+    def get_one_by_slug(self, slug):
+        return self.__namespace_entity.get_one_by_slug(slug)

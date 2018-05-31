@@ -18,7 +18,7 @@ from app.modules.core.response import Response
 from app.modules.core.namespace import Namespace as Namespace_Module
 
 
-class Namespaces_List(View):
+class Namespaces(View):
 
     __request = Request()
     __response = Response()
@@ -38,30 +38,15 @@ class Namespaces_List(View):
         self.__user_id = request.user.id
 
 
-
-class Namespace_Create(View):
-
-    __request = Request()
-    __response = Response()
-    __helpers = Helpers()
-    __form = Form()
-    __logger = None
-    __user_id = None
-    __namespace_module = Namespace_Module()
-
-
-    def __init__(self):
-        self.__logger = self.__helpers.get_logger(__name__)
-
-
     def post(self, request):
 
         self.__user_id = request.user.id
 
+        self.__request.set_request(request)
         request_data = self.__request.get_request_data("post", {
             "name" : "",
             "slug" : "",
-            "is_public": "on"
+            "is_public": "off"
         })
 
         self.__form.add_inputs({
@@ -93,7 +78,7 @@ class Namespace_Create(View):
                 'value': request_data["is_public"],
                 'validate': {
                     'any_of':{
-                        'param': ["on", "off"],
+                        'param': [["on", "off"]],
                         'error': _('Error! Is public value is invalid.')
                     }
                 }
@@ -131,8 +116,7 @@ class Namespace_Create(View):
             }]))
 
 
-
-class Namespace_Edit(View):
+class Namespace(View):
 
     __request = Request()
     __response = Response()
@@ -148,7 +132,7 @@ class Namespace_Edit(View):
         self.__logger = self.__helpers.get_logger(__name__)
 
 
-    def put(self, request, namespace_id):
+    def post(self, request, namespace_id):
 
         self.__user_id = request.user.id
         self.__namespace_id = namespace_id
@@ -159,10 +143,11 @@ class Namespace_Edit(View):
                 "message": _("Error! Invalid Request.")
             }]))
 
+        self.__request.set_request(request)
         request_data = self.__request.get_request_data("post", {
             "name" : "",
             "slug" : "",
-            "is_public": "on"
+            "is_public": "off"
         })
 
         self.__form.add_inputs({
@@ -194,7 +179,7 @@ class Namespace_Edit(View):
                 'value': request_data["is_public"],
                 'validate': {
                     'any_of':{
-                        'param': ["on", "off"],
+                        'param': [["on", "off"]],
                         'error': _('Error! Is public value is invalid.')
                     }
                 }
@@ -232,23 +217,6 @@ class Namespace_Edit(View):
             }]))
 
 
-
-class Namespace_Delete(View):
-
-    __request = Request()
-    __response = Response()
-    __helpers = Helpers()
-    __form = Form()
-    __logger = None
-    __user_id = None
-    __namespace_id = None
-    __namespace_module = Namespace_Module()
-
-
-    def __init__(self):
-        self.__logger = self.__helpers.get_logger(__name__)
-
-
     def delete(self, request, namespace_id):
 
         self.__user_id = request.user.id
@@ -271,3 +239,5 @@ class Namespace_Delete(View):
                 "type": "error",
                 "message": _("Error! Something goes wrong while deleting a namespace.")
             }]))
+
+

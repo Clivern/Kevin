@@ -50,7 +50,7 @@ class Namespace_Entity():
     def user_owns(self, namespace_id, user_id):
         """Get Namespace By ID and User ID"""
         try:
-            namespace = Namespace.objects.get(pk=id, user=user_id)
+            namespace = Namespace.objects.get(pk=namespace_id, user=user_id)
             return False if namespace.pk is None else True
         except:
             return False

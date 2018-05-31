@@ -37,11 +37,8 @@ from app.controllers.api.private.v1.reset_password import Reset_Password as Rese
 from app.controllers.api.private.v1.admin.settings import Settings as Settings_Admin_V1_Endpoint_Private
 from app.controllers.api.private.v1.admin.profile import Profile as Profile_Admin_V1_Endpoint_Private
 
-
-from app.controllers.api.private.v1.admin.namespaces import Namespaces_List as Namespaces_List_Admin_V1_Endpoint_Private
-from app.controllers.api.private.v1.admin.namespaces import Namespace_Create as Namespace_Create_Admin_V1_Endpoint_Private
-from app.controllers.api.private.v1.admin.namespaces import Namespace_Edit as Namespace_Edit_Admin_V1_Endpoint_Private
-from app.controllers.api.private.v1.admin.namespaces import Namespace_Delete as Namespace_Delete_Admin_V1_Endpoint_Private
+from app.controllers.api.private.v1.admin.namespaces import Namespaces as Namespaces_Admin_V1_Endpoint_Private
+from app.controllers.api.private.v1.admin.namespaces import Namespace as Namespace_Admin_V1_Endpoint_Private
 
 
 
@@ -85,10 +82,8 @@ urlpatterns = [
             path('settings', Settings_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.settings.endpoint'),
             path('profile', Profile_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.profile.endpoint'),
 
-            path('namespace', Namespaces_List_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespace.list.endpoint'),
-            path('namespace', Namespace_Create_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespace.create.endpoint'),
-            path('namespace/<int:namespace_id>', Namespace_Edit_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespace.edit.endpoint'),
-            path('namespace/<int:namespace_id>', Namespace_Delete_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespace.delete.endpoint'),
+            path('namespace', Namespaces_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespaces.endpoint'),
+            path('namespace/<int:namespace_id>', Namespace_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespace.endpoint'),
 
         ]))
 

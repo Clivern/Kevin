@@ -239,6 +239,49 @@ kevin_app.profile = (function (window, document, $) {
 
 
 /**
+ * Namespace Endpoints
+ */
+kevin_app.namespace = (function (window, document, $) {
+
+    'use strict';
+
+    var base = {
+
+        el: {
+            namespaceName : $('form#namespace_create input[name="name"]'),
+            namespaceSlug : $('form#namespace_create input[name="slug"]'),
+        },
+        init: function(){
+            if( base.el.namespaceName.length ){
+                base.autoChangeSlug();
+            }
+        },
+        autoChangeSlug : function(){
+            base.el.namespaceName.on("change", base.namespaceNameChange);
+        },
+
+        namespaceNameChange: function(event) {
+            event.preventDefault();
+            base.el.namespaceSlug.val(base.slugify(base.el.namespaceName.val()))
+        },
+        slugify: function(text) {
+          return text.toString().toLowerCase()
+            .replace(/\s+/g, '-')           // Replace spaces with -
+            .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+            .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+            .replace(/^-+/, '')             // Trim - from start of text
+            .replace(/-+$/, '');            // Trim - from end of text
+        }
+    };
+
+   return {
+        init: base.init
+    };
+
+})(window, document, jQuery);
+
+
+/**
  *
  */
 let hexToRgba = function(hex, opacity) {
@@ -267,6 +310,7 @@ $(document).ready(function() {
 
     kevin_app.endpoint_connect.init();
     kevin_app.profile.init();
+    kevin_app.namespace.init();
 
     require(['jscookie'], function(Cookies) {
         console.log(Cookies.get('csrftoken'))
