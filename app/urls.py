@@ -23,6 +23,7 @@ from app.controllers.web.admin.profile import Profile as Profile_View
 from app.controllers.web.admin.namespaces import Namespaces_List as Namespaces_List_Web
 from app.controllers.web.admin.namespaces import Namespace_Create as Namespace_Create_Web
 from app.controllers.web.admin.namespaces import Namespace_Edit as Namespace_Edit_Web
+from app.controllers.web.admin.namespaces import Namespace_View as Namespace_View_Web
 
 from app.controllers.web.admin.endpoints import Endpoints_List as Endpoints_List_Web
 from app.controllers.web.admin.endpoints import Endpoint_View as Endpoint_View_Web
@@ -61,6 +62,7 @@ urlpatterns = [
         path('namespaces', Namespaces_List_Web.as_view(), name='app.web.admin.namespaces.list'),
         path('namespaces/create', Namespace_Create_Web.as_view(), name='app.web.admin.namespaces.create'),
         path('namespaces/edit/<slug:namespace_slug>', Namespace_Edit_Web.as_view(), name='app.web.admin.namespaces.edit'),
+        path('namespaces/view/<slug:namespace_slug>', Namespace_View_Web.as_view(), name='app.web.admin.namespaces.view'),
 
         path('endpoints/<slug:namespace>', Endpoints_List_Web.as_view(), name='app.web.admin.endpoints.list'),
         path('endpoints/<slug:namespace>/<int:endpoint>', Endpoint_View_Web.as_view(), name='app.web.admin.endpoints.view'),

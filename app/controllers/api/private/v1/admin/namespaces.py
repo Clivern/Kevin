@@ -116,6 +116,7 @@ class Namespaces(View):
             }]))
 
 
+
 class Namespace(View):
 
     __request = Request()

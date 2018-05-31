@@ -45,3 +45,7 @@ class Namespace():
 
     def get_one_by_slug(self, slug):
         return self.__namespace_entity.get_one_by_slug(slug)
+
+
+    def get_many_by_user(self, user_id):
+        return self.__namespace_entity.get_many_by_user(user_id)

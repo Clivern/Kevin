@@ -35,7 +35,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12 text-right">
-                        <a href="{% url 'app.web.admin.namespaces.create' %}" class="btn btn-icon btn-primary btn-secondary"><i class="fe fe-plus"></i> New Namespace</a>
+                        <a href="{% url 'app.web.admin.namespaces.create' %}" class="btn btn-icon btn-primary btn-secondary"><i class="fe fe-plus"></i> {% trans "New Namespace" %}</a>
                     </div>
                 </div>
                 <br/>
@@ -54,45 +54,50 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="text-left">
-                                                <div><a href="#">Monk</a></div>
-                                                <div class="small text-muted">
-                                                    Created: Mar 19, 2018
-                                                </div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div>
-                                                    <i class="text-red fe fe-lock" data-toggle="tooltip" data-original-title="{% trans "Private" %}"></i>
-                                                    <i class="text-blue fe fe-unlock" data-toggle="tooltip" data-original-title="{% trans "Public" %}"></i>
-                                                </div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div>5</div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="small text-muted">{% trans "Last Update" %}</div>
-                                                <div>4 minutes ago</div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="item-action dropdown">
-                                                    <a href="javascript:void(0)" data-toggle="dropdown" class="icon">
-                                                        <i class="fe fe-more-vertical"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a href="#" class="dropdown-item">
-                                                            <i class="dropdown-icon fe fe-link"></i> {% trans "View" %}
-                                                        </a>
-                                                        <a href="#" class="dropdown-item">
-                                                            <i class="dropdown-icon fe fe-edit"></i> {% trans "Edit" %}
-                                                        </a>
-                                                        <a href="#" class="dropdown-item">
-                                                            <i class="dropdown-icon fe fe-trash"></i> {% trans "Delete" %}
-                                                        </a>
+                                        {% for namespace in namespaces %}
+                                            <tr>
+                                                <td class="text-left">
+                                                    <div><a href="#">{{ namespace.name }}</a></div>
+                                                    <div class="small text-muted">
+                                                        Created: {{ namespace.created_at }}
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div>
+                                                        {% if namespace.is_public %}
+                                                            <i class="text-blue fe fe-unlock" data-toggle="tooltip" data-original-title="{% trans "Public" %}"></i>
+                                                        {% else %}
+                                                            <i class="text-red fe fe-lock" data-toggle="tooltip" data-original-title="{% trans "Private" %}"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div>5</div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="small text-muted">{% trans "Last Update" %}</div>
+                                                    <div class="small text-muted">{{ namespace.updated_at }}</div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="item-action dropdown">
+                                                        <a href="javascript:void(0)" data-toggle="dropdown" class="icon">
+                                                            <i class="fe fe-more-vertical"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a href="{% url 'app.web.admin.namespaces.view' namespace.slug %}" class="dropdown-item">
+                                                                <i class="dropdown-icon fe fe-link"></i> {% trans "View" %}
+                                                            </a>
+                                                            <a href="{% url 'app.web.admin.namespaces.edit' namespace.slug %}" class="dropdown-item">
+                                                                <i class="dropdown-icon fe fe-edit"></i> {% trans "Edit" %}
+                                                            </a>
+                                                            <a href="javascript:void(0)()" data-url="{% url 'app.api.private.v1.admin.namespace.endpoint' namespace.id %}" class="dropdown-item">
+                                                                <i class="dropdown-icon fe fe-trash"></i> {% trans "Delete" %}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
 
