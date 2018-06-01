@@ -5,7 +5,7 @@
     <div class="container">
         <div class="d-flex">
             <a class="header-brand" href="/">
-                <img src="{% static 'assets/images/logo.png' %}" class="header-brand-img" alt="tabler logo">
+                <img src="{% static 'assets/images/logo.png' %}" class="header-brand-img" alt="{{ app_name }}">
             </a>
             <div class="d-flex order-lg-2 ml-auto">
                 <div class="dropdown">
@@ -17,20 +17,20 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                         <a class="dropdown-item" href="{% url 'app.web.admin.dashboard' %}">
-                            <i class="dropdown-icon fe fe-pie-chart"></i> Dashboard
+                            <i class="dropdown-icon fe fe-pie-chart"></i> {% trans "Dashboard" %}
                         </a>
                         <a class="dropdown-item" href="{% url 'app.web.admin.profile' %}">
-                            <i class="dropdown-icon fe fe-user"></i> Profile
+                            <i class="dropdown-icon fe fe-user"></i> {% trans "Profile" %}
                         </a>
                         <a class="dropdown-item" href="{% url 'app.web.admin.namespaces.list' %}">
-                            <i class="dropdown-icon fe fe-zap"></i> Namespaces
+                            <i class="dropdown-icon fe fe-zap"></i> {% trans "Namespaces" %}
                         </a>
                         <a class="dropdown-item" href="{% url 'app.web.admin.settings' %}">
-                            <i class="dropdown-icon fe fe-settings"></i> Settings
+                            <i class="dropdown-icon fe fe-settings"></i> {% trans "Settings" %}
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{% url 'app.web.admin.logout' %}">
-                            <i class="dropdown-icon fe fe-log-out"></i> Logout
+                            <i class="dropdown-icon fe fe-log-out"></i> {% trans "Logout" %}
                         </a>
                     </div>
                 </div>

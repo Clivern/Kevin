@@ -49,8 +49,8 @@ class Namespace():
         return self.__namespace_entity.get_one_by_slug(slug)
 
 
-    def get_many_by_user(self, user_id):
-        namespaces = self.__namespace_entity.get_many_by_user(user_id)
+    def get_many_by_user(self, user_id, order_by = "created_at", asc = False):
+        namespaces = self.__namespace_entity.get_many_by_user(user_id, order_by, asc)
         for namespace in namespaces:
             namespace.endpoints_count = self.__endpoint_entity.count_by_namespace(namespace.id)
         return namespaces

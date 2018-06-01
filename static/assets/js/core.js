@@ -151,6 +151,11 @@ kevin_app.profile = (function (window, document, $) {
             if( base.el.update_access_token.length ){
                 base.el.update_access_token.find("button").on("click", function(event){
                     event.preventDefault();
+
+                    if( !confirm(_i18n.confirm_msg) ){
+                        return false;
+                    }
+
                     var _self = $(this);
                     _self.attr('disabled', 'disabled');
                     _self.addClass("btn-loading");
@@ -182,6 +187,11 @@ kevin_app.profile = (function (window, document, $) {
             if( base.el.update_refresh_token.length ){
                 base.el.update_refresh_token.find("button").on("click", function(event){
                     event.preventDefault();
+
+                    if( !confirm(_i18n.confirm_msg) ){
+                        return false;
+                    }
+
                     var _self = $(this);
                     _self.attr('disabled', 'disabled');
                     _self.addClass("btn-loading");
@@ -264,7 +274,7 @@ kevin_app.namespace = (function (window, document, $) {
         deleteNamespace: function(event) {
             event.preventDefault();
 
-            if( confirm("Are you sure!") == false ){
+            if( !confirm(_i18n.confirm_msg) ){
                 return false;
             }
 

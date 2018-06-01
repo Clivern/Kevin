@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load i18n %}
 
 {% if google_account %}
     <script type="text/javascript">
@@ -13,6 +14,8 @@
     </script>
 {% endif %}
 <script type="text/javascript">
-    var _app_globals = {}
+    var _app_globals = {};
+    var _i18n = {
+        confirm_msg: "{% trans 'Are you sure!' %}"
+    };
 </script>
-{% load i18n %}
