@@ -14,6 +14,7 @@ from django.http import Http404
 
 # local Django
 from app.modules.core.context import Context
+from app.modules.core.statistics import NamespacesStatistics
 from app.modules.core.namespace import Namespace as Namespace_Module
 
 
@@ -22,6 +23,7 @@ class Namespaces_List(View):
     template_name = 'templates/admin/namespaces/list.html'
     __context = Context()
     __namespace_module = Namespace_Module()
+    __namespaces_statistics = NamespacesStatistics()
 
 
     def get(self, request):
@@ -33,7 +35,9 @@ class Namespaces_List(View):
         })
 
         self.__context.push({
-            "namespaces": self.__namespace_module.get_many_by_user(request.user.id)
+            "namespaces": self.__namespace_module.get_many_by_user(request.user.id),
+            "donut": self.__namespaces_statistics.overall_count_chart(request.user.id),
+            "line_chart": self.__namespaces_statistics.count_over_time_chart(20, request.user.id)
         })
 
         return render(request, self.template_name, self.__context.get())

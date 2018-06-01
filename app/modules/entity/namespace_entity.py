@@ -71,6 +71,20 @@ class Namespace_Entity():
         return namespaces
 
 
+    def count_by_visibility(self, is_public, user_id = None):
+        if user_id == None:
+            return Namespace.objects.filter(is_public=is_public).count()
+        else:
+            return Namespace.objects.filter(is_public=is_public, user=user_id).count()
+
+
+    def count_by_visibility_date(self, is_public, limit, user_id = None):
+        if user_id == None:
+            return Namespace.objects.raw("select count(id) as id, DATE(created_at) as count_date from app_namespace where is_public=%s group by count_date order by count_date desc limit %s;" % ("1" if is_public else "0", limit))
+        else:
+            return Namespace.objects.raw("select count(id) as id, DATE(created_at) as count_date from app_namespace where is_public=%s and user_id=%s group by count_date order by count_date desc limit %s;" % ("1" if is_public else "0", user_id, limit))
+
+
     def update_one_by_id(self, id, new_data):
         """Update Namespace By ID"""
         namespace = self.get_one_by_id(id)

@@ -128,9 +128,9 @@
                 data: {
                     columns: [
                         // each columns data
-                        ['data1', 0, 5, 1, 2, 7, 5, 6, 8, 24, 7, 12, 5, 6, 3, 2, 2, 6, 30, 10, 10, 15, 14, 47, 65, 55],
-                        ['data2', 0, 2, 1, 1, 3, 2, 3, 1, 20, 7, 6, 1, 3, 3, 1, 1, 2, 20, 1, 2, 10, 2, 40, 35, 30],
-                        ['data3', 0, 3, 0, 1, 4, 3, 3, 7, 4, 0, 6, 4, 3, 0, 1, 1, 4, 10, 9, 8, 5, 12, 7, 30, 25]
+                        ['data1', {{ line_chart.final.total }}],
+                        ['data2', {{ line_chart.final.public }}],
+                        ['data3', {{ line_chart.final.private }}]
                     ],
                     type: 'area', // default type of chart
                     groups: [
@@ -202,18 +202,18 @@
                 data: {
                     columns: [
                         // each columns data
-                        ['data1', 63],
-                        ['data2', 37]
+                        ['public_data', {{ donut.public }}],
+                        ['private_data', {{ donut.private }}]
                     ],
                     type: 'donut', // default type of chart
                     colors: {
-                        'data1': tabler.colors["green"],
-                        'data2': tabler.colors["green-light"]
+                        'public_data': tabler.colors["blue"],
+                        'private_data': tabler.colors["red"]
                     },
                     names: {
                         // name of each serie
-                        'data1': 'Public',
-                        'data2': 'Private'
+                        'public_data': '{% trans "Public" %}',
+                        'private_data': '{% trans "Private" %}'
                     }
                 },
                 axis: {
