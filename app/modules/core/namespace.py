@@ -5,6 +5,7 @@ Namespace Module
 # local Django
 from app.modules.util.helpers import Helpers
 from app.modules.entity.namespace_entity import Namespace_Entity
+from app.modules.entity.endpoint_entity import Endpoint_Entity
 
 
 class Namespace():
@@ -12,6 +13,7 @@ class Namespace():
     __helpers = Helpers()
     __logger = None
     __namespace_entity = Namespace_Entity()
+    __endpoint_entity = Endpoint_Entity()
 
 
     def __init__(self):
@@ -48,4 +50,7 @@ class Namespace():
 
 
     def get_many_by_user(self, user_id):
-        return self.__namespace_entity.get_many_by_user(user_id)
+        namespaces = self.__namespace_entity.get_many_by_user(user_id)
+        for namespace in namespaces:
+            namespace.endpoints_count = self.__endpoint_entity.count_by_namespace(namespace.id)
+        return namespaces

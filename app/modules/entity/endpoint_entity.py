@@ -67,6 +67,12 @@ class Endpoint_Entity():
         return endpoints
 
 
+    def count_by_namespace(self, namespace_id):
+        """Count Endpoints By Namespace ID"""
+        count = Endpoint.objects.filter(namespace=namespace_id).count()
+        return count
+
+
     def update_one_by_id(self, id, new_data):
         """Update Endpoint By ID"""
         endpoint = self.get_one_by_id(id)

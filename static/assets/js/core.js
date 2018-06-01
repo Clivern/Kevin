@@ -250,14 +250,42 @@ kevin_app.namespace = (function (window, document, $) {
         el: {
             namespaceName : $('form#namespace_create input[name="name"]'),
             namespaceSlug : $('form#namespace_create input[name="slug"]'),
+            namespaceDelete: $('a.delete_namespace')
         },
         init: function(){
             if( base.el.namespaceName.length ){
-                base.autoChangeSlug();
+                base.el.namespaceName.on("change", base.namespaceNameChange);
+            }
+            if( base.el.namespaceDelete.length ){
+                base.el.namespaceDelete.on("click", base.deleteNamespace);
             }
         },
-        autoChangeSlug : function(){
-            base.el.namespaceName.on("change", base.namespaceNameChange);
+
+        deleteNamespace: function(event) {
+            event.preventDefault();
+
+            if( confirm("Are you sure!") == false ){
+                return false;
+            }
+
+            var _self = $(this);
+            _self.attr('disabled', 'disabled');
+            require(['pace', 'jscookie'], function(Pace, Cookies) {
+                Pace.track(function(){
+                    $.ajax({
+                      method: "DELETE",
+                      url: _self.attr('data-url') + "?csrfmiddlewaretoken=" + Cookies.get('csrftoken'),
+                      data: { "csrfmiddlewaretoken": Cookies.get('csrftoken') }
+                    }).done(function( response ) {
+                        if( response.status == "success" ){
+                            base.success(response.messages);
+                            _self.closest("tr").remove();
+                        }else{
+                            base.error(response.messages);
+                        }
+                    });
+                });
+            });
         },
 
         namespaceNameChange: function(event) {
@@ -271,6 +299,24 @@ kevin_app.namespace = (function (window, document, $) {
             .replace(/\-\-+/g, '-')         // Replace multiple - with single -
             .replace(/^-+/, '')             // Trim - from start of text
             .replace(/-+$/, '');            // Trim - from end of text
+        },
+        success : function(messages){
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.clear();
+                    toastr.success(messageObj.message);
+                });
+                break;
+            }
+        },
+        error : function(messages){
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.clear();
+                    toastr.error(messageObj.message);
+                });
+                break;
+            }
         }
     };
 
@@ -299,6 +345,9 @@ let hexToRgba = function(hex, opacity) {
  */
 $(document).ready(function() {
 
+
+
+
     $(document).ajaxStart(function() {
         require(['pace'], function(Pace) {
             Pace.restart();
@@ -313,6 +362,10 @@ $(document).ready(function() {
     kevin_app.namespace.init();
 
     require(['jscookie'], function(Cookies) {
+        $.ajaxSetup({
+            headers:
+            { 'X-CSRFToken': Cookies.get('csrftoken') }
+        });
         console.log(Cookies.get('csrftoken'))
     })
 
