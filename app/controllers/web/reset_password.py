@@ -24,23 +24,23 @@ from app.modules.core.reset_password import Reset_Password as Reset_Password_Mod
 class Reset_Password(View):
 
     template_name = 'templates/reset_password.html'
-    _reset_password_core = Reset_Password_Module()
-    _context = Context()
-    _option_entity = Option_Entity()
+    __reset_password_core = Reset_Password_Module()
+    __context = Context()
+    __option_entity = Option_Entity()
 
 
     @redirect_if_not_installed
     @redirect_if_authenticated
     def get(self, request, token):
 
-        self._context.autoload_options()
-        self._context.push({
-            "page_title": _("Reset Password | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin")),
+        self.__context.autoload_options()
+        self.__context.push({
+            "page_title": _("Reset Password | %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin")),
             "reset_token": token
         })
 
-        if not self._reset_password_core.check_token(token):
+        if not self.__reset_password_core.check_token(token):
             messages.error(request, _("Reset token is expired or invalid, Please request another token!"))
             return redirect("app.web.forgot_password")
 
-        return render(request, self.template_name, self._context.get())
+        return render(request, self.template_name, self.__context.get())

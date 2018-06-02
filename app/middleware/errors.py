@@ -11,13 +11,13 @@ from app.modules.util.helpers import Helpers
 
 class Errors():
 
-    _helpers = Helpers()
-    _logger = None
+    __helpers = Helpers()
+    __logger = None
 
 
     def __init__(self, get_response):
         self.get_response = get_response
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     def __call__(self, request):
@@ -27,5 +27,7 @@ class Errors():
         return response
 
     def process_exception(self, request, exception):
-        self._logger.error(_("The server encountered something unexpected! %s %s  - %s - %s") % (request.method, request.path, exception.__class__.__name__, exception))
+        self.__logger.error(
+            _("The server encountered something unexpected! %s %s  - %s - %s") % (request.method, request.path, exception.__class__.__name__, exception)
+        )
         return None

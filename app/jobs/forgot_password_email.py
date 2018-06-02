@@ -13,51 +13,51 @@ from app.jobs.base import Base
 
 class Forgot_Password_Email(Base):
 
-    _data = {}
-    _subject = _("%s Password Reset")
-    _template = "mails/reset_password.html"
+    __data = {}
+    __subject = _("%s Password Reset")
+    __template = "mails/reset_password.html"
 
 
     def execute(self):
 
-        if "app_name" not in self._arguments or "app_email" not in self._arguments or "app_url" not in self._arguments:
-            self._logger.error("App name or app email or app url is missing!")
+        if "app_name" not in self.__arguments or "app_email" not in self.__arguments or "app_url" not in self.__arguments:
+            self.__logger.error("App name or app email or app url is missing!")
             return False
 
-        if "recipient_list" not in self._arguments or len(self._arguments["recipient_list"]) < 1:
-            self._logger.error("Recipient List is Missing!")
+        if "recipient_list" not in self.__arguments or len(self.__arguments["recipient_list"]) < 1:
+            self.__logger.error("Recipient List is Missing!")
             return False
 
-        if "token" not in self._arguments or self._arguments["token"].strip() == "":
-            self._logger.error("Reset Token is Missing!")
+        if "token" not in self.__arguments or self.__arguments["token"].strip() == "":
+            self.__logger.error("Reset Token is Missing!")
             return False
 
-        if "fail_silently" not in self._arguments:
-            self._arguments["fail_silently"] = False
+        if "fail_silently" not in self.__arguments:
+            self.__arguments["fail_silently"] = False
 
-        self._subject = self._subject % (self._arguments["app_name"])
+        self.__subject = self.__subject % (self.__arguments["app_name"])
 
-        self._data = {
-            "app_name": self._arguments["app_name"],
-            "email_title": self._subject,
-            "app_url": self._arguments["app_url"],
-            "token": self._arguments["token"]
+        self.__data = {
+            "app_name": self.__arguments["app_name"],
+            "email_title": self.__subject,
+            "app_url": self.__arguments["app_url"],
+            "token": self.__arguments["token"]
         }
 
         try:
             send_mail(
-                self._subject,
+                self.__subject,
                 "",
-                self._arguments["app_email"],
-                self._arguments["recipient_list"],
-                fail_silently=self._arguments["fail_silently"],
-                html_message=self._get_message()
+                self.__arguments["app_email"],
+                self.__arguments["recipient_list"],
+                fail_silently=self.__arguments["fail_silently"],
+                html_message=self.__get_message()
             )
             return True
         except Exception as e:
-            self._logger.error("Error while sending email: %s" % (e))
+            self.__logger.error("Error while sending email: %s" % (e))
             return False
 
 
     def _get_message(self):
-         return render_to_string(self._template, self._data)
+         return render_to_string(self.__template, self.__data)

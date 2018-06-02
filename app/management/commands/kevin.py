@@ -42,13 +42,13 @@ class Command(BaseCommand):
         if options['command'][0] == "info":
             self.stdout.write(self.style.SUCCESS('Current Version is: %s' % VERSION))
         elif options['command'][0] == "update_app_key":
-            self._refresh_app_key()
+            self.__refresh_app_key()
         elif options['command'][0] == "update_env":
             env_data = options['command'][1].split("=")
-            self._update_env_var(env_data[0], env_data[1])
+            self.__update_env_var(env_data[0], env_data[1])
 
 
-    def _update_env_var(self, key, value):
+    def __update_env_var(self, key, value):
         """Update Env Variable"""
         if not os.path.isfile(os.path.join(APP_ROOT,'.env')):
             self.stdout.write(self.style.ERROR('Error! .env File is Missing.'))
@@ -68,7 +68,7 @@ class Command(BaseCommand):
             file.writelines( data )
 
 
-    def _refresh_app_key(self):
+    def __refresh_app_key(self):
         """Refresh APP Key"""
         if not os.path.isfile(os.path.join(APP_ROOT,'.env')):
             self.stdout.write(self.style.ERROR('Error! .env File is Missing.'))

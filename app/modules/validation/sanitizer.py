@@ -5,70 +5,70 @@ Sanitizer Module
 
 class Sanitizer():
 
-    _input = None
-    _sinput = None
+    __input = None
+    __sinput = None
 
 
     def set_input(self, input_value):
-        self._input = input_value
+        self.__input = input_value
 
 
     def set_sinput(self, sinput_value):
-        self._sinput = sinput_value
+        self.__sinput = sinput_value
 
 
     def get_sinput(self):
-        return self._sinput
+        return self.__sinput
 
 
     def get_input(self):
-        return self._input
+        return self.__input
 
 
     def is_exact(self):
-        return self._input == self._sinput and len(self._input) == len(self._sinput)
+        return self.__input == self.__sinput and len(self.__input) == len(self.__sinput)
 
 
     def strip(self, chars=''):
-        if not isinstance(self._input, (str)):
-            self._sinput = str(self._input)
+        if not isinstance(self.__input, (str)):
+            self.__sinput = str(self.__input)
         else:
-            self._sinput = self._input
+            self.__sinput = self.__input
 
         if len(chars) > 0:
-            self._sinput = self._sinput.strip(chars)
+            self.__sinput = self.__sinput.strip(chars)
         else:
-            self._sinput = self._sinput.strip()
+            self.__sinput = self.__sinput.strip()
 
-        return self._sinput
+        return self.__sinput
 
 
     def lstrip(self, chars=''):
-        if not isinstance(self._input, (str)):
-            self._sinput = str(self._input)
+        if not isinstance(self.__input, (str)):
+            self.__sinput = str(self.__input)
         else:
-            self._sinput = self._input
+            self.__sinput = self.__input
 
         if len(chars) > 0:
-            self._sinput = self._sinput.lstrip(chars)
+            self.__sinput = self.__sinput.lstrip(chars)
         else:
-            self._sinput = self._sinput.lstrip()
+            self.__sinput = self.__sinput.lstrip()
 
-        return self._sinput
+        return self.__sinput
 
 
     def rstrip(self, chars=''):
-        if not isinstance(self._input, (str)):
-            self._sinput = str(self._input)
+        if not isinstance(self.__input, (str)):
+            self.__sinput = str(self.__input)
         else:
-            self._sinput = self._input
+            self.__sinput = self.__input
 
         if len(chars) > 0:
-            self._sinput = self._sinput.rstrip(chars)
+            self.__sinput = self.__sinput.rstrip(chars)
         else:
-            self._sinput = self._sinput.rstrip()
+            self.__sinput = self.__sinput.rstrip()
 
-        return self._sinput
+        return self.__sinput
 
 
     def escape(self, chars=['&', '"', '\'', '>', '<']):
@@ -80,10 +80,10 @@ class Sanitizer():
             "<": "&lt;" if '<' in chars else '<',
         }
 
-        if not isinstance(self._input, (str)):
-            self._sinput = str(self._input)
+        if not isinstance(self.__input, (str)):
+            self.__sinput = str(self.__input)
         else:
-            self._sinput = self._input
+            self.__sinput = self.__input
 
-        self._sinput = "".join(html_escape_table.get(c, c) for c in self._sinput)
-        return self._sinput
+        self.__sinput = "".join(html_escape_table.get(c, c) for c in self.__sinput)
+        return self.__sinput

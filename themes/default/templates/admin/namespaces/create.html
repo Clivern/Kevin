@@ -9,7 +9,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <form action="https://httpbin.org/post" method="post" class="card">
+                        <form id="namespace_create" class="card _endpoint_connect" onsubmit="return false" action="{% url 'app.api.private.v1.admin.namespaces.endpoint' %}" method="post"data-succ-type="redirect" data-succ-url="{% url 'app.web.admin.namespaces.list' %}" data-succ-wait="3000">
+                            {% csrf_token %}
                             <div class="card-status bg-green"></div>
                             <div class="card-header">
                                 <h3 class="card-title">{% trans "Namespace" %}</h3>
@@ -17,18 +18,27 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12 col-lg-12">
-
                                         <div class="form-group">
                                             <label class="form-label">Name</label>
-                                            <input type="text" class="form-control" name="example-text-input" placeholder="Text..">
+                                            <input type="text" class="form-control" name="name" placeholder="Namespace Name" required>
                                         </div>
-
+                                        <div class="form-group">
+                                            <label class="form-label">Slug</label>
+                                            <input type="text" class="form-control" name="slug" placeholder="Namespace Slug" required>
+                                        </div>
+                                        <br/>
+                                        <div class="form-group">
+                                            <label class="custom-switch">
+                                                <input type="checkbox" name="is_public" class="custom-switch-input" value="on">
+                                                <span class="custom-switch-indicator"></span>
+                                                <span class="custom-switch-description">Make it Public</span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer text-right">
                                 <div class="d-flex">
-                                    <button type="reset" href="javascript:void(0)" class="btn btn-link">Cancel</button>
                                     <button type="submit" class="btn btn-primary ml-auto">Save</button>
                                 </div>
                             </div>

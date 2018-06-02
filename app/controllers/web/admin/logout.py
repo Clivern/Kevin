@@ -18,7 +18,7 @@ from app.modules.core.context import Context
 
 class Logout(View):
 
-    _context = Context()
+    __context = Context()
 
 
     def get(self, request):

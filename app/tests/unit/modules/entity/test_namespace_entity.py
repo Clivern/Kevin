@@ -204,4 +204,4 @@ class Test_Namespace_Entity(TestCase):
             {"name": "kev Item 3","is_public": True,"user_id": user13.pk},
             {"name": "kev Item 4","is_public": False,"user_id": user13.pk}
         ]))
-        self.assertEqual(namespace_entity.get_many_by_user(user13.pk).count(), 4)
+        self.assertEqual(namespace_entity.get_many_by_user(user13.pk, "created_at", True).count(), 4)

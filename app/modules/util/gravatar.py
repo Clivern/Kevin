@@ -34,8 +34,8 @@ class Gravatar():
 
 
     def __init__(self, email):
-        self.email = self._sanitize_email(email)
-        self.email_hash = self._md5_hash(self.email)
+        self.email = self.__sanitize_email(email)
+        self.email_hash = self.__md5_hash(self.email)
 
 
     def get_image(self, size=DEFAULT_IMAGE_SIZE, default="", force_default=False, rating="", filetype_extension=False, use_ssl=False):
@@ -58,7 +58,7 @@ class Gravatar():
             del params_dict['default']
         else:
             if not params_dict['default'] in self.DEFAULT_IMAGE:
-                if not self._default_url_is_valid(params_dict['default']):
+                if not self.__default_url_is_valid(params_dict['default']):
                     raise ValueError('Your URL for the default image is not valid.')
         if params_dict['forcedefault']:
             params_dict['forcedefault'] = 'y'
@@ -103,15 +103,15 @@ class Gravatar():
         return base_url.format(**data)
 
 
-    def _sanitize_email(self, email):
+    def __sanitize_email(self, email):
         return email.lower().strip()
 
 
-    def _md5_hash(self, string):
+    def __md5_hash(self, string):
         return md5(string.encode('utf-8')).hexdigest()
 
 
-    def _default_url_is_valid(self, url):
+    def __default_url_is_valid(self, url):
         result = urlparse(url)
 
         if result.scheme == 'http' or result.scheme == 'https':

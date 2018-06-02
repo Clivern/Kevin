@@ -14,17 +14,17 @@ from app.modules.entity.user_entity import User_Entity
 
 class Login():
 
-    _option_entity = None
-    _user_entity = None
-    _helpers = None
-    _logger = None
+    __option_entity = None
+    __user_entity = None
+    __helpers = None
+    __logger = None
 
 
     def __init__(self):
-        self._option_entity = Option_Entity()
-        self._user_entity = User_Entity()
-        self._helpers = Helpers()
-        self._logger = self._helpers.get_logger(__name__)
+        self.__option_entity = Option_Entity()
+        self.__user_entity = User_Entity()
+        self.__helpers = Helpers()
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     def is_authenticated(self, request):
@@ -41,7 +41,7 @@ class Login():
         except Exception as e:
             is_email = False
         if is_email:
-            user = self._user_entity.get_one_by_email(username_email)
+            user = self.__user_entity.get_one_by_email(username_email)
             if user != False and user.check_password(password) == True:
                 if with_login:
                     self.login(request, user)

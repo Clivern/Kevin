@@ -19,9 +19,6 @@ class Namespace_Entity():
         if "slug" not in namespace:
             namespace["slug"] = Helpers().slugify(namespace["name"])
 
-        if namespace["slug"] == "" or self.get_one_by_slug(namespace["slug"]):
-            return False
-
         namespace = Namespace(
             name=namespace["name"],
             slug=namespace["slug"],
@@ -50,6 +47,15 @@ class Namespace_Entity():
             return False
 
 
+    def user_owns(self, namespace_id, user_id):
+        """Get Namespace By ID and User ID"""
+        try:
+            namespace = Namespace.objects.get(pk=namespace_id, user=user_id)
+            return False if namespace.pk is None else True
+        except:
+            return False
+
+
     def get_one_by_slug(self, slug):
         """Get Namespace By Slug"""
         try:
@@ -59,10 +65,24 @@ class Namespace_Entity():
             return False
 
 
-    def get_many_by_user(self, user_id):
+    def get_many_by_user(self, user_id, order_by, asc):
         """Get Many Namespaces By User ID"""
-        namespaces = Namespace.objects.filter(user=user_id)
+        namespaces = Namespace.objects.filter(user=user_id).order_by(order_by if asc else "-created_at")
         return namespaces
+
+
+    def count_by_visibility(self, is_public, user_id = None):
+        if user_id == None:
+            return Namespace.objects.filter(is_public=is_public).count()
+        else:
+            return Namespace.objects.filter(is_public=is_public, user=user_id).count()
+
+
+    def count_by_visibility_date(self, is_public, limit, user_id = None):
+        if user_id == None:
+            return Namespace.objects.raw("select count(id) as id, DATE(created_at) as count_date from app_namespace where is_public=%s group by count_date order by count_date desc limit %s;" % ("1" if is_public else "0", limit))
+        else:
+            return Namespace.objects.raw("select count(id) as id, DATE(created_at) as count_date from app_namespace where is_public=%s and user_id=%s group by count_date order by count_date desc limit %s;" % ("1" if is_public else "0", user_id, limit))
 
 
     def update_one_by_id(self, id, new_data):

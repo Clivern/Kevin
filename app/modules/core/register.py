@@ -10,30 +10,30 @@ from app.modules.entity.user_entity import User_Entity
 
 class Register():
 
-    _option_entity = None
-    _user_entity = None
-    _helpers = None
-    _logger = None
+    __option_entity = None
+    __user_entity = None
+    __helpers = None
+    __logger = None
 
 
     def __init__(self):
-        self._option_entity = Option_Entity()
-        self._user_entity = User_Entity()
-        self._helpers = Helpers()
-        self._logger = self._helpers.get_logger(__name__)
+        self.__option_entity = Option_Entity()
+        self.__user_entity = User_Entity()
+        self.__helpers = Helpers()
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     def username_used(self, username):
-        return False if self._user_entity.get_one_by_username(username) == False else True
+        return False if self.__user_entity.get_one_by_username(username) == False else True
 
 
     def email_used(self, email):
-        return False if self._user_entity.get_one_by_email(email) == False else True
+        return False if self.__user_entity.get_one_by_email(email) == False else True
 
 
     def create_user(self, user_data):
         status = True
-        status &= (self._user_entity.insert_one({
+        status &= (self.__user_entity.insert_one({
             "username" : user_data["username"],
             "email" : user_data["email"],
             "password" : user_data["password"],

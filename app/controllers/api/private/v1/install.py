@@ -21,30 +21,30 @@ from app.modules.core.install import Install as Install_Module
 
 class Install(View):
 
-    _request = Request()
-    _response = Response()
-    _helpers = Helpers()
-    _form = Form()
-    _install = Install_Module()
-    _logger = None
+    __request = Request()
+    __response = Response()
+    __helpers = Helpers()
+    __form = Form()
+    __install = Install_Module()
+    __logger = None
 
 
     def __init__(self):
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     @stop_request_if_installed
     def post(self, request):
 
-        if self._install.is_installed():
-            return JsonResponse(self._response.send_private_failure([{
+        if self.__install.is_installed():
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Application is already installed.")
             }]))
 
-        self._request.set_request(request)
+        self.__request.set_request(request)
 
-        request_data = self._request.get_request_data("post", {
+        request_data = self.__request.get_request_data("post", {
             "app_name" : "",
             "app_email" : "",
             "app_url" : "",
@@ -53,7 +53,7 @@ class Install(View):
             "admin_password" : ""
         })
 
-        self._form.add_inputs({
+        self.__form.add_inputs({
             'app_name': {
                 'value': request_data["app_name"],
                 'sanitize': {
@@ -136,29 +136,29 @@ class Install(View):
             }
         })
 
-        self._form.process()
+        self.__form.process()
 
-        if not self._form.is_passed():
-            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+        if not self.__form.is_passed():
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
 
-        self._install.set_app_data(
-            self._form.get_input_value("app_name"),
-            self._form.get_input_value("app_email"),
-            self._form.get_input_value("app_url")
+        self.__install.set_app_data(
+            self.__form.get_input_value("app_name"),
+            self.__form.get_input_value("app_email"),
+            self.__form.get_input_value("app_url")
         )
-        self._install.set_admin_data(
-            self._form.get_input_value("admin_username"),
-            self._form.get_input_value("admin_email"),
-            self._form.get_input_value("admin_password")
+        self.__install.set_admin_data(
+            self.__form.get_input_value("admin_username"),
+            self.__form.get_input_value("admin_email"),
+            self.__form.get_input_value("admin_password")
         )
 
-        if self._install.install():
-            return JsonResponse(self._response.send_private_success([{
+        if self.__install.install():
+            return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Application installed successfully.")
             }]))
         else:
-            return JsonResponse(self._response.send_private_failure([{
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Something goes wrong during installing.")
             }]))

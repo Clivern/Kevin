@@ -12,50 +12,50 @@ from app.exceptions.validation_rule_not_found import Validation_Rule_Not_Found
 
 class Form():
 
-    _inputs = {}
-    _errors = {}
+    __inputs = {}
+    __errors = {}
 
-    _vstatus = False
-    _sstatus = False
+    __vstatus = False
+    __sstatus = False
 
-    _validator = None
-    _sanitizer = None
-    _sanitizers = []
-    _validators = []
+    __validator = None
+    __sanitizer = None
+    __sanitizers = []
+    __validators = []
 
 
     def __init__(self, inputs={}):
-        self._inputs = inputs
-        self._validator = Validator()
-        self._sanitizer = Sanitizer()
+        self.__inputs = inputs
+        self.__validator = Validator()
+        self.__sanitizer = Sanitizer()
 
 
     def add_inputs(self, inputs={}):
-        self._inputs = inputs
+        self.__inputs = inputs
 
 
     def get_inputs(self):
-        return self._inputs
+        return self.__inputs
 
 
     def get_input_value(self, input_key, sanitized=True):
-        return self._inputs[input_key]["value"] if not sanitized or not "svalue" in self._inputs[input_key] else self._inputs[input_key]["svalue"]
+        return self.__inputs[input_key]["value"] if not sanitized or not "svalue" in self.__inputs[input_key] else self.__inputs[input_key]["svalue"]
 
 
     def get_errors(self, with_type = False):
         if with_type:
             errors = []
-            for input_key, error_list in self._errors.items():
+            for input_key, error_list in self.__errors.items():
                 for error in error_list:
                     errors.append({"type": "error", "message": error})
             return errors
         else:
-            return self._errors
+            return self.__errors
 
 
     def is_passed(self):
-        for input in self._inputs:
-            if len(self._errors[input]) > 0:
+        for input in self.__inputs:
+            if len(self.__errors[input]) > 0:
                 return False
         return True
 
@@ -71,100 +71,100 @@ class Form():
     def process(self, direction=['sanitize', 'validate']):
         if direction[0] == 'sanitize':
             if 'sanitize' in direction:
-                self._sanitize()
+                self.__sanitize()
             if 'validate' in direction:
-                self._validate()
+                self.__validate()
         else:
             if 'validate' in direction:
-                self._validate()
+                self.__validate()
             if 'sanitize' in direction:
-                self._sanitize()
+                self.__sanitize()
 
 
     def add_validator(self, val_instance):
-        self._validators.append(val_instance)
+        self.__validators.append(val_instance)
 
 
     def add_sanitizer(self, san_instance):
-        self._sanitizers.append(san_instance)
+        self.__sanitizers.append(san_instance)
 
 
-    def _validate(self):
+    def __validate(self):
         status = True
 
-        for current_input, validation_rule in self._inputs.items():
-            self._validator.set_input(self._inputs[current_input]['value'])
+        for current_input, validation_rule in self.__inputs.items():
+            self.__validator.set_input(self.__inputs[current_input]['value'])
             if 'validate' in validation_rule:
-                self._errors[current_input] = []
+                self.__errors[current_input] = []
                 for rule_name, rule_args in validation_rule['validate'].items():
-                    self._update_validator(rule_name)
+                    self.__update_validator(rule_name)
                     # Check if param exist and pass them to the method
                     if 'param' in rule_args.keys() and len(rule_args['param']) > 0:
-                        current_status = getattr(self._validator, rule_name)(*rule_args['param'])
+                        current_status = getattr(self.__validator, rule_name)(*rule_args['param'])
                     else:
-                        current_status = getattr(self._validator, rule_name)()
+                        current_status = getattr(self.__validator, rule_name)()
 
-                    if "optional" in validation_rule['validate'] and self._inputs[current_input]['value'] == "":
+                    if "optional" in validation_rule['validate'] and self.__inputs[current_input]['value'] == "":
                         current_status = True
 
-                    self._inputs[current_input]['status'] = current_status
+                    self.__inputs[current_input]['status'] = current_status
                     status &= current_status
                     if not current_status and 'error' in rule_args.keys():
-                        self._errors[current_input].append(rule_args['error'])
+                        self.__errors[current_input].append(rule_args['error'])
 
 
 
 
-        self._vstatus = status
+        self.__vstatus = status
         return status
 
 
-    def _sanitize(self):
+    def __sanitize(self):
         status = True
-        for current_input, sanitization_rule in self._inputs.items():
-            self._sanitizer.set_input(self._inputs[current_input]['value'])
-            self._sanitizer.set_sinput(None)
+        for current_input, sanitization_rule in self.__inputs.items():
+            self.__sanitizer.set_input(self.__inputs[current_input]['value'])
+            self.__sanitizer.set_sinput(None)
             if 'sanitize' in sanitization_rule:
                 for rule_name, rule_args in sanitization_rule['sanitize'].items():
-                    self._update_sanitizer(rule_name)
+                    self.__update_sanitizer(rule_name)
                     # Check if param provided and pass them to the method
                     if 'param' in rule_args.keys() and len(rule_args['param']) > 0:
-                        sanitized_value = getattr(self._sanitizer, rule_name)(*rule_args['param'])
+                        sanitized_value = getattr(self.__sanitizer, rule_name)(*rule_args['param'])
                     else:
-                        sanitized_value = getattr(self._sanitizer, rule_name)()
-                    self._inputs[current_input]['svalue'] = sanitized_value
-                    self._inputs[current_input]['is_exact'] = True if self._inputs[current_input]['value'] == self._sanitizer.get_sinput() else False
-                    status &= self._inputs[current_input]['is_exact']
+                        sanitized_value = getattr(self.__sanitizer, rule_name)()
+                    self.__inputs[current_input]['svalue'] = sanitized_value
+                    self.__inputs[current_input]['is_exact'] = True if self.__inputs[current_input]['value'] == self.__sanitizer.get_sinput() else False
+                    status &= self.__inputs[current_input]['is_exact']
 
-        self._sstatus = status
+        self.__sstatus = status
         return status
 
 
-    def _update_validator(self, rule_name):
-        if hasattr(self._validator, rule_name):
+    def __update_validator(self, rule_name):
+        if hasattr(self.__validator, rule_name):
             return True
-        for validator in self._validators:
+        for validator in self.__validators:
             if hasattr(validator, rule_name):
-                self._validator = validator
+                self.__validator = validator
                 return True
         raise Validation_Rule_Not_Found('Non existent validation rule %s' % rule_name)
 
 
-    def _update_sanitizer(self, rule_name):
-        if hasattr(self._sanitizer, rule_name):
-            if self._sanitizer.get_sinput() is None:
-                self._sanitizer.set_input(self._sanitizer.get_input())
-                self._sanitizer.set_sinput(None)
+    def __update_sanitizer(self, rule_name):
+        if hasattr(self.__sanitizer, rule_name):
+            if self.__sanitizer.get_sinput() is None:
+                self.__sanitizer.set_input(self.__sanitizer.get_input())
+                self.__sanitizer.set_sinput(None)
             else:
-                self._sanitizer.set_input(self._sanitizer.get_sinput())
+                self.__sanitizer.set_input(self.__sanitizer.get_sinput())
             return True
-        for sanitizer in self._sanitizers:
+        for sanitizer in self.__sanitizers:
             if hasattr(sanitizer, rule_name):
-                if self._sanitizer.get_sinput() is None:
-                    sanitizer.set_input(self._sanitizer.get_input())
+                if self.__sanitizer.get_sinput() is None:
+                    sanitizer.set_input(self.__sanitizer.get_input())
                     sanitizer.set_sinput(None)
                 else:
-                    sanitizer.set_input(self._sanitizer.get_sinput())
-                self._sanitizer = sanitizer
+                    sanitizer.set_input(self.__sanitizer.get_sinput())
+                self.__sanitizer = sanitizer
                 return True
         raise Sanitization_Rule_Not_Found('Non existent sanitization rule %s' % rule_name)

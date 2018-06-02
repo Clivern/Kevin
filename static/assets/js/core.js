@@ -151,6 +151,11 @@ kevin_app.profile = (function (window, document, $) {
             if( base.el.update_access_token.length ){
                 base.el.update_access_token.find("button").on("click", function(event){
                     event.preventDefault();
+
+                    if( !confirm(_i18n.confirm_msg) ){
+                        return false;
+                    }
+
                     var _self = $(this);
                     _self.attr('disabled', 'disabled');
                     _self.addClass("btn-loading");
@@ -182,6 +187,11 @@ kevin_app.profile = (function (window, document, $) {
             if( base.el.update_refresh_token.length ){
                 base.el.update_refresh_token.find("button").on("click", function(event){
                     event.preventDefault();
+
+                    if( !confirm(_i18n.confirm_msg) ){
+                        return false;
+                    }
+
                     var _self = $(this);
                     _self.attr('disabled', 'disabled');
                     _self.addClass("btn-loading");
@@ -239,6 +249,95 @@ kevin_app.profile = (function (window, document, $) {
 
 
 /**
+ * Namespace Endpoints
+ */
+kevin_app.namespace = (function (window, document, $) {
+
+    'use strict';
+
+    var base = {
+
+        el: {
+            namespaceName : $('form#namespace_create input[name="name"]'),
+            namespaceSlug : $('form#namespace_create input[name="slug"]'),
+            namespaceDelete: $('a.delete_namespace')
+        },
+        init: function(){
+            if( base.el.namespaceName.length ){
+                base.el.namespaceName.on("change", base.namespaceNameChange);
+            }
+            if( base.el.namespaceDelete.length ){
+                base.el.namespaceDelete.on("click", base.deleteNamespace);
+            }
+        },
+
+        deleteNamespace: function(event) {
+            event.preventDefault();
+
+            if( !confirm(_i18n.confirm_msg) ){
+                return false;
+            }
+
+            var _self = $(this);
+            _self.attr('disabled', 'disabled');
+            require(['pace', 'jscookie'], function(Pace, Cookies) {
+                Pace.track(function(){
+                    $.ajax({
+                      method: "DELETE",
+                      url: _self.attr('data-url') + "?csrfmiddlewaretoken=" + Cookies.get('csrftoken'),
+                      data: { "csrfmiddlewaretoken": Cookies.get('csrftoken') }
+                    }).done(function( response ) {
+                        if( response.status == "success" ){
+                            base.success(response.messages);
+                            _self.closest("tr").remove();
+                        }else{
+                            base.error(response.messages);
+                        }
+                    });
+                });
+            });
+        },
+
+        namespaceNameChange: function(event) {
+            event.preventDefault();
+            base.el.namespaceSlug.val(base.slugify(base.el.namespaceName.val()))
+        },
+        slugify: function(text) {
+          return text.toString().toLowerCase()
+            .replace(/\s+/g, '-')           // Replace spaces with -
+            .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+            .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+            .replace(/^-+/, '')             // Trim - from start of text
+            .replace(/-+$/, '');            // Trim - from end of text
+        },
+        success : function(messages){
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.clear();
+                    toastr.success(messageObj.message);
+                });
+                break;
+            }
+        },
+        error : function(messages){
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.clear();
+                    toastr.error(messageObj.message);
+                });
+                break;
+            }
+        }
+    };
+
+   return {
+        init: base.init
+    };
+
+})(window, document, jQuery);
+
+
+/**
  *
  */
 let hexToRgba = function(hex, opacity) {
@@ -256,6 +355,9 @@ let hexToRgba = function(hex, opacity) {
  */
 $(document).ready(function() {
 
+
+
+
     $(document).ajaxStart(function() {
         require(['pace'], function(Pace) {
             Pace.restart();
@@ -267,8 +369,13 @@ $(document).ready(function() {
 
     kevin_app.endpoint_connect.init();
     kevin_app.profile.init();
+    kevin_app.namespace.init();
 
     require(['jscookie'], function(Cookies) {
+        $.ajaxSetup({
+            headers:
+            { 'X-CSRFToken': Cookies.get('csrftoken') }
+        });
         console.log(Cookies.get('csrftoken'))
     })
 

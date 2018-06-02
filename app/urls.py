@@ -23,6 +23,7 @@ from app.controllers.web.admin.profile import Profile as Profile_View
 from app.controllers.web.admin.namespaces import Namespaces_List as Namespaces_List_Web
 from app.controllers.web.admin.namespaces import Namespace_Create as Namespace_Create_Web
 from app.controllers.web.admin.namespaces import Namespace_Edit as Namespace_Edit_Web
+from app.controllers.web.admin.namespaces import Namespace_View as Namespace_View_Web
 
 from app.controllers.web.admin.endpoints import Endpoints_List as Endpoints_List_Web
 from app.controllers.web.admin.endpoints import Endpoint_View as Endpoint_View_Web
@@ -36,6 +37,10 @@ from app.controllers.api.private.v1.forgot_password import Forgot_Password as Fo
 from app.controllers.api.private.v1.reset_password import Reset_Password as Reset_Password_V1_Endpoint_Private
 from app.controllers.api.private.v1.admin.settings import Settings as Settings_Admin_V1_Endpoint_Private
 from app.controllers.api.private.v1.admin.profile import Profile as Profile_Admin_V1_Endpoint_Private
+
+from app.controllers.api.private.v1.admin.namespaces import Namespaces as Namespaces_Admin_V1_Endpoint_Private
+from app.controllers.api.private.v1.admin.namespaces import Namespace as Namespace_Admin_V1_Endpoint_Private
+
 
 
 urlpatterns = [
@@ -56,7 +61,8 @@ urlpatterns = [
 
         path('namespaces', Namespaces_List_Web.as_view(), name='app.web.admin.namespaces.list'),
         path('namespaces/create', Namespace_Create_Web.as_view(), name='app.web.admin.namespaces.create'),
-        path('namespaces/edit/<slug:namespace>', Namespace_Edit_Web.as_view(), name='app.web.admin.namespaces.edit'),
+        path('namespaces/edit/<slug:namespace_slug>', Namespace_Edit_Web.as_view(), name='app.web.admin.namespaces.edit'),
+        path('namespaces/view/<slug:namespace_slug>', Namespace_View_Web.as_view(), name='app.web.admin.namespaces.view'),
 
         path('endpoints/<slug:namespace>', Endpoints_List_Web.as_view(), name='app.web.admin.endpoints.list'),
         path('endpoints/<slug:namespace>/<int:endpoint>', Endpoint_View_Web.as_view(), name='app.web.admin.endpoints.view'),
@@ -77,6 +83,10 @@ urlpatterns = [
         path('admin/', include([
             path('settings', Settings_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.settings.endpoint'),
             path('profile', Profile_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.profile.endpoint'),
+
+            path('namespace', Namespaces_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespaces.endpoint'),
+            path('namespace/<int:namespace_id>', Namespace_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespace.endpoint'),
+
         ]))
 
     ])),

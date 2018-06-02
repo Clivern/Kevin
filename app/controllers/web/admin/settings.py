@@ -13,19 +13,22 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import gettext as _
 
 # local Django
+from app.modules.core.upgrade import Upgrade
 from app.modules.core.context import Context
 
 
 class Settings(View):
 
     template_name = 'templates/admin/settings.html'
-    _context = Context()
+    __context = Context()
+    __upgrade = Upgrade()
 
 
     def get(self, request):
 
-        self._context.autoload_options()
-        self._context.load_options({
+        self.__context.autoload_options()
+        self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
+        self.__context.load_options({
             "app_name": "",
             "app_email": "",
             "app_url": "",
@@ -34,8 +37,14 @@ class Settings(View):
             "reset_mails_messages_count": "",
             "reset_mails_expire_after": ""
         })
-        self._context.push({
-            "page_title": _("Settings | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+
+        self.__context.push({
+            "current": self.__upgrade.get_current_version(),
+            "latest": self.__upgrade.get_latest_version()
         })
 
-        return render(request, self.template_name, self._context.get())
+        self.__context.push({
+            "page_title": _("Settings | %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+        })
+
+        return render(request, self.template_name, self.__context.get())

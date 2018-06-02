@@ -20,20 +20,21 @@ from app.modules.core.profile import Profile
 class Profile(View):
 
     template_name = 'templates/admin/profile.html'
-    _context = Context()
-    _profile = Profile()
-    _user_id = None
+    __context = Context()
+    __profile = Profile()
+    __user_id = None
 
 
     def get(self, request):
 
-        self._user_id = request.user.id
+        self.__user_id = request.user.id
 
-        self._context.autoload_options()
-        self._context.push({
-            "page_title": _("Profile | %s") % self._context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+        self.__context.autoload_options()
+        self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
+        self.__context.push({
+            "page_title": _("Profile | %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
 
-        self._context.push(self._profile.get_profile(self._user_id))
+        self.__context.push(self.__profile.get_profile(self.__user_id))
 
-        return render(request, self.template_name, self._context.get())
+        return render(request, self.template_name, self.__context.get())

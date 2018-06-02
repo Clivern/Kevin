@@ -19,28 +19,28 @@ from app.modules.core.forgot_password import Forgot_Password as Forgot_Password_
 
 class Forgot_Password(View):
 
-    _request = Request()
-    _response = Response()
-    _helpers = Helpers()
-    _form = Form()
-    _forgot_password = Forgot_Password_Module()
-    _logger = None
+    __request = Request()
+    __response = Response()
+    __helpers = Helpers()
+    __form = Form()
+    __forgot_password = Forgot_Password_Module()
+    __logger = None
 
 
     def __init__(self):
-        self._logger = self._helpers.get_logger(__name__)
+        self.__logger = self.__helpers.get_logger(__name__)
 
 
     @stop_request_if_authenticated
     def post(self, request):
 
-        self._request.set_request(request)
+        self.__request.set_request(request)
 
-        request_data = self._request.get_request_data("post", {
+        request_data = self.__request.get_request_data("post", {
             "email" : ""
         })
 
-        self._form.add_inputs({
+        self.__form.add_inputs({
             'email': {
                 'value': request_data["email"],
                 'sanitize': {
@@ -55,45 +55,45 @@ class Forgot_Password(View):
             }
         })
 
-        self._form.process()
+        self.__form.process()
 
-        if not self._form.is_passed():
-            return JsonResponse(self._response.send_private_failure(self._form.get_errors(with_type=True)))
+        if not self.__form.is_passed():
+            return JsonResponse(self.__response.send_private_failure(self.__form.get_errors(with_type=True)))
 
-        if not self._forgot_password.check_email(self._form.get_input_value("email")):
-            return JsonResponse(self._response.send_private_failure([{
+        if not self.__forgot_password.check_email(self.__form.get_input_value("email")):
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Email is not exist.")
             }]))
 
-        reset_request = self._forgot_password.reset_request_exists(self._form.get_input_value("email"))
+        reset_request = self.__forgot_password.reset_request_exists(self.__form.get_input_value("email"))
 
         if reset_request != False:
-            if self._forgot_password.is_spam(reset_request):
-                return JsonResponse(self._response.send_private_failure([{
+            if self.__forgot_password.is_spam(reset_request):
+                return JsonResponse(self.__response.send_private_failure([{
                     "type": "error",
                     "message": _("Sorry! You already exceeded the maximum number of reset requests!")
                 }]))
-            token = self._forgot_password.update_request(reset_request)
+            token = self.__forgot_password.update_request(reset_request)
         else:
-            token = self._forgot_password.create_request(self._form.get_input_value("email"))
+            token = self.__forgot_password.create_request(self.__form.get_input_value("email"))
 
         if token == False:
-            return JsonResponse(self._response.send_private_failure([{
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Something goes wrong while creating reset request.")
             }]))
 
 
-        message = self._forgot_password.send_message(self._form.get_input_value("email"), token)
+        message = self.__forgot_password.send_message(self.__form.get_input_value("email"), token)
 
         if message == False:
-            return JsonResponse(self._response.send_private_failure([{
+            return JsonResponse(self.__response.send_private_failure([{
                 "type": "error",
                 "message": _("Error! Something goes wrong while sending reset instructions.")
             }]))
         else:
-            return JsonResponse(self._response.send_private_success([{
+            return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Reset instructions sent successfully.")
             }]))
