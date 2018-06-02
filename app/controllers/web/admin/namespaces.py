@@ -78,10 +78,8 @@ class Namespace_Edit(View):
         self.__context.autoload_options()
         self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self.__context.push({
-            "page_title": _("Edit %s Namespace · %s") % (namespace.name, self.__context.get("app_name", os.getenv("APP_NAME", "Kevin")))
-        })
-        self.__context.push({
-            "namespace": namespace,
+            "page_title": _("Edit %s Namespace · %s") % (namespace.name, self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
+            "namespace": namespace
         })
 
         return render(request, self.template_name, self.__context.get())
@@ -93,6 +91,7 @@ class Namespace_View(View):
     template_name = 'templates/admin/namespaces/view.html'
     __context = Context()
     __namespace_module = Namespace_Module()
+    __namespaces_statistics = NamespacesStatistics()
 
 
     def get(self, request, namespace_slug):
@@ -105,11 +104,10 @@ class Namespace_View(View):
         self.__context.autoload_options()
         self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self.__context.push({
-            "page_title": _("%s Namespace · %s") % (namespace.name, self.__context.get("app_name", os.getenv("APP_NAME", "Kevin")))
-        })
-
-        self.__context.push({
+            "page_title": _("%s Namespace · %s") % (namespace.name, self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
             "namespace": namespace,
+            "donut": self.__namespaces_statistics.count_endpoints_by_target(namespace.id),
+            "line_chart": self.__namespaces_statistics.count_requests_over_time_chart(20, namespace.id)
         })
 
         return render(request, self.template_name, self.__context.get())
