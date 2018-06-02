@@ -57,7 +57,7 @@ class NamespacesStatistics():
 
         days_count = days_num
 
-        while days_count > -1:
+        while days_count > 0:
             current_date = timezone.now().date() - timedelta(days_count)
             current_date = str(current_date)
 
