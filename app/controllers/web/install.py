@@ -32,7 +32,7 @@ class Install(View):
             return redirect("app.web.login")
 
         self.__context.push({
-            "page_title": _("Installation | %s") % self.__option_entity.get_value_by_key("app_name", os.getenv("APP_NAME", "Kevin"))
+            "page_title": _("Installation · %s") % self.__option_entity.get_value_by_key("app_name", os.getenv("APP_NAME", "Kevin"))
         })
 
         return render(request, self.template_name, self.__context.get())

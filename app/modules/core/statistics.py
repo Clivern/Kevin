@@ -7,6 +7,7 @@ from app.modules.entity.namespace_entity import Namespace_Entity
 from django.utils import timezone
 from datetime import date, timedelta
 
+
 class NamespacesStatistics():
 
     __helpers = Helpers()
@@ -83,4 +84,13 @@ class NamespacesStatistics():
         data["final"]["public"] = ",".join(str(x) for x in data["final"]["public"])
         data["final"]["total"] = ",".join(str(x) for x in data["final"]["total"])
 
-        return data
+        return {
+            "private": data["final"]["private"],
+            "public": data["final"]["public"],
+            "total": data["final"]["total"]
+        }
+
+
+
+class EndpointsStatistics():
+    pass

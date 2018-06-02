@@ -31,7 +31,7 @@ class Namespaces_List(View):
         self.__context.autoload_options()
         self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self.__context.push({
-            "page_title": _("Namespaces | %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+            "page_title": _("Namespaces · %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
 
         self.__context.push({
@@ -55,7 +55,7 @@ class Namespace_Create(View):
         self.__context.autoload_options()
         self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self.__context.push({
-            "page_title": _("Create a Namespace | %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+            "page_title": _("Create a Namespace · %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
 
         return render(request, self.template_name, self.__context.get())
@@ -70,17 +70,16 @@ class Namespace_Edit(View):
 
     def get(self, request, namespace_slug):
 
-        self.__context.autoload_options()
-        self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
-        self.__context.push({
-            "page_title": _("Edit %s Namespace | %s") % ("Item", self.__context.get("app_name", os.getenv("APP_NAME", "Kevin")))
-        })
-
         namespace = self.__namespace_module.get_one_by_slug(namespace_slug)
 
         if namespace == False or request.user.id != namespace.user.id:
             raise Http404("Namespace not found.")
 
+        self.__context.autoload_options()
+        self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
+        self.__context.push({
+            "page_title": _("Edit %s Namespace · %s") % (namespace.name, self.__context.get("app_name", os.getenv("APP_NAME", "Kevin")))
+        })
         self.__context.push({
             "namespace": namespace,
         })
@@ -98,21 +97,19 @@ class Namespace_View(View):
 
     def get(self, request, namespace_slug):
 
-        self.__context.autoload_options()
-        self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
-        self.__context.push({
-            "page_title": _("Edit %s Namespace | %s") % ("Item", self.__context.get("app_name", os.getenv("APP_NAME", "Kevin")))
-        })
-
         namespace = self.__namespace_module.get_one_by_slug(namespace_slug)
 
         if namespace == False or request.user.id != namespace.user.id:
             raise Http404("Namespace not found.")
+
+        self.__context.autoload_options()
+        self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
+        self.__context.push({
+            "page_title": _("%s Namespace · %s") % (namespace.name, self.__context.get("app_name", os.getenv("APP_NAME", "Kevin")))
+        })
 
         self.__context.push({
             "namespace": namespace,
         })
 
         return render(request, self.template_name, self.__context.get())
-
-

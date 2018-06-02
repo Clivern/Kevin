@@ -35,7 +35,7 @@ class Reset_Password(View):
 
         self.__context.autoload_options()
         self.__context.push({
-            "page_title": _("Reset Password | %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin")),
+            "page_title": _("Reset Password · %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin")),
             "reset_token": token
         })
 
