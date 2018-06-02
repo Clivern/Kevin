@@ -55,48 +55,71 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="text-left">
-                                                <div><a href="#">GET</a></div>
-                                            </td>
-                                            <td class="text-left">
-                                                <div>/</div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div>{% trans "Debug" %}</div>
-                                                <div>{% trans "Validate" %}</div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="small text-muted">
-                                                    Mar 19, 2018
-                                                </div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div>
-                                                    <i class="text-green fe fe-activity" data-toggle="tooltip" data-original-title="Debug"></i>
-                                                    <i class="text-blue fe fe-cloud" data-toggle="tooltip" data-original-title="Validation Passed"></i>
-                                                    <i class="text-red fe fe-cloud-drizzle" data-toggle="tooltip" data-original-title="Validation Failed"></i>
-                                                </div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="item-action dropdown">
-                                                    <a href="javascript:void(0)" data-toggle="dropdown" class="icon">
-                                                        <i class="fe fe-more-vertical"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a href="#" class="dropdown-item">
-                                                            <i class="dropdown-icon fe fe-link"></i> {% trans "View" %}
-                                                        </a>
-                                                        <a href="#" class="dropdown-item">
-                                                            <i class="dropdown-icon fe fe-edit"></i> {% trans "Edit" %}
-                                                        </a>
-                                                        <a href="#" class="dropdown-item">
-                                                            <i class="dropdown-icon fe fe-trash"></i> {% trans "Delete" %}
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        {% if endpoints %}
+                                            {% for endpoint in endpoints %}
+
+                                                <tr>
+                                                    <td class="text-left">
+                                                        <div><a href="{% url 'app.web.admin.endpoints.view' namespace.slug endpoint.id %}">{{ endpoint.method|upper }}</a></div>
+                                                    </td>
+                                                    <td class="text-left">
+                                                        <div>{{ endpoint.route }}</div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {% if endpoint.target == "debug" %}
+                                                            <div>{% trans "Debug" %}</div>
+                                                        {% elif endpoint.target == "dynamic" %}
+                                                            <div>{% trans "Dynamic" %}</div>
+                                                        {% else %}
+                                                            <div>{% trans "Validate" %}</div>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="small text-muted">
+                                                            {{ endpoint.created_at }}
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div>
+                                                            {% if endpoint.status == "debug" %}
+                                                                <i class="text-green fe fe-activity" data-toggle="tooltip" data-original-title="Debug"></i>
+                                                            {% elif endpoint.status == "valid" %}
+                                                                <i class="text-blue fe fe-cloud" data-toggle="tooltip" data-original-title="Validation Passed"></i>
+                                                            {% elif endpoint.status == "not_valid" %}
+                                                                <i class="text-red fe fe-cloud-drizzle" data-toggle="tooltip" data-original-title="Validation Failed"></i>
+                                                            {% else %}
+                                                                <i class="text-blue fe fe-zap" data-toggle="tooltip" data-original-title="Dynamic"></i>
+                                                            {% endif %}
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="item-action dropdown">
+                                                            <a href="javascript:void(0)" data-toggle="dropdown" class="icon">
+                                                                <i class="fe fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a href="{% url 'app.web.admin.endpoints.view' namespace.slug endpoint.id %}" class="dropdown-item">
+                                                                    <i class="dropdown-icon fe fe-link"></i> {% trans "View" %}
+                                                                </a>
+                                                                <a href="{% url 'app.web.admin.endpoints.edit' namespace.slug endpoint.id %}" class="dropdown-item">
+                                                                    <i class="dropdown-icon fe fe-edit"></i> {% trans "Edit" %}
+                                                                </a>
+                                                                <a href="javascript:void(0)" data-url="" class="dropdown-item">
+                                                                    <i class="dropdown-icon fe fe-trash"></i> {% trans "Delete" %}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="6" class="text-center small text-muted">
+                                                    <br/>
+                                                    {% trans "You miss a lot of fun, Create some endpoints!" %}
+                                                </td>
+                                            </tr>
+                                        {% endif %}
                                     </tbody>
                                 </table>
 

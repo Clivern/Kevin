@@ -72,6 +72,14 @@ class Request_Entity():
         return Request.objects.raw("select count(id) as id, DATE(created_at) as count_date from app_request where endpoint_id in (%s) group by count_date order by count_date desc limit %s;" % (",".join(str(x) for x in endpoint_ids), limit))
 
 
+    def get_latest_status(self, endpoint_id):
+        try:
+            request =  Request.objects.filter(endpoint=endpoint_id).latest('status')
+            return request.status
+        except Exception as e:
+            return "valid"
+
+
     def update_one_by_id(self, id, new_data):
         """Update Request By ID"""
         request = self.get_one_by_id(id)

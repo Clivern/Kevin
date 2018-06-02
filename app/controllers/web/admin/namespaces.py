@@ -16,6 +16,7 @@ from django.http import Http404
 from app.modules.core.context import Context
 from app.modules.core.statistics import NamespacesStatistics
 from app.modules.core.namespace import Namespace as Namespace_Module
+from app.modules.core.endpoint import Endpoint as Endpoint_Module
 
 
 class Namespaces_List(View):
@@ -92,6 +93,7 @@ class Namespace_View(View):
     __context = Context()
     __namespace_module = Namespace_Module()
     __namespaces_statistics = NamespacesStatistics()
+    __endpoint_module = Endpoint_Module()
 
 
     def get(self, request, namespace_slug):
@@ -106,6 +108,7 @@ class Namespace_View(View):
         self.__context.push({
             "page_title": _("%s Namespace · %s") % (namespace.name, self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
             "namespace": namespace,
+            "endpoints": self.__endpoint_module.get_many_by_namespace_id(namespace.id),
             "donut": self.__namespaces_statistics.count_endpoints_by_target(namespace.id),
             "line_chart": self.__namespaces_statistics.count_requests_over_time_chart(20, namespace.id)
         })
