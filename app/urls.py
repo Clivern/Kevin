@@ -42,6 +42,8 @@ from app.controllers.api.private.v1.admin.profile import Profile as Profile_Admi
 from app.controllers.api.private.v1.admin.namespaces import Namespaces as Namespaces_Admin_V1_Endpoint_Private
 from app.controllers.api.private.v1.admin.namespaces import Namespace as Namespace_Admin_V1_Endpoint_Private
 
+from app.controllers.api.private.v1.admin.endpoints import Endpoints as Endpoints_Admin_V1_Endpoint_Private
+from app.controllers.api.private.v1.admin.endpoints import Endpoint as Endpoint_Admin_V1_Endpoint_Private
 
 
 urlpatterns = [
@@ -88,6 +90,9 @@ urlpatterns = [
 
             path('namespace', Namespaces_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespaces.endpoint'),
             path('namespace/<int:namespace_id>', Namespace_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespace.endpoint'),
+
+            path('endpoint', Endpoints_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.endpoints.endpoint'),
+            path('endpoint/<int:endpoint_id>', Endpoint_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.endpoint.endpoint'),
 
         ]))
 

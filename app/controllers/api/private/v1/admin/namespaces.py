@@ -229,7 +229,7 @@ class Namespace(View):
                 "message": _("Error! Invalid Request.")
             }]))
 
-        if self.__namespace_module.delete_namespace(namespace_id):
+        if self.__namespace_module.delete_namespace(self.__namespace_id):
             return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Namespace deleted successfully.")

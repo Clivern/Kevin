@@ -104,9 +104,10 @@
                                                                 <a href="{% url 'app.web.admin.endpoints.edit' namespace.slug endpoint.id %}" class="dropdown-item">
                                                                     <i class="dropdown-icon fe fe-edit"></i> {% trans "Edit" %}
                                                                 </a>
-                                                                <a href="javascript:void(0)" data-url="" class="dropdown-item">
+                                                                <a href="javascript:void(0)" data-url="{% url 'app.api.private.v1.admin.endpoint.endpoint' endpoint.id %}" class="dropdown-item delete_endpoint">
                                                                     <i class="dropdown-icon fe fe-trash"></i> {% trans "Delete" %}
                                                                 </a>
+
                                                             </div>
                                                         </div>
                                                     </td>

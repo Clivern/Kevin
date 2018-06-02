@@ -36,3 +36,14 @@ class Endpoint():
             else:
                 endpoint.status = "debug"
         return endpoints
+
+
+    def user_owns(self, endpoint_id, user_id):
+        endpoint = self.__endpoint_entity.get_one_by_id(endpoint_id)
+        if endpoint == False:
+            return False
+        return self.__namespace_entity.user_owns(endpoint.namespace.id, user_id)
+
+
+    def delete_endpoint(self, endpoint_id):
+        return self.__endpoint_entity.delete_one_by_id(endpoint_id)

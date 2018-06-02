@@ -337,6 +337,77 @@ kevin_app.namespace = (function (window, document, $) {
 })(window, document, jQuery);
 
 
+
+/**
+ * Endpoint Endpoints
+ */
+kevin_app.endpoint = (function (window, document, $) {
+
+    'use strict';
+
+    var base = {
+
+        el: {
+            endpointDelete: $('a.delete_endpoint')
+        },
+        init: function(){
+            if( base.el.endpointDelete.length ){
+                base.el.endpointDelete.on("click", base.deleteEndpoint);
+            }
+        },
+
+        deleteEndpoint: function(event) {
+            event.preventDefault();
+
+            if( !confirm(_i18n.confirm_msg) ){
+                return false;
+            }
+
+            var _self = $(this);
+            _self.attr('disabled', 'disabled');
+            require(['pace', 'jscookie'], function(Pace, Cookies) {
+                Pace.track(function(){
+                    $.ajax({
+                      method: "DELETE",
+                      url: _self.attr('data-url') + "?csrfmiddlewaretoken=" + Cookies.get('csrftoken'),
+                      data: { "csrfmiddlewaretoken": Cookies.get('csrftoken') }
+                    }).done(function( response ) {
+                        if( response.status == "success" ){
+                            base.success(response.messages);
+                            _self.closest("tr").remove();
+                        }else{
+                            base.error(response.messages);
+                        }
+                    });
+                });
+            });
+        },
+        success : function(messages){
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.clear();
+                    toastr.success(messageObj.message);
+                });
+                break;
+            }
+        },
+        error : function(messages){
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.clear();
+                    toastr.error(messageObj.message);
+                });
+                break;
+            }
+        }
+    };
+
+   return {
+        init: base.init
+    };
+
+})(window, document, jQuery);
+
 /**
  *
  */
@@ -370,6 +441,7 @@ $(document).ready(function() {
     kevin_app.endpoint_connect.init();
     kevin_app.profile.init();
     kevin_app.namespace.init();
+    kevin_app.endpoint.init();
 
     require(['jscookie'], function(Cookies) {
         $.ajaxSetup({
