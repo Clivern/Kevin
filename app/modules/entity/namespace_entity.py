@@ -67,7 +67,7 @@ class Namespace_Entity():
 
     def get_many_by_user(self, user_id, order_by, asc):
         """Get Many Namespaces By User ID"""
-        namespaces = Namespace.objects.filter(user=user_id).order_by(order_by if asc else "-created_at")
+        namespaces = Namespace.objects.filter(user=user_id).order_by(order_by if asc else "-%s" % order_by)
         return namespaces
 
 

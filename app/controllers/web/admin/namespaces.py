@@ -108,7 +108,7 @@ class Namespace_View(View):
         self.__context.push({
             "page_title": _("%s Namespace · %s") % (namespace.name, self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
             "namespace": namespace,
-            "endpoints": self.__endpoint_module.get_many_by_namespace_id(namespace.id),
+            "endpoints": self.__endpoint_module.get_many_by_namespace_id(namespace.id, "created_at", False),
             "donut": self.__namespaces_statistics.count_endpoints_by_target(namespace.id),
             "line_chart": self.__namespaces_statistics.count_requests_over_time_chart(20, namespace.id)
         })

@@ -26,8 +26,8 @@ class Endpoint():
         return self.__endpoint_entity.count_by_target(target, namespace_id)
 
 
-    def get_many_by_namespace_id(self, namespace_id):
-        endpoints  = self.__endpoint_entity.get_many_by_namespace(namespace_id)
+    def get_many_by_namespace_id(self, namespace_id, order_by = "created_at", asc = False):
+        endpoints  = self.__endpoint_entity.get_many_by_namespace(namespace_id, order_by, asc)
         for endpoint in endpoints:
             if endpoint.target == 'validate':
                 endpoint.status = self.__request_entity.get_latest_status(endpoint.id)
@@ -47,3 +47,11 @@ class Endpoint():
 
     def delete_endpoint(self, endpoint_id):
         return self.__endpoint_entity.delete_one_by_id(endpoint_id)
+
+
+    def insert_one(self, endpoint):
+        return self.__endpoint_entity.insert_one(endpoint)
+
+
+    def update_one_by_id(self, endpoint_id, new_data):
+        return self.__endpoint_entity.update_one_by_id(endpoint_id, new_data)

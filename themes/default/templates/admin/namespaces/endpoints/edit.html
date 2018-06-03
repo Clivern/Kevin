@@ -2,17 +2,67 @@
 {% load staticfiles %}
 {% load i18n %}
 
-
 {% block content %}
     <div class="page-main">
         {% include 'partials/top-menu.html' %}
         <div class="my-3 my-md-5">
             <div class="container">
-
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card _endpoint_connect" onsubmit="return false" action="{% url 'app.api.private.v1.admin.endpoint.endpoint' endpoint.id %}" method="post"data-succ-type="redirect" data-succ-url="{% url 'app.web.admin.namespaces.view' namespace.slug %}" data-succ-wait="3000">
+                            {% csrf_token %}
+                            <input type="hidden" name="route_rules" value="{}">
+                            <input type="hidden" name="headers_rules" value="{}">
+                            <input type="hidden" name="body_rules" value="{}">
+                            <div class="card-status bg-green"></div>
+                            <div class="card-header">
+                                <h3 class="card-title">{% trans "Endpoint" %}</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-label">{% trans "Route" %}</label>
+                                            <input type="text" class="form-control" name="route" value="{{ endpoint.route }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">{% trans "Method" %}</label>
+                                            <select name="method" class="form-control custom-select" required>
+                                                <option value="">{% trans "Please select a value" %}</option>
+                                                <option value="get" {% if endpoint.method == 'get' %}selected{% endif %}>{% trans "GET" %}</option>
+                                                <option value="post" {% if endpoint.method == 'post' %}selected{% endif %}>{% trans "POST" %}</option>
+                                                <option value="head" {% if endpoint.method == 'head' %}selected{% endif %}>{% trans "HEAD" %}</option>
+                                                <option value="put" {% if endpoint.method == 'put' %}selected{% endif %}>{% trans "PUT" %}</option>
+                                                <option value="delete" {% if endpoint.method == 'delete' %}selected{% endif %}>{% trans "DELETE" %}</option>
+                                                <option value="patch" {% if endpoint.method == 'patch' %}selected{% endif %}>{% trans "PATCH" %}</option>
+                                                <option value="trace" {% if endpoint.method == 'trace' %}selected{% endif %}>{% trans "TRACE" %}</option>
+                                                <option value="options" {% if endpoint.method == 'options' %}selected{% endif %}>{% trans "OPTIONS" %}</option>
+                                                <option value="connect" {% if endpoint.method == 'connect' %}selected{% endif %}>{% trans "CONNECT" %}</option>
+                                                <option value="any" {% if endpoint.method == 'any' %}selected{% endif %}>{% trans "ANY" %}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">{% trans "Target" %}</label>
+                                            <select name="target" class="form-control custom-select" required>
+                                                <option value="">{% trans "Please select a value" %}</option>
+                                                <option value="debug" {% if endpoint.target == 'debug' %}selected{% endif %}>{% trans "Debug" %}</option>
+                                                <option value="validate" {% if endpoint.target == 'validate' %}selected{% endif %}>{% trans "Validate" %}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <div class="d-flex">
+                                    <button type="submit" class="btn btn-primary ml-auto">{% trans "Submit" %}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
     {% include 'partials/bottom-menu.html' %}
 
 {% endblock %}

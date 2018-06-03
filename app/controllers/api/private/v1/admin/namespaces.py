@@ -33,9 +33,8 @@ class Namespaces(View):
         self.__logger = self.__helpers.get_logger(__name__)
 
 
-    def get(self, request):
-
-        self.__user_id = request.user.id
+    #def get(self, request):
+    #    pass
 
 
     def post(self, request):

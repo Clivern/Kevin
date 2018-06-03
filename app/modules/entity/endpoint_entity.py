@@ -61,9 +61,9 @@ class Endpoint_Entity():
             return False
 
 
-    def get_many_by_namespace(self, namespace_id):
+    def get_many_by_namespace(self, namespace_id, order_by, asc):
         """Get Many Endpoints By Namespace ID"""
-        endpoints = Endpoint.objects.filter(namespace=namespace_id)
+        endpoints = Endpoint.objects.filter(namespace=namespace_id).order_by(order_by if asc else "-%s" % order_by)
         return endpoints
 
 

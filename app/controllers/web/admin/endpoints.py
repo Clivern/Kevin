@@ -73,7 +73,7 @@ class Endpoint_Add(View):
         self.__context.autoload_options()
         self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self.__context.push({
-            "page_title": _("%s Endpoint Activity · %s") % ("Item", self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
+            "page_title": _("Create Endpoint · %s") % (self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
             "namespace": namespace
         })
 
@@ -105,7 +105,7 @@ class Endpoint_Edit(View):
         self.__context.autoload_options()
         self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self.__context.push({
-            "page_title": _("%s Endpoint Activity · %s") % ("Item", self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
+            "page_title": _("Edit Endpoint · %s") % (self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
             "namespace": namespace,
             "endpoint": endpoint
         })
