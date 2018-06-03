@@ -120,7 +120,7 @@ class Test_Endpoint_Entity(TestCase):
             {"route": "/", "method": Endpoint_Entity.POST, "target": Endpoint_Entity.VALIDATE, "route_rules": "{}", "headers_rules": "{}", "body_rules": "{}","namespace_id": namespace.id},
             {"route": "/{id}", "method": Endpoint_Entity.GET, "target": Endpoint_Entity.DYNAMIC, "route_rules": "{}", "headers_rules": "{}", "body_rules": "{}","namespace_id": namespace.id},
         ]))
-        self.assertEqual(3, endpoint_entity.get_many_by_namespace(namespace.id).count())
+        self.assertEqual(3, endpoint_entity.get_many_by_namespace(namespace.id, "created_at", False).count())
 
 
     def test_update_one_by_id(self):
