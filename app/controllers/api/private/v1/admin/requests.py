@@ -37,7 +37,6 @@ class Requests(View):
         pass
 
 
-
 class Request(View):
 
     __request = Request()
