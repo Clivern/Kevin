@@ -45,6 +45,9 @@ from app.controllers.api.private.v1.admin.namespaces import Namespace as Namespa
 from app.controllers.api.private.v1.admin.endpoints import Endpoints as Endpoints_Admin_V1_Endpoint_Private
 from app.controllers.api.private.v1.admin.endpoints import Endpoint as Endpoint_Admin_V1_Endpoint_Private
 
+from app.controllers.api.private.v1.admin.requests import Requests as Requests_Admin_V1_Endpoint_Private
+from app.controllers.api.private.v1.admin.requests import Request as Request_Admin_V1_Endpoint_Private
+
 
 urlpatterns = [
     # Public Views
@@ -94,6 +97,8 @@ urlpatterns = [
             path('endpoint', Endpoints_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.endpoints.endpoint'),
             path('endpoint/<int:endpoint_id>', Endpoint_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.endpoint.endpoint'),
 
+            path('request', Requests_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.requests.endpoint'),
+            path('request/<int:request_id>', Request_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.request.endpoint'),
         ]))
 
     ])),

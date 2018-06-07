@@ -57,3 +57,21 @@ class Request(View):
 
         self.__user_id = request.user.id
         self.__request_id = request_id
+
+        if not self.__request_module.user_owns(self.__request_id, self.__user_id):
+            return JsonResponse(self.__response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Invalid Request.")
+            }]))
+
+        if self.__request_module.delete_request(self.__request_id):
+            return JsonResponse(self.__response.send_private_success([{
+                "type": "success",
+                "message": _("Request deleted successfully.")
+            }]))
+
+        else:
+            return JsonResponse(self.__response.send_private_failure([{
+                "type": "error",
+                "message": _("Error! Something goes wrong while deleting a request.")
+            }]))

@@ -6,6 +6,7 @@ Request Entity Module
 from django.contrib.auth.models import User
 
 # local Django
+from app.models import Namespace
 from app.models import Endpoint
 from app.models import Request
 from app.models import Request_Meta
@@ -78,6 +79,24 @@ class Request_Entity():
             return request.status
         except Exception as e:
             return "valid"
+
+
+    def user_owns(self, request_id, user_id):
+        try:
+            # Get Request
+            request = Request.objects.get(pk=request_id)
+            if request == False:
+                return False
+
+            # Get Endpoint
+            endpoint = Endpoint.objects.get(pk=request.endpoint.id)
+            if endpoint == False:
+                return False
+
+            namespace = Namespace.objects.get(pk=endpoint.namespace.id, user=user_id)
+            return False if namespace.pk is None else True
+        except:
+            return False
 
 
     def update_one_by_id(self, id, new_data):
