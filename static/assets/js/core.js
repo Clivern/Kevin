@@ -350,7 +350,8 @@ kevin_app.endpoint = (function (window, document, $) {
         el: {
             endpointDelete: $('a.delete_endpoint'),
             addHeaderRuleButton: $('a#add_header_rule'),
-            headerRules: $('tbody#header_rules')
+            headerRules: $('tbody#header_rules'),
+            submitButton: $('form#endpoint_add')
         },
         init: function(){
             if( base.el.endpointDelete.length ){
@@ -362,8 +363,22 @@ kevin_app.endpoint = (function (window, document, $) {
             if( base.el.headerRules.length ){
                 base.el.headerRules.on("click", "a.remove_header_rule", base.removeHeaderRule);
             }
+            if( base.el.submitButton.length ){
+                base.el.submitButton.on("click", base.submitButtonPreAction);
+            }
         },
-
+        submitButtonPreAction: function(event) {
+            var max = $("tbody#header_rules tr").length;
+            var value = "[";
+            for (var i = 2; i <= max; i++) {
+                if ($('[name="header_key[' + i + ']"]').length && $('[name="header_condition[' + i + ']"]').length && $('[name="header_value[' + i + ']"]').length ){
+                    value += '{"key":"' + $('[name="header_key[' + i + ']"]').val() + '","condition":"' + $('[name="header_condition[' + i + ']"]').val() + '","value":"' + $('[name="header_value[' + i + ']"]').val() + '"},';
+                }
+            }
+            value = value.replace(/,$/, '');
+            value += "]";
+            $("input[name='headers_rules']").val(value);
+        },
         removeHeaderRule: function(event) {
             event.preventDefault();
 
@@ -376,7 +391,9 @@ kevin_app.endpoint = (function (window, document, $) {
         addHeaderRule: function(event) {
             event.preventDefault();
             var _self = $(this);
-            $("tr#header_rule_item").clone().removeAttr('id').show().appendTo('tbody#header_rules');
+            var item = $("tr#header_rule_item").clone().removeAttr('id').show();
+            item.html(item.html().replace(/\[iii\]/g,"["+ ($("tbody#header_rules tr").length + 1) + "]"));
+            item.appendTo('tbody#header_rules');
         },
 
         deleteEndpoint: function(event) {
