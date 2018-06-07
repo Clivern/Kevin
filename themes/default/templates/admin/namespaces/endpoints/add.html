@@ -11,9 +11,8 @@
                     <div class="col-12">
                         <form class="card _endpoint_connect" onsubmit="return false" action="{% url 'app.api.private.v1.admin.endpoints.endpoint' %}" method="post"data-succ-type="redirect" data-succ-url="{% url 'app.web.admin.namespaces.view' namespace.slug %}" data-succ-wait="3000">
                             {% csrf_token %}
-                            <input type="hidden" name="route_rules" value="{}">
-                            <input type="hidden" name="headers_rules" value="{}">
-                            <input type="hidden" name="body_rules" value="{}">
+                            <input type="hidden" name="route_rules" value="">
+                            <input type="hidden" name="headers_rules" value="">
                             <input type="hidden" name="namespace_id" value="{{ namespace.id }}">
                             <div class="card-status bg-green"></div>
                             <div class="card-header">
@@ -24,7 +23,7 @@
                                     <div class="col-md-12 col-lg-12">
                                         <div class="form-group">
                                             <label class="form-label">{% trans "Route" %}</label>
-                                            <input type="text" class="form-control" name="route" required>
+                                            <input name="route" type="text" class="form-control" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label">{% trans "Method" %}</label>
@@ -62,14 +61,15 @@
                                                         <th class="pr-0 text-center">{% trans "Action" %}</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    <tr>
+                                                <tbody id="header_rules">
+                                                    <tr id="header_rule_item" style="display:none">
                                                         <td class="pl-0">
-                                                            <input name="" type="text" class="form-control">
+                                                            <input name="header_key[]" type="text" class="form-control">
                                                         </td>
                                                         <td>
-                                                            <select name="" class="custom-select">
-                                                                <option value="EQUALS" selected="">{% trans "Equals" %}</option>
+                                                            <select name="header_condition[]" class="custom-select">
+                                                                <option value="" selected>{% trans "Please select a value" %}</option>
+                                                                <option value="EQUALS">{% trans "Equals" %}</option>
                                                                 <option value="NOT_EQUALS">{% trans "Not equals" %}</option>
                                                                 <option value="CONTAINS">{% trans "Contains" %}</option>
                                                                 <option value="IS_EMPTY">{% trans "Is empty" %}</option>
@@ -79,23 +79,23 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input name="" type="text" class="form-control">
+                                                            <input name="header_value[]" type="text" class="form-control">
                                                         </td>
                                                         <td class="pr-0 text-center">
-                                                            <a href="#" class="btn btn-secondary">{% trans "Remove" %}</a>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="4" class="text-center">
-                                                            <a href="#" class="btn btn-secondary">{% trans "Add Item" %}</a>
+                                                            <a href="javascript:void(0)" class="btn btn-secondary remove_header_rule">{% trans "Remove" %}</a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <br/><br/>
+                                        <div class="form-label text-center">
+                                            <a href="javascript:void(0)" id="add_header_rule" class="btn btn-secondary">{% trans "Add Item" %}</a>
+                                        </div>
+                                        <br/>
                                         <div class="form-group">
                                             <label class="form-label">{% trans "Body Validation JSON Schema" %}</label>
-                                            <textarea name="" rows="5" class="form-control" placeholder=""></textarea>
+                                            <textarea name="body_rules" rows="5" class="form-control" placeholder=""></textarea>
                                         </div>
                                     </div>
                                 </div>

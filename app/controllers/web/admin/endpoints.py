@@ -11,6 +11,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.utils.translation import gettext as _
+from django.http import Http404
 
 # local Django
 from app.modules.core.context import Context
