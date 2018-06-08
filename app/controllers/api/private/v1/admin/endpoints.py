@@ -49,39 +49,69 @@ class Endpoints(View):
             "route" : "",
             "method" : "",
             "target": "",
-            "route_rules": "{}",
-            "headers_rules": "{}",
-            "body_rules": "{}",
+            "route_rules": "",
+            "headers_rules": "",
+            "body_rules": "",
         })
 
         self.__form.add_inputs({
             'namespace_id': {
                 'value': request_data["namespace_id"],
-                'validate': {}
+                'validate': {
+                    'namespace_pk': {
+                        'error': _("Error! Namespace is not exist.")
+                    }
+                }
             },
             'route': {
                 'value': request_data["route"],
-                'validate': {}
+                'validate': {
+                    'custom_endpoint_route': {
+                        'error': _("Error! Endpoint route is invalid.")
+                    }
+                }
             },
             'method': {
                 'value': request_data["method"],
-                'validate': {}
+                'validate': {
+                    'any_of':{
+                        'param': [["get", "post", "head", "put", "delete", "patch", "trace", "options", "connect", "any"]],
+                        'error': _("Error! Endpoint method in invalid.")
+                    }
+                }
             },
             'target': {
                 'value': request_data["target"],
-                'validate': {}
+                'validate': {
+                    'any_of': {
+                        'param': [["debug", "validate"]],
+                        'error': _("Error! Endpoint target is invalid.")
+                    }
+                }
             },
             'route_rules': {
                 'value': request_data["route_rules"],
-                'validate': {}
+                'validate': {
+                    'custom_endpoint_route_rules': {
+                        'error': _("Error! Endpoint route rules is invalid.")
+                    }
+                }
             },
             'headers_rules': {
                 'value': request_data["headers_rules"],
-                'validate': {}
+                'validate': {
+                    'custom_endpoint_headers_rules': {
+                        'error': _("Error! Endpoint headers rules is invalid.")
+                    }
+                }
             },
             'body_rules': {
                 'value': request_data["body_rules"],
-                'validate': {}
+                'validate': {
+                    'custom_endpoint_body_rules': {
+                        'error': _("Error! Endpoint body rules is invalid.")
+                    }
+                }
             }
         })
 
@@ -153,35 +183,61 @@ class Endpoint(View):
             "route" : "",
             "method" : "",
             "target": "",
-            "route_rules": "{}",
-            "headers_rules": "{}",
-            "body_rules": "{}",
+            "route_rules": "",
+            "headers_rules": "",
+            "body_rules": "",
         })
 
         self.__form.add_inputs({
             'route': {
                 'value': request_data["route"],
-                'validate': {}
+                'validate': {
+                    'custom_endpoint_route': {
+                        'error': _("Error! Endpoint route is invalid.")
+                    }
+                }
             },
             'method': {
                 'value': request_data["method"],
-                'validate': {}
+                'validate': {
+                    'any_of':{
+                        'param': [["get", "post", "head", "put", "delete", "patch", "trace", "options", "connect", "any"]],
+                        'error': _("Error! Endpoint method in invalid.")
+                    }
+                }
             },
             'target': {
                 'value': request_data["target"],
-                'validate': {}
+                'validate': {
+                    'any_of': {
+                        'param': [["debug", "validate"]],
+                        'error': _("Error! Endpoint target is invalid.")
+                    }
+                }
             },
             'route_rules': {
                 'value': request_data["route_rules"],
-                'validate': {}
+                'validate': {
+                    'custom_endpoint_route_rules': {
+                        'error': _("Error! Endpoint route rules is invalid.")
+                    }
+                }
             },
             'headers_rules': {
                 'value': request_data["headers_rules"],
-                'validate': {}
+                'validate': {
+                    'custom_endpoint_headers_rules': {
+                        'error': _("Error! Endpoint headers rules is invalid.")
+                    }
+                }
             },
             'body_rules': {
                 'value': request_data["body_rules"],
-                'validate': {}
+                'validate': {
+                    'custom_endpoint_body_rules': {
+                        'error': _("Error! Endpoint body rules is invalid.")
+                    }
+                }
             }
         })
 

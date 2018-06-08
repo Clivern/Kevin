@@ -11,9 +11,8 @@
                     <div class="col-12">
                         <form class="card _endpoint_connect" onsubmit="return false" action="{% url 'app.api.private.v1.admin.endpoint.endpoint' endpoint.id %}" method="post"data-succ-type="redirect" data-succ-url="{% url 'app.web.admin.namespaces.view' namespace.slug %}" data-succ-wait="3000">
                             {% csrf_token %}
-                            <input type="hidden" name="route_rules" value="{}">
-                            <input type="hidden" name="headers_rules" value="{}">
-                            <input type="hidden" name="body_rules" value="{}">
+                            <input type="hidden" name="route_rules" value="">
+                            <input type="hidden" name="headers_rules" value="">
                             <div class="card-status bg-green"></div>
                             <div class="card-header">
                                 <h3 class="card-title">{% trans "Endpoint" %}</h3>
