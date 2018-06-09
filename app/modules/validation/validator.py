@@ -7,6 +7,10 @@ import re
 import uuid
 import json
 
+# third-party
+from jsonschema import Draft3Validator
+from jsonschema import Draft4Validator
+
 # Django
 from django.core.signing import Signer
 from django.core.validators import validate_email
@@ -351,16 +355,20 @@ class Validator():
 
         try:
             data = json.loads(self.__input)
-        except:
+        except Exception as e:
             return False
 
-        return True
+        draft3 = True
+        draft4 = True
 
+        try:
+            Draft3Validator.check_schema(data)
+        except Exception as e:
+            draft3 = False
 
+        try:
+            Draft4Validator.check_schema(data)
+        except Exception as e:
+            draft4 = False
 
-
-
-
-
-
-
+        return draft3 or draft4

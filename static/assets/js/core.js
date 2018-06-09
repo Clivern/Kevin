@@ -351,7 +351,8 @@ kevin_app.endpoint = (function (window, document, $) {
             endpointDelete: $('a.delete_endpoint'),
             addHeaderRuleButton: $('a#add_header_rule'),
             headerRules: $('tbody#header_rules'),
-            submitButton: $('form#endpoint_add')
+            submitButton: $('form#endpoint_add'),
+            targetFieldSwitch: $('form#endpoint_add select[name="target"]')
         },
         init: function(){
             if( base.el.endpointDelete.length ){
@@ -365,6 +366,18 @@ kevin_app.endpoint = (function (window, document, $) {
             }
             if( base.el.submitButton.length ){
                 base.el.submitButton.on("click", base.submitButtonPreAction);
+            }
+            if( base.el.targetFieldSwitch.length ){
+                base.el.targetFieldSwitch.on("change", base.targetFieldSwitchAction);
+            }
+        },
+        targetFieldSwitchAction: function(event) {
+            event.preventDefault();
+            var _self = $(this);
+            if(_self.val() == "validate"){
+                $("#validate_endpoint_options").show();
+            }else{
+                $("#validate_endpoint_options").hide();
             }
         },
         submitButtonPreAction: function(event) {
