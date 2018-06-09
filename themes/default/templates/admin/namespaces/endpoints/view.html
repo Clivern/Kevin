@@ -9,10 +9,225 @@
         <div class="my-3 my-md-5">
             <div class="container">
 
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-status bg-teal"></div>
+                            <div class="card-header">
+                                <h3 class="card-title">{% trans "Requests" %}</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-requests-activity" style="height: 13rem"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+
+
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="h5" style="color: green">Valid Requests</div>
+                                        <div class="display-4 font-weight-bold mb-4" style="color: green">62</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="h5" style="color: red">Not Valid Requests</div>
+                                        <div class="display-4 font-weight-bold mb-4" style="color: red">62</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="h5">Total Requests</div>
+                                        <div class="display-4 font-weight-bold mb-4">62</div>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="requests_list">
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-right">
+                                    <small class="text-muted">2 minutes ago.</small>
+                                </div>
+                                <br/>
+<div class="form-label" style="color: red">Method / URI</div>
+<pre>
+POST   /user/1
+</pre>
+
+<div class="form-label" style="color: green">Headers</div>
+<pre>
+X-VAULT-TOKEN: 349-3843-28373
+</pre>
+<div class="form-label" style="color: green">Body</div>
+<pre>
+{
+    "title": "Person",
+    "type": "object",
+    "properties": {
+        "firstName": {
+            "type": "string"
+        },
+        "lastName": {
+            "type": "string"
+        },
+        "age": {
+            "description": "Age in years",
+            "type": "integer",
+            "minimum": 0
+        }
+    },
+    "required": ["firstName", "lastName"]
+}
+</pre>
+<br/>
+<div class="text-center">
+    <button type="button" class="btn btn-icon btn-primary btn-danger"><i class="fe fe-trash"></i></button>
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-right">
+                                    <small class="text-muted">2 minutes ago.</small>
+                                </div>
+                                <br/>
+<div class="form-label" style="color: red">Method / URI</div>
+<pre>
+POST   /user/1
+</pre>
+
+<div class="form-label" style="color: red">Headers</div>
+<pre>
+X-VAULT-TOKEN: 349-3843-28373
+</pre>
+<div class="form-label" style="color: red">Body</div>
+<pre>
+{
+    "title": "Person",
+    "type": "object",
+    "properties": {
+        "firstName": {
+            "type": "string"
+        },
+        "lastName": {
+            "type": "string"
+        },
+        "age": {
+            "description": "Age in years",
+            "type": "integer",
+            "minimum": 0
+        }
+    },
+    "required": ["firstName", "lastName"]
+}
+</pre>
+<br/>
+<div class="text-center">
+    <button type="button" class="btn btn-icon btn-primary btn-danger"><i class="fe fe-trash"></i></button>
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
             </div>
         </div>
     </div>
 
+
+    <script>
+      require(['c3', 'jquery'], function(c3, $) {
+        $(document).ready(function(){
+            var chart = c3.generate({
+                bindto: '#chart-requests-activity', // id of chart wrapper
+                data: {
+                    columns: [
+                        // each columns data
+                        ['data1', 2, 3, 6, 9, 20, 10, 23, 14, 23, 12]
+                    ],
+                    type: 'area', // default type of chart
+                    groups: [
+                        [ 'data1']
+                    ],
+                    colors: {
+                        'data1': tabler.colors["blue"]
+                    },
+                    names: {
+                        // name of each serie
+                        'data1': 'Total Requests'
+                    }
+                },
+                axis: {
+                    y: {
+                        padding: {
+                            bottom: 0,
+                        },
+                        show: false,
+                            tick: {
+                            outer: false
+                        }
+                    },
+                    x: {
+                        padding: {
+                            left: 0,
+                            right: 0
+                        },
+                        show: false
+                    }
+                },
+                legend: {
+                    position: 'inset',
+                    padding: 0,
+                    inset: {
+                          anchor: 'top-left',
+                        x: 20,
+                        y: 8,
+                        step: 10
+                    }
+                },
+                tooltip: {
+                    format: {
+                        title: function (x) {
+                            return '';
+                        }
+                    }
+                },
+                padding: {
+                    bottom: 0,
+                    left: -1,
+                    right: -1
+                },
+                point: {
+                    show: false
+                }
+            });
+        });
+      });
+    </script>
     {% include 'partials/bottom-menu.html' %}
 
 {% endblock %}
