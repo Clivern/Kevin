@@ -60,10 +60,16 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="text-right">
-                                            <small class="text-muted">{{ request.created_at }}</small>
+                                            {% if request.status == "not_valid" %}
+                                                <small style="color: red">Failed at {{ request.created_at }}</small>
+                                            {% elif request.status == "valid" %}
+                                                <small style="color: green">Passed at {{ request.created_at }}</small>
+                                            {% elif request.status == "debug" %}
+                                                <small style="color: green">{{ request.created_at }}</small>
+                                            {% endif %}
                                         </div>
                                         <br/>
-                                        <div class="form-label" style="color: red">{% trans "Method / URI" %}</div>
+                                        <div class="form-label" style="color: green">{% trans "Method / URI" %}</div>
                                         <pre>{{ request.method|upper }}  {{ request.uri }}</pre>
                                         <div class="form-label" style="color: green">{% trans "Headers" %}</div>
                                         <pre>{% for header in request.headers %}
