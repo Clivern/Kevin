@@ -152,4 +152,44 @@ class NamespacesStatistics():
 
 
 class EndpointsStatistics():
-    pass
+
+    __request_entity = Request_Entity()
+
+    def count_requests_over_time_chart(self, days_num, endpoint_id):
+        data = {
+            "requests_list": {},
+            "requests": []
+        }
+
+        items = self.__request_entity.count_by_endpoint_date(days_num, [endpoint_id])
+        for item in items:
+            data["requests_list"][str(item.count_date)] = item.id
+
+        days_count = days_num
+
+        while days_count > -1:
+            current_date = timezone.now().date() - timedelta(days_count)
+            current_date = str(current_date)
+
+            if current_date in data["requests_list"]:
+                requests = data["requests_list"][current_date]
+                data["requests"].append(requests)
+            else:
+                requests = 0
+                data["requests"].append(requests)
+
+            days_count -= 1
+
+        data["requests"] = ",".join([str(x) for x in data["requests"]])
+
+        return {
+            "requests": data["requests"]
+        }
+
+
+    def count_requests_by_status(self, endpoint_id):
+        return {
+            "debug": self.__request_entity.count_by_status(Request_Entity.DEBUG, endpoint_id),
+            "valid": self.__request_entity.count_by_status(Request_Entity.VALID, endpoint_id),
+            "not_valid": self.__request_entity.count_by_status(Request_Entity.NOT_VALID, endpoint_id)
+        }

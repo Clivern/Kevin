@@ -61,9 +61,9 @@ class Request_Entity():
             return False
 
 
-    def get_many_by_endpoint(self, endpoint_id):
+    def get_many_by_endpoint(self, endpoint_id, order_by, asc):
         """Get Many Requests By Endpoint ID"""
-        requests = Request.objects.filter(endpoint=endpoint_id)
+        requests = Request.objects.filter(endpoint=endpoint_id).order_by(order_by if asc else "-%s" % order_by)
         return requests
 
 
@@ -71,6 +71,10 @@ class Request_Entity():
         if len(endpoint_ids) <= 0:
             return []
         return Request.objects.raw("select count(id) as id, DATE(created_at) as count_date from app_request where endpoint_id in (%s) group by count_date order by count_date desc limit %s;" % (",".join(str(x) for x in endpoint_ids), limit))
+
+
+    def count_by_status(self, status, endpoint_id):
+        return Request.objects.filter(endpoint=endpoint_id, status=status).count()
 
 
     def get_latest_status(self, endpoint_id):
