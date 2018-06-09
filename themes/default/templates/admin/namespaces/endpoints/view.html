@@ -56,7 +56,7 @@
                 {% if requests %}
                     <div class="row" id="requests_list">
                         {% for request in requests %}
-                            <div class="col-md-6">
+                            <div class="col-md-6 request_item">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="text-right">
@@ -72,7 +72,7 @@
                                         <pre>{{ request.body }}</pre>
                                         <br/>
                                         <div class="text-center">
-                                            <button type="button" class="btn btn-icon btn-primary btn-danger"><i class="fe fe-trash"></i></button>
+                                            <a href="javascript:void(0)" data-url="{% url 'app.api.private.v1.admin.request.endpoint' request.id %}" class="btn btn-icon btn-primary btn-danger delete_request"><i class="fe fe-trash"></i></a>
                                         </div>
                                     </div>
                                 </div>

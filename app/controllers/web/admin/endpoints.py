@@ -48,7 +48,7 @@ class Endpoint_View(View):
         self.__context.autoload_options()
         self.__context.autoload_user(request.user.id if request.user.is_authenticated else None)
         self.__context.push({
-            "page_title": _("%s Endpoint Activity · %s") % ("Item", self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
+            "page_title": _("%s Endpoint Activity · %s") % (namespace.name, self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))),
             "namespace": namespace,
             "endpoint": endpoint,
             "requests": self.__request_module.get_many_by_endpoint(endpoint.id, "created_at", False),

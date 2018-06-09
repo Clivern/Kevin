@@ -352,11 +352,15 @@ kevin_app.endpoint = (function (window, document, $) {
             addHeaderRuleButton: $('a#add_header_rule'),
             headerRules: $('tbody#header_rules'),
             submitButton: $('form#endpoint_add'),
-            targetFieldSwitch: $('form#endpoint_add select[name="target"]')
+            targetFieldSwitch: $('form#endpoint_add select[name="target"]'),
+            requestDelete: $('a.delete_request')
         },
         init: function(){
             if( base.el.endpointDelete.length ){
                 base.el.endpointDelete.on("click", base.deleteEndpoint);
+            }
+            if( base.el.requestDelete.length ){
+                base.el.requestDelete.on("click", base.deleteRequest);
             }
             if( base.el.addHeaderRuleButton.length ){
                 base.el.addHeaderRuleButton.on("click", base.addHeaderRule);
@@ -428,6 +432,32 @@ kevin_app.endpoint = (function (window, document, $) {
                         if( response.status == "success" ){
                             base.success(response.messages);
                             _self.closest("tr").remove();
+                        }else{
+                            base.error(response.messages);
+                        }
+                    });
+                });
+            });
+        },
+        deleteRequest: function(event) {
+            event.preventDefault();
+
+            if( !confirm(_i18n.confirm_msg) ){
+                return false;
+            }
+
+            var _self = $(this);
+            _self.attr('disabled', 'disabled');
+            require(['pace', 'jscookie'], function(Pace, Cookies) {
+                Pace.track(function(){
+                    $.ajax({
+                      method: "DELETE",
+                      url: _self.attr('data-url') + "?csrfmiddlewaretoken=" + Cookies.get('csrftoken'),
+                      data: { "csrfmiddlewaretoken": Cookies.get('csrftoken') }
+                    }).done(function( response ) {
+                        if( response.status == "success" ){
+                            base.success(response.messages);
+                            _self.closest("div.request_item").remove();
                         }else{
                             base.error(response.messages);
                         }
