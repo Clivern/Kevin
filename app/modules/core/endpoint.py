@@ -2,6 +2,9 @@
 Endpoint Module
 """
 
+# standard library
+import json
+
 # local Django
 from app.modules.util.helpers import Helpers
 from app.modules.entity.namespace_entity import Namespace_Entity
@@ -19,7 +22,25 @@ class Endpoint():
 
 
     def get_one_by_id(self, endpoint_id):
-        return self.__endpoint_entity.get_one_by_id(endpoint_id)
+        endpoint = self.__endpoint_entity.get_one_by_id(endpoint_id)
+        if endpoint != False:
+
+            try:
+                endpoint.header_rule_obj = json.loads(endpoint.headers_rules)
+            except Exception as e:
+                endpoint.header_rule_obj = []
+                return endpoint
+
+            i = 2
+            j = 0
+            for item in endpoint.header_rule_obj:
+                endpoint.header_rule_obj[j]["index"] = i
+                i += 1
+                j += 1
+
+            return endpoint
+
+        return False
 
 
     def count_by_target(self, target, namespace_id):
