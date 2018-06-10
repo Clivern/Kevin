@@ -3,6 +3,7 @@ Request Module
 """
 # standard library
 import json
+import re
 
 # local Django
 from app.modules.util.helpers import Helpers
@@ -46,13 +47,85 @@ class Request():
                 self.delete_request(request.id)
 
             request.headers = data
-            request.body = json.loads(request.body)
-            request.body = json.dumps(request.body, indent=4)
+            if request.body != '':
+                try:
+                    request.body = json.loads(request.body)
+                    request.body = json.dumps(request.body, indent=4)
+                except Exception as e:
+                    request.body = ''
 
         return requests
 
 
     def store_request(self, request_data):
-        # {'method': 'GET', 'uri': '33', 'headers': {'Content-Length': '0', 'Content-Type': 'application/x-www-form-urlencoded', 'Host': '127.0.0.1:8000', 'User-Agent': 'curl/7.43.0', 'Accept': '*/*', 'X-Auth-Token': '6kqokCeX7LwZA6Qgm:RcaEhwLqTo6Xo5cq_Q8tRQkd_AI'}, 'body': b'', 'namespace': <Namespace: Namespace object (51)>}
-        print(request_data)
+
+        try:
+            request_data["body"] = json.loads(request_data["body"])
+        except Exception as e:
+            request_data["body"] = ''
+
+        headers = []
+        for key, value in request_data["headers"].items():
+            headers.append({"key": key, "value": request_data["headers"][key]})
+
+        endpoints = self.__endpoint_entity.get_many_by_namespace(request_data["namespace"].id, "created_at", True)
+
+        result = 0
+        for endpoint in endpoints:
+
+            if not self.__validate_method(endpoint.method, request_data["method"]):
+                continue
+
+            if not self.__validate_uri(endpoint.route, request_data["uri"]):
+                continue
+
+            if endpoint.target == "debug":
+
+                self.__request_entity.insert_one({
+                    "uri": "/" + request_data["uri"],
+                    "method": request_data["method"].lower(),
+                    "headers": json.dumps(headers),
+                    "body": '{}' if request_data["body"] == '' else json.dumps(request_data["body"]),
+                    "status": "debug",
+                    "endpoint_id": endpoint.id
+                })
+
+                result += 1
+
+            elif endpoint.target == "validate":
+
+                if not self.__validate_body(endpoint.body_rules, equest_data["body"]):
+                    continue
+
+                if not self.__validate_headers(endpoint.headers_rules, headers):
+                    continue
+
+                self.__request_entity.insert_one({
+                    "uri": "/" + request_data["uri"],
+                    "method": request_data["method"].lower(),
+                    "headers": json.dumps(headers),
+                    "body": json.dumps(request_data["body"]),
+                    "status": "debug",
+                    "endpoint_id": endpoint.id
+                })
+
+                result += 1
+
+        return result
+
+
+
+    def __validate_uri(self, endpoint_uri, request_uri):
+        return re.match("^" + endpoint_uri + "$", "/" + request_uri) != None
+
+
+    def __validate_method(self, endpoint_method, request_method):
+        return endpoint_method.lower() == request_method.lower()
+
+
+    def __validate_body(self, endpoint_body, request_body):
+        return True
+
+
+    def __validate_headers(self, endpoint_headers, request_headers):
         return True

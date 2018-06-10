@@ -59,7 +59,7 @@ urlpatterns = [
     path('register', Register_View.as_view(), name='app.web.register'),
     path('forgot-password', Forgot_Password_View.as_view(), name='app.web.forgot_password'),
     path('reset-password/<token>', Reset_Password_View.as_view(), name='app.web.reset_password'),
-    path('r/<slug:namespace_slug>/<path:endpoint_path>', Ping_V1_Endpoint_Public.as_view(), name='app.api.public.v1.ping'),
+    path('r/<path:endpoint_path>', Ping_V1_Endpoint_Public.as_view(), name='app.api.public.v1.ping'),
 
     # Authenticated Users Views
     path('admin/', include([

@@ -44,10 +44,12 @@ class Ping(View):
 
 
     @method_decorator(csrf_exempt)
-    def dispatch(self, request, namespace_slug, endpoint_path):
+    def dispatch(self, request, endpoint_path):
+        path_items = endpoint_path.split("/")
+        namespace_slug = path_items[0]
+        endpoint_path = endpoint_path.replace(namespace_slug, "")
 
         self.__headers = self.__get_headers(request)
-        self.__method = request.method
 
         namespace = self.__namespace_module.get_one_by_slug(namespace_slug)
 
@@ -87,7 +89,7 @@ class Ping(View):
             "method": request.method,
             "uri": endpoint_path,
             "headers": self.__headers,
-            "body": request.body,
+            "body": request.body.decode('utf-8'),
             "namespace": namespace
         })
 

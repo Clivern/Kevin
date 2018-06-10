@@ -20,4 +20,11 @@ from app.modules.core.context import Context
 
 
 class Auth(View):
-    pass
+
+
+    def get(self):
+        pass
+
+
+    def post(self):
+        pass
