@@ -35,7 +35,8 @@ class Settings(View):
             "app_description": "",
             "google_analytics_account": "",
             "reset_mails_messages_count": "",
-            "reset_mails_expire_after": ""
+            "reset_mails_expire_after": "",
+            "access_tokens_expire_after": ""
         })
 
         self.__context.push({

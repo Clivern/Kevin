@@ -85,6 +85,16 @@
                             </div>
                         {% endfor %}
                     </div>
+                {% else %}
+                    <div class="row" id="requests_list">
+                        <div class="col-md-12 request_item">
+                            <div class="card">
+                                <div class="card-body text-center text-muted">
+                                    {% trans "You miss a lot of fun, Do some requests!" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </div>

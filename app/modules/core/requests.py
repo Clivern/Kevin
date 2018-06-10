@@ -120,7 +120,7 @@ class Request():
 
 
     def __validate_method(self, endpoint_method, request_method):
-        return endpoint_method.lower() == request_method.lower()
+        return endpoint_method.lower() == "any" or endpoint_method.lower() == request_method.lower()
 
 
     def __validate_body(self, endpoint_body, request_body):

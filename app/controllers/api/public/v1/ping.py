@@ -47,7 +47,7 @@ class Ping(View):
     def dispatch(self, request, endpoint_path):
         path_items = endpoint_path.split("/")
         namespace_slug = path_items[0]
-        endpoint_path = endpoint_path.replace(namespace_slug, "")
+        endpoint_path = endpoint_path.replace(namespace_slug, "").lstrip("/")
 
         self.__headers = self.__get_headers(request)
 
@@ -76,8 +76,8 @@ class Ping(View):
                     "error": "Error! Access Denied."
                 }]))
 
-            self.__context.load_options({"reset_tokens_expire_after": 24})
-            expire_after = int(self.__context.get("reset_tokens_expire_after", 24))
+            self.__context.load_options({"access_tokens_expire_after": 24})
+            expire_after = int(self.__context.get("access_tokens_expire_after", 24))
 
             if profile.access_token_updated_at < self.__helpers.time_after({"hours": -24}):
                 return JsonResponse(self.__response.send_public_failure([{
@@ -97,7 +97,7 @@ class Ping(View):
             return JsonResponse(self.__response.send_public_success([]))
         else:
             return JsonResponse(self.__response.send_public_failure([{
-                    "error": "Error! Endpoint not found."
+                "error": "Error! Endpoint not found."
             }]))
 
 
