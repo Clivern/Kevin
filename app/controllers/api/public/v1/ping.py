@@ -36,13 +36,7 @@ class Ping(View):
     __profile_module = Profile_Module()
     __context = Context()
 
-    __user_id = None
-    __namespace_id = None
-    __endpoint_id = None
-    __body = None
     __headers = None
-    __method = None
-    __uri = None
 
 
     def __init__(self):
@@ -55,16 +49,6 @@ class Ping(View):
         self.__headers = self.__get_headers(request)
         self.__method = request.method
 
-        #curl -X GET -H "" -d '' "http://127.0.0.1:8000/mongo/33"
-        #curl -X POST -H "" -d '' "http://127.0.0.1:8000/mongo/33"
-        #curl -X HEAD -H "" -d '' "http://127.0.0.1:8000/mongo/33"
-        #curl -X PUT -H "" -d '' "http://127.0.0.1:8000/mongo/33"
-        #curl -X DELETE -H "" -d '' "http://127.0.0.1:8000/mongo/33"
-        #curl -X PATCH -H "" -d '' "http://127.0.0.1:8000/mongo/33"
-        #curl -X TRACE -H "" -d '' "http://127.0.0.1:8000/mongo/33"
-        #curl -X OPTIONS -H "" -d '' "http://127.0.0.1:8000/mongo/33"
-        #curl -X CONNECT -H "" -d '' "http://127.0.0.1:8000/mongo/33"
-
         namespace = self.__namespace_module.get_one_by_slug(namespace_slug)
 
         if namespace == False:
@@ -73,12 +57,12 @@ class Ping(View):
             }]))
 
         if not namespace.is_public:
-            if not "X-Auth-Token" in self.__headers:
+            if not "KVN-Auth-Token" in self.__headers:
                 return JsonResponse(self.__response.send_public_failure([{
                     "error": "Error! Access Denied."
                 }]))
 
-            profile = self.__profile_module.get_profile_by_access_token(self.__headers["X-Auth-Token"])
+            profile = self.__profile_module.get_profile_by_access_token(self.__headers["KVN-Auth-Token"])
 
             if profile == False:
                 return JsonResponse(self.__response.send_public_failure([{
@@ -93,19 +77,26 @@ class Ping(View):
             self.__context.load_options({"reset_tokens_expire_after": 24})
             expire_after = int(self.__context.get("reset_tokens_expire_after", 24))
 
-            if profile.access_token_updated_at < self.__helpers.time_after({"hours": -1}):
+            if profile.access_token_updated_at < self.__helpers.time_after({"hours": -24}):
                 return JsonResponse(self.__response.send_public_failure([{
                     "error": "Error! Access Token Expired."
                 }]))
 
-        print(self.__headers)
-        print(namespace_slug)
-        print("/%s" % endpoint_path)
-        print(request.body)
 
-        return JsonResponse(self.__response.send_public_success([{
-            "status": "ok"
-        }]))
+        result = self.__request_module.store_request({
+            "method": request.method,
+            "uri": endpoint_path,
+            "headers": self.__headers,
+            "body": request.body,
+            "namespace": namespace
+        })
+
+        if result:
+            return JsonResponse(self.__response.send_public_success([]))
+        else:
+            return JsonResponse(self.__response.send_public_failure([{
+                    "error": "Error! Endpoint not found."
+            }]))
 
 
     def __get_headers(self, request):

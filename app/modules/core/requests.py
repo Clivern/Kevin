@@ -50,3 +50,9 @@ class Request():
             request.body = json.dumps(request.body, indent=4)
 
         return requests
+
+
+    def store_request(self, request_data):
+        # {'method': 'GET', 'uri': '33', 'headers': {'Content-Length': '0', 'Content-Type': 'application/x-www-form-urlencoded', 'Host': '127.0.0.1:8000', 'User-Agent': 'curl/7.43.0', 'Accept': '*/*', 'X-Auth-Token': '6kqokCeX7LwZA6Qgm:RcaEhwLqTo6Xo5cq_Q8tRQkd_AI'}, 'body': b'', 'namespace': <Namespace: Namespace object (51)>}
+        print(request_data)
+        return True
