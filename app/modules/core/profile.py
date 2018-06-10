@@ -98,6 +98,10 @@ class Profile():
         return token if self.__profile_entity.update_refresh_token(user_id, token) else False
 
 
+    def get_profile_by_access_token(self, access_token):
+        return self.__profile_entity.get_profile_by_access_token(access_token)
+
+
     def change_password(self, user_id, password):
         return self.__user_entity.update_password_by_user_id(user_id, password)
 

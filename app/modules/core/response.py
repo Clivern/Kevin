@@ -41,3 +41,23 @@ class Response():
 
         self.__logger.debug(_("App Response: ") + self.__helpers.json_dumps(self.__private) + "\n")
         return self.__private
+
+
+    def send_public_success(self, messages, payload={}):
+        self.__public["status"] = "success"
+        self.__public["messages"] = messages
+        if len(payload) > 0:
+            self.__public["payload"] = payload
+
+        self.__logger.debug(_("App Response: ") + self.__helpers.json_dumps(self.__public) + "\n")
+        return self.__public
+
+
+    def send_public_failure(self, messages, payload={}):
+        self.__public["status"] = "failure"
+        self.__public["messages"] = messages
+        if len(payload) > 0:
+            self.__public["payload"] = payload
+
+        self.__logger.debug(_("App Response: ") + self.__helpers.json_dumps(self.__public) + "\n")
+        return self.__public

@@ -20,7 +20,8 @@ class Install():
         {"key": "app_description", "value": "", "autoload": False},
         {"key": "google_analytics_account", "value": "", "autoload": True},
         {"key": "reset_mails_messages_count", "value": "5", "autoload": False},
-        {"key": "reset_mails_expire_after", "value": "24", "autoload": False}
+        {"key": "reset_mails_expire_after", "value": "24", "autoload": False},
+        {"key": "reset_tokens_expire_after", "value": "24", "autoload": False}
     ]
     __admin = {
         "username" : "",
