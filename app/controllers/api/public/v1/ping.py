@@ -84,7 +84,6 @@ class Ping(View):
                     "error": "Error! Access Token Expired."
                 }]))
 
-
         result = self.__request_module.store_request({
             "method": request.method,
             "uri": endpoint_path,

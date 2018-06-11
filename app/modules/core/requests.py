@@ -66,6 +66,8 @@ class Request():
 
         headers = []
         for key, value in request_data["headers"].items():
+            if key == "KVN-Auth-Token":
+                continue
             headers.append({"key": key, "value": request_data["headers"][key]})
 
         endpoints = self.__endpoint_entity.get_many_by_namespace(request_data["namespace"].id, "created_at", True)
