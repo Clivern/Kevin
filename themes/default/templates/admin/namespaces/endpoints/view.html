@@ -9,10 +9,167 @@
         <div class="my-3 my-md-5">
             <div class="container">
 
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-status bg-teal"></div>
+                            <div class="card-header">
+                                <h3 class="card-title">{% trans "Requests" %}</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-requests-activity" style="height: 13rem"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            {% if endpoint.target == "debug" %}
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <div class="h5" style="color: green">{% trans "Total Requests" %}</div>
+                                            <div class="display-4 font-weight-bold mb-4" style="color: green">{{ donut.debug }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <div class="h5" style="color: green">{% trans "Valid Requests" %}</div>
+                                            <div class="display-4 font-weight-bold mb-4" style="color: green">{{ donut.valid }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <div class="h5" style="color: red">{% trans "Not Valid Requests" %}</div>
+                                            <div class="display-4 font-weight-bold mb-4" style="color: red">{{ donut.not_valid }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if requests %}
+                    <div class="row" id="requests_list">
+                        {% for request in requests %}
+                            <div class="col-md-6 request_item">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-right">
+                                            {% if request.status == "not_valid" %}
+                                                <small style="color: red">Failed at {{ request.created_at }}</small>
+                                            {% elif request.status == "valid" %}
+                                                <small style="color: green">Passed at {{ request.created_at }}</small>
+                                            {% elif request.status == "debug" %}
+                                                <small style="color: green">{{ request.created_at }}</small>
+                                            {% endif %}
+                                        </div>
+                                        <br/>
+                                        <div class="form-label" style="color: green">{% trans "Method / URI" %}</div>
+                                        <pre>{{ request.method|upper }}  {{ request.uri }}</pre>
+                                        <div class="form-label" style="color: green">{% trans "Headers" %}</div>
+                                        <pre>{% for header in request.headers %}
+{{ header.key }}: {{ header.value }}{% endfor %}</pre>
+                                        <div class="form-label" style="color: green">{% trans "Body" %}</div>
+                                        <pre>{{ request.body }}</pre>
+                                        <br/>
+                                        <div class="text-center">
+                                            <a href="javascript:void(0)" data-url="{% url 'app.api.private.v1.admin.request.endpoint' request.id %}" class="btn btn-icon btn-primary btn-danger delete_request"><i class="fe fe-trash"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="row" id="requests_list">
+                        <div class="col-md-12 request_item">
+                            <div class="card">
+                                <div class="card-body text-center text-muted">
+                                    {% trans "You miss a lot of fun, Do some requests!" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
 
+
+    <script>
+      require(['c3', 'jquery'], function(c3, $) {
+        $(document).ready(function(){
+            var chart = c3.generate({
+                bindto: '#chart-requests-activity', // id of chart wrapper
+                data: {
+                    columns: [
+                        // each columns data
+                        ['data1', {{ line_chart.requests }}]
+                    ],
+                    type: 'area', // default type of chart
+                    groups: [
+                        [ 'data1']
+                    ],
+                    colors: {
+                        'data1': tabler.colors["blue"]
+                    },
+                    names: {
+                        // name of each serie
+                        'data1': 'Total Requests'
+                    }
+                },
+                axis: {
+                    y: {
+                        padding: {
+                            bottom: 0,
+                        },
+                        show: false,
+                            tick: {
+                            outer: false
+                        }
+                    },
+                    x: {
+                        padding: {
+                            left: 0,
+                            right: 0
+                        },
+                        show: false
+                    }
+                },
+                legend: {
+                    position: 'inset',
+                    padding: 0,
+                    inset: {
+                          anchor: 'top-left',
+                        x: 20,
+                        y: 8,
+                        step: 10
+                    }
+                },
+                tooltip: {
+                    format: {
+                        title: function (x) {
+                            return '';
+                        }
+                    }
+                },
+                padding: {
+                    bottom: 0,
+                    left: -1,
+                    right: -1
+                },
+                point: {
+                    show: false
+                }
+            });
+        });
+      });
+    </script>
     {% include 'partials/bottom-menu.html' %}
 
 {% endblock %}

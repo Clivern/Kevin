@@ -205,7 +205,7 @@ class Test_Request_Entity(TestCase):
             {"uri": "/{id}","method": Request_Entity.GET,"headers": "{}","body": "{}","status": Request_Entity.DEBUG,"endpoint_id": endpoint.id},
             {"uri": "/{id}","method": Request_Entity.PUT,"headers": "{}","body": "{}","status": Request_Entity.DEBUG,"endpoint_id": endpoint.id}
         ])
-        self.assertEqual(request_entity.get_many_by_endpoint(endpoint.id).count(), 4)
+        self.assertEqual(request_entity.get_many_by_endpoint(endpoint.id, "create_at", True).count(), 4)
 
     def test_update_one_by_id(self):
         user = User(

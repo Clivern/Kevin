@@ -35,7 +35,8 @@ class Settings(View):
             "app_description": "",
             "google_analytics_account": "",
             "reset_mails_messages_count": "",
-            "reset_mails_expire_after": ""
+            "reset_mails_expire_after": "",
+            "access_tokens_expire_after": ""
         })
 
         self.__context.push({
@@ -44,7 +45,7 @@ class Settings(View):
         })
 
         self.__context.push({
-            "page_title": _("Settings | %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+            "page_title": _("Settings · %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
 
         return render(request, self.template_name, self.__context.get())

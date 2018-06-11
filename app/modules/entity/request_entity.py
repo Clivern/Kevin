@@ -6,6 +6,7 @@ Request Entity Module
 from django.contrib.auth.models import User
 
 # local Django
+from app.models import Namespace
 from app.models import Endpoint
 from app.models import Request
 from app.models import Request_Meta
@@ -60,10 +61,46 @@ class Request_Entity():
             return False
 
 
-    def get_many_by_endpoint(self, endpoint_id):
+    def get_many_by_endpoint(self, endpoint_id, order_by, asc):
         """Get Many Requests By Endpoint ID"""
-        requests = Request.objects.filter(endpoint=endpoint_id)
+        requests = Request.objects.filter(endpoint=endpoint_id).order_by(order_by if asc else "-%s" % order_by)
         return requests
+
+
+    def count_by_endpoint_date(self, limit, endpoint_ids = []):
+        if len(endpoint_ids) <= 0:
+            return []
+        return Request.objects.raw("select count(id) as id, DATE(created_at) as count_date from app_request where endpoint_id in (%s) group by count_date order by count_date desc limit %s;" % (",".join(str(x) for x in endpoint_ids), limit))
+
+
+    def count_by_status(self, status, endpoint_id):
+        return Request.objects.filter(endpoint=endpoint_id, status=status).count()
+
+
+    def get_latest_status(self, endpoint_id):
+        try:
+            request =  Request.objects.filter(endpoint=endpoint_id).latest('status')
+            return request.status
+        except Exception as e:
+            return "valid"
+
+
+    def user_owns(self, request_id, user_id):
+        try:
+            # Get Request
+            request = Request.objects.get(pk=request_id)
+            if request == False:
+                return False
+
+            # Get Endpoint
+            endpoint = Endpoint.objects.get(pk=request.endpoint.id)
+            if endpoint == False:
+                return False
+
+            namespace = Namespace.objects.get(pk=endpoint.namespace.id, user=user_id)
+            return False if namespace.pk is None else True
+        except:
+            return False
 
 
     def update_one_by_id(self, id, new_data):

@@ -25,8 +25,9 @@ from app.controllers.web.admin.namespaces import Namespace_Create as Namespace_C
 from app.controllers.web.admin.namespaces import Namespace_Edit as Namespace_Edit_Web
 from app.controllers.web.admin.namespaces import Namespace_View as Namespace_View_Web
 
-from app.controllers.web.admin.endpoints import Endpoints_List as Endpoints_List_Web
 from app.controllers.web.admin.endpoints import Endpoint_View as Endpoint_View_Web
+from app.controllers.web.admin.endpoints import Endpoint_Add as Endpoint_Add_Web
+from app.controllers.web.admin.endpoints import Endpoint_Edit as Endpoint_Edit_Web
 
 from app.controllers.web.admin.settings import Settings as Settings_View
 
@@ -41,6 +42,13 @@ from app.controllers.api.private.v1.admin.profile import Profile as Profile_Admi
 from app.controllers.api.private.v1.admin.namespaces import Namespaces as Namespaces_Admin_V1_Endpoint_Private
 from app.controllers.api.private.v1.admin.namespaces import Namespace as Namespace_Admin_V1_Endpoint_Private
 
+from app.controllers.api.private.v1.admin.endpoints import Endpoints as Endpoints_Admin_V1_Endpoint_Private
+from app.controllers.api.private.v1.admin.endpoints import Endpoint as Endpoint_Admin_V1_Endpoint_Private
+
+from app.controllers.api.private.v1.admin.requests import Requests as Requests_Admin_V1_Endpoint_Private
+from app.controllers.api.private.v1.admin.requests import Request as Request_Admin_V1_Endpoint_Private
+
+from app.controllers.api.public.v1.ping import Ping as Ping_V1_Endpoint_Public
 
 
 urlpatterns = [
@@ -51,6 +59,7 @@ urlpatterns = [
     path('register', Register_View.as_view(), name='app.web.register'),
     path('forgot-password', Forgot_Password_View.as_view(), name='app.web.forgot_password'),
     path('reset-password/<token>', Reset_Password_View.as_view(), name='app.web.reset_password'),
+    path('r/<path:endpoint_path>', Ping_V1_Endpoint_Public.as_view(), name='app.api.public.v1.ping'),
 
     # Authenticated Users Views
     path('admin/', include([
@@ -64,8 +73,9 @@ urlpatterns = [
         path('namespaces/edit/<slug:namespace_slug>', Namespace_Edit_Web.as_view(), name='app.web.admin.namespaces.edit'),
         path('namespaces/view/<slug:namespace_slug>', Namespace_View_Web.as_view(), name='app.web.admin.namespaces.view'),
 
-        path('endpoints/<slug:namespace>', Endpoints_List_Web.as_view(), name='app.web.admin.endpoints.list'),
-        path('endpoints/<slug:namespace>/<int:endpoint>', Endpoint_View_Web.as_view(), name='app.web.admin.endpoints.view'),
+        path('endpoints/create/<slug:namespace_slug>', Endpoint_Add_Web.as_view(), name='app.web.admin.endpoints.create'),
+        path('endpoints/edit/<slug:namespace_slug>/<int:endpoint_id>', Endpoint_Edit_Web.as_view(), name='app.web.admin.endpoints.edit'),
+        path('endpoints/view/<slug:namespace_slug>/<int:endpoint_id>', Endpoint_View_Web.as_view(), name='app.web.admin.endpoints.view'),
 
         path('settings', Settings_View.as_view(), name='app.web.admin.settings'),
 
@@ -87,6 +97,11 @@ urlpatterns = [
             path('namespace', Namespaces_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespaces.endpoint'),
             path('namespace/<int:namespace_id>', Namespace_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.namespace.endpoint'),
 
+            path('endpoint', Endpoints_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.endpoints.endpoint'),
+            path('endpoint/<int:endpoint_id>', Endpoint_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.endpoint.endpoint'),
+
+            path('request', Requests_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.requests.endpoint'),
+            path('request/<int:request_id>', Request_Admin_V1_Endpoint_Private.as_view(), name='app.api.private.v1.admin.request.endpoint'),
         ]))
 
     ])),

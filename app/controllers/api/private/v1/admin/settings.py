@@ -42,7 +42,8 @@ class Settings(View):
             "app_description": "",
             "google_analytics_account": "",
             "reset_mails_messages_count": "",
-            "reset_mails_expire_after": ""
+            "reset_mails_expire_after": "",
+            "access_tokens_expire_after": ""
         })
 
         self.__form.add_inputs({
@@ -141,7 +142,22 @@ class Settings(View):
                         'param': [0]
                     }
                 }
-            }
+            },
+            'access_tokens_expire_after': {
+                'value': request_data["access_tokens_expire_after"],
+                'sanitize': {
+                    'strip': {}
+                },
+                'validate': {
+                    'digit': {
+                        'error': _('Error! Access token expiry interval is invalid.')
+                    },
+                    'greater_than': {
+                        'error': _('Error! Access token expiry interval is invalid.'),
+                        'param': [0]
+                    }
+                }
+            },
         })
 
         self.__form.process()
@@ -156,7 +172,8 @@ class Settings(View):
             "app_description": self.__form.get_input_value("app_description"),
             "google_analytics_account": self.__form.get_input_value("google_analytics_account"),
             "reset_mails_messages_count": self.__form.get_input_value("reset_mails_messages_count"),
-            "reset_mails_expire_after": self.__form.get_input_value("reset_mails_expire_after")
+            "reset_mails_expire_after": self.__form.get_input_value("reset_mails_expire_after"),
+            "access_tokens_expire_after": self.__form.get_input_value("access_tokens_expire_after")
         })
 
         if result:

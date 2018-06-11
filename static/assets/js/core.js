@@ -337,6 +337,160 @@ kevin_app.namespace = (function (window, document, $) {
 })(window, document, jQuery);
 
 
+
+/**
+ * Endpoint Endpoints
+ */
+kevin_app.endpoint = (function (window, document, $) {
+
+    'use strict';
+
+    var base = {
+
+        el: {
+            endpointDelete: $('a.delete_endpoint'),
+            addHeaderRuleButton: $('a#add_header_rule'),
+            headerRules: $('tbody#header_rules'),
+            submitButton: $('form#endpoint_add'),
+            targetFieldSwitch: $('form#endpoint_add select[name="target"]'),
+            requestDelete: $('a.delete_request')
+        },
+        init: function(){
+            if( base.el.endpointDelete.length ){
+                base.el.endpointDelete.on("click", base.deleteEndpoint);
+            }
+            if( base.el.requestDelete.length ){
+                base.el.requestDelete.on("click", base.deleteRequest);
+            }
+            if( base.el.addHeaderRuleButton.length ){
+                base.el.addHeaderRuleButton.on("click", base.addHeaderRule);
+            }
+            if( base.el.headerRules.length ){
+                base.el.headerRules.on("click", "a.remove_header_rule", base.removeHeaderRule);
+            }
+            if( base.el.submitButton.length ){
+                base.el.submitButton.on("click", base.submitButtonPreAction);
+            }
+            if( base.el.targetFieldSwitch.length ){
+                base.el.targetFieldSwitch.on("change", base.targetFieldSwitchAction);
+            }
+        },
+        targetFieldSwitchAction: function(event) {
+            event.preventDefault();
+            var _self = $(this);
+            if(_self.val() == "validate"){
+                $("#validate_endpoint_options").show();
+            }else{
+                $("#validate_endpoint_options").hide();
+            }
+        },
+        submitButtonPreAction: function(event) {
+            var max = $("tbody#header_rules tr").length;
+            var value = "[";
+            for (var i = 2; i <= max; i++) {
+                if ($('[name="header_key[' + i + ']"]').length && $('[name="header_condition[' + i + ']"]').length && $('[name="header_value[' + i + ']"]').length ){
+                    value += '{"key":"' + $('[name="header_key[' + i + ']"]').val() + '","condition":"' + $('[name="header_condition[' + i + ']"]').val() + '","value":"' + $('[name="header_value[' + i + ']"]').val() + '"},';
+                }
+            }
+            value = value.replace(/,$/, '');
+            value += "]";
+            $("input[name='headers_rules']").val(value);
+        },
+        removeHeaderRule: function(event) {
+            event.preventDefault();
+
+            if( !confirm(_i18n.confirm_msg) ){
+                return false;
+            }
+            var _self = $(this);
+            _self.closest("tr").remove();
+        },
+        addHeaderRule: function(event) {
+            event.preventDefault();
+            var _self = $(this);
+            var item = $("tr#header_rule_item").clone().removeAttr('id').show();
+            item.html(item.html().replace(/\[iii\]/g,"["+ ($("tbody#header_rules tr").length + 1) + "]"));
+            item.appendTo('tbody#header_rules');
+        },
+
+        deleteEndpoint: function(event) {
+            event.preventDefault();
+
+            if( !confirm(_i18n.confirm_msg) ){
+                return false;
+            }
+
+            var _self = $(this);
+            _self.attr('disabled', 'disabled');
+            require(['pace', 'jscookie'], function(Pace, Cookies) {
+                Pace.track(function(){
+                    $.ajax({
+                      method: "DELETE",
+                      url: _self.attr('data-url') + "?csrfmiddlewaretoken=" + Cookies.get('csrftoken'),
+                      data: { "csrfmiddlewaretoken": Cookies.get('csrftoken') }
+                    }).done(function( response ) {
+                        if( response.status == "success" ){
+                            base.success(response.messages);
+                            _self.closest("tr").remove();
+                        }else{
+                            base.error(response.messages);
+                        }
+                    });
+                });
+            });
+        },
+        deleteRequest: function(event) {
+            event.preventDefault();
+
+            if( !confirm(_i18n.confirm_msg) ){
+                return false;
+            }
+
+            var _self = $(this);
+            _self.attr('disabled', 'disabled');
+            require(['pace', 'jscookie'], function(Pace, Cookies) {
+                Pace.track(function(){
+                    $.ajax({
+                      method: "DELETE",
+                      url: _self.attr('data-url') + "?csrfmiddlewaretoken=" + Cookies.get('csrftoken'),
+                      data: { "csrfmiddlewaretoken": Cookies.get('csrftoken') }
+                    }).done(function( response ) {
+                        if( response.status == "success" ){
+                            base.success(response.messages);
+                            _self.closest("div.request_item").remove();
+                        }else{
+                            base.error(response.messages);
+                        }
+                    });
+                });
+            });
+        },
+        success : function(messages){
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.clear();
+                    toastr.success(messageObj.message);
+                });
+                break;
+            }
+        },
+        error : function(messages){
+            for(var messageObj of messages) {
+                require(['toastr'], function(toastr) {
+                    toastr.clear();
+                    toastr.error(messageObj.message);
+                });
+                break;
+            }
+        }
+    };
+
+   return {
+        init: base.init
+    };
+
+})(window, document, jQuery);
+
 /**
  *
  */
@@ -370,6 +524,7 @@ $(document).ready(function() {
     kevin_app.endpoint_connect.init();
     kevin_app.profile.init();
     kevin_app.namespace.init();
+    kevin_app.endpoint.init();
 
     require(['jscookie'], function(Cookies) {
         $.ajaxSetup({

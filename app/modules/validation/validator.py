@@ -5,11 +5,20 @@ Validator Module
 # standard library
 import re
 import uuid
+import json
+
+# third-party
+from jsonschema import Draft3Validator
+from jsonschema import Draft4Validator
 
 # Django
 from django.core.signing import Signer
 from django.core.validators import validate_email
 from django.core.validators import URLValidator
+
+# Local Django
+from app.modules.entity.namespace_entity import Namespace_Entity
+from app.modules.entity.endpoint_entity import Endpoint_Entity
 
 
 class Validator():
@@ -245,5 +254,121 @@ class Validator():
 
         return True if original != "" else False
 
+
     def optional(self):
         return self.__input == ""
+
+
+    def numeric(self):
+        regex = re.compile('^[0-9]+$')
+        return bool(regex.match(self.__input))
+
+
+    def namespace_pk(self):
+        regex = re.compile('^[0-9]+$')
+        if not bool(regex.match(self.__input)):
+            return False
+
+        namespace_entity = Namespace_Entity()
+        return namespace_entity.get_one_by_id(self.__input) != False
+
+
+    def entity_pk(self):
+        regex = re.compile('^[0-9]+$')
+        if not bool(regex.match(self.__input)):
+            return False
+
+        endpoint_entity = Endpoint_Entity()
+        return endpoint_entity.get_one_by_id(self.__input) != False
+
+
+    def custom_endpoint_route(self):
+        if self.__input.strip() == "":
+            return False
+        return True
+
+
+    def custom_endpoint_route_rules(self):
+
+        if self.__input == "":
+            return True
+
+        try:
+            data = json.loads(self.__input)
+        except:
+            return False
+
+        return True
+
+
+    def custom_endpoint_headers_rules(self):
+
+        if self.__input == "":
+            return True
+
+        try:
+            data = json.loads(self.__input)
+        except:
+            return False
+
+        conditions = [
+            "EQUALS",
+            "NOT_EQUALS",
+            "CONTAINS",
+            "IS_EMPTY",
+            "NOT_EMPTY",
+            "GREATER_THAN",
+            "LESS_THAN"
+        ]
+        int_regex = re.compile('^[\-0-9]+$')
+
+        status = True
+        for item in data:
+
+            if not "key" in item or not "condition" in item or not "value" in item:
+                status &= False
+                return False
+
+            if item["key"].strip() == "":
+                status &= False
+                return False
+
+            if item["condition"] == "" or not item["condition"] in conditions:
+                status &= False
+                return False
+
+            if item["condition"] == "GREATER_THAN" and not bool(int_regex.match(item["value"])):
+                status &= False
+                return False
+
+            if item["condition"] == "LESS_THAN" and not bool(int_regex.match(item["value"])):
+                status &= False
+                return False
+
+        return status
+
+
+    def custom_endpoint_body_rules(self):
+
+        if self.__input == "":
+            return True
+
+        try:
+            data = json.loads(self.__input)
+        except Exception as e:
+            return False
+
+        draft3 = True
+        draft4 = True
+
+        try:
+            Draft3Validator.check_schema(data)
+        except Exception as e:
+            draft3 = False
+
+        try:
+            Draft4Validator.check_schema(data)
+        except Exception as e:
+            draft4 = False
+
+        return draft3 or draft4

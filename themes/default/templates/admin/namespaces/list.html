@@ -92,7 +92,7 @@
                                                                 <a href="{% url 'app.web.admin.namespaces.edit' namespace.slug %}" class="dropdown-item">
                                                                     <i class="dropdown-icon fe fe-edit"></i> {% trans "Edit" %}
                                                                 </a>
-                                                                <a href="javascript:void(0)()" data-url="{% url 'app.api.private.v1.admin.namespace.endpoint' namespace.id %}" class="dropdown-item delete_namespace">
+                                                                <a href="javascript:void(0)" data-url="{% url 'app.api.private.v1.admin.namespace.endpoint' namespace.id %}" class="dropdown-item delete_namespace">
                                                                     <i class="dropdown-icon fe fe-trash"></i> {% trans "Delete" %}
                                                                 </a>
                                                             </div>
@@ -128,9 +128,9 @@
                 data: {
                     columns: [
                         // each columns data
-                        ['data1', {{ line_chart.final.total }}],
-                        ['data2', {{ line_chart.final.public }}],
-                        ['data3', {{ line_chart.final.private }}]
+                        ['data1', {{ line_chart.total }}],
+                        ['data2', {{ line_chart.public }}],
+                        ['data3', {{ line_chart.private }}]
                     ],
                     type: 'area', // default type of chart
                     groups: [

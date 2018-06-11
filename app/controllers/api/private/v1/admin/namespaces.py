@@ -33,9 +33,8 @@ class Namespaces(View):
         self.__logger = self.__helpers.get_logger(__name__)
 
 
-    def get(self, request):
-
-        self.__user_id = request.user.id
+    #def get(self, request):
+    #    pass
 
 
     def post(self, request):
@@ -229,7 +228,7 @@ class Namespace(View):
                 "message": _("Error! Invalid Request.")
             }]))
 
-        if self.__namespace_module.delete_namespace(namespace_id):
+        if self.__namespace_module.delete_namespace(self.__namespace_id):
             return JsonResponse(self.__response.send_private_success([{
                 "type": "success",
                 "message": _("Namespace deleted successfully.")

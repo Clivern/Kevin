@@ -31,7 +31,7 @@ def handler404(request, exception=None, template_name='templates/404.html'):
 
     context.autoload_options()
     context.push({
-        "page_title": _("404 | %s") % context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+        "page_title": _("404 · %s") % context.get("app_name", os.getenv("APP_NAME", "Kevin"))
     })
 
     return render(request, template_name, context.get(), status=404)

@@ -33,7 +33,7 @@ class Home(View):
 
         self.__context.autoload_options()
         self.__context.push({
-            "page_title": _("Home | %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
+            "page_title": _("Home · %s") % self.__context.get("app_name", os.getenv("APP_NAME", "Kevin"))
         })
 
         return render(request, self.template_name, self.__context.get())

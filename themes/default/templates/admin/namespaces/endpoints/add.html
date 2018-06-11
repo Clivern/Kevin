@@ -1,0 +1,125 @@
+{% extends 'layouts/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+    <div class="page-main">
+        {% include 'partials/top-menu.html' %}
+        <div class="my-3 my-md-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <form id="endpoint_add" class="card _endpoint_connect" onsubmit="return false" action="{% url 'app.api.private.v1.admin.endpoints.endpoint' %}" method="post"data-succ-type="redirect" data-succ-url="{% url 'app.web.admin.namespaces.view' namespace.slug %}" data-succ-wait="3000">
+                            {% csrf_token %}
+                            <input type="hidden" name="route_rules" value="">
+                            <input type="hidden" name="headers_rules" value="">
+                            <input type="hidden" name="namespace_id" value="{{ namespace.id }}">
+                            <div class="card-status bg-green"></div>
+                            <div class="card-header">
+                                <h3 class="card-title">{% trans "Endpoint" %}</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-label">{% trans "Route" %}</label>
+                                            <input name="route" type="text" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">{% trans "Method" %}</label>
+                                            <select name="method" class="form-control custom-select" required>
+                                                <option value="">{% trans "Please select a value" %}</option>
+                                                <option value="get">{% trans "GET" %}</option>
+                                                <option value="post">{% trans "POST" %}</option>
+                                                <option value="head">{% trans "HEAD" %}</option>
+                                                <option value="put">{% trans "PUT" %}</option>
+                                                <option value="delete">{% trans "DELETE" %}</option>
+                                                <option value="patch">{% trans "PATCH" %}</option>
+                                                <option value="trace">{% trans "TRACE" %}</option>
+                                                <option value="options">{% trans "OPTIONS" %}</option>
+                                                <option value="connect">{% trans "CONNECT" %}</option>
+                                                <option value="any">{% trans "ANY" %}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">{% trans "Target" %}</label>
+                                            <select name="target" class="form-control custom-select" required>
+                                                <option value="">{% trans "Please select a value" %}</option>
+                                                <option value="debug">{% trans "Debug" %}</option>
+                                                <option value="validate">{% trans "Validate" %}</option>
+                                            </select>
+                                        </div>
+                                        <br/>
+                                        <div id="validate_endpoint_options" style="display: none">
+                                            <div class="form-label">{% trans "Header Validation Rules" %}</div>
+                                            <div class="table-responsive table-borderless">
+                                                <table class="table mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="pl-0">{% trans "Key" %}</th>
+                                                            <th>{% trans "Comparison" %}</th>
+                                                            <th>{% trans "Value" %}</th>
+                                                            <th class="pr-0 text-center">{% trans "Action" %}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="header_rules">
+                                                        <tr id="header_rule_item" style="display:none">
+                                                            <td class="pl-0">
+                                                                <input name="header_key[iii]" type="text" class="form-control">
+                                                            </td>
+                                                            <td>
+                                                                <select name="header_condition[iii]" class="custom-select">
+                                                                    <option value="" selected>{% trans "Please select a value" %}</option>
+                                                                    <option value="EQUALS">{% trans "Equals" %}</option>
+                                                                    <option value="NOT_EQUALS">{% trans "Not equals" %}</option>
+                                                                    <option value="CONTAINS">{% trans "Contains" %}</option>
+                                                                    <option value="IS_EMPTY">{% trans "Is empty" %}</option>
+                                                                    <option value="NOT_EMPTY">{% trans "Is not empty" %}</option>
+                                                                    <option value="GREATER_THAN">{% trans "Greater than" %}</option>
+                                                                    <option value="LESS_THAN">{% trans "Less than" %}</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input name="header_value[iii]" type="text" class="form-control">
+                                                            </td>
+                                                            <td class="pr-0 text-center">
+                                                                <a href="javascript:void(0)" class="btn btn-secondary remove_header_rule">{% trans "Remove" %}</a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <br/>
+                                            <div class="form-label text-center">
+                                                <a href="javascript:void(0)" id="add_header_rule" class="btn btn-secondary">{% trans "Add Item" %}</a>
+                                            </div>
+                                            <br/>
+                                            <div class="form-group">
+                                                <label class="form-label">{% trans "Body Validation JSON Schema" %}</label>
+                                                <textarea name="body_rules" rows="7" class="form-control" placeholder='{
+        "properties": {
+            "name": {"type": "string"},
+            "email": {"type": "string"}
+        },
+        "required": ["email"]
+}'></textarea>
+                                                <small class="form-text text-muted"><a href="http://json-schema.org/" target="_blank">{% trans "We support JSON Schema draft 3 & draft 4." %}</a></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <div class="d-flex">
+                                    <button type="submit" class="btn btn-primary ml-auto">{% trans "Submit" %}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'partials/bottom-menu.html' %}
+
+{% endblock %}
